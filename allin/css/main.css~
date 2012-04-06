@@ -1,0 +1,7 @@
+.container  {}
+.clear      {}
+.form       {}
+
+#header {}
+#footer {}
+#content{}
