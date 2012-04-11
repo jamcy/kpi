@@ -1,7 +1,10 @@
 .container  {}
 .clear      {}
 .form       {}
+.logincontainer {}
+.clear      {height: 20px}
 
+#page    {min-height: 100%}
 #header {}
-#footer {}
+#footer {height: 160px; width: 100%; background-image: url('../images/footer.png'); background-repeat: repeat-x;}
 #content{}

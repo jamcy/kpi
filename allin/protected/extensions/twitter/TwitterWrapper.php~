@@ -1,7 +1,7 @@
 <?php
     Yii::import('ext.twitter.tmhUtilities');
     Yii::import('ext.twitter.tmhOAuth');
-    Yii::import('ext.SocialWrapper'); 
+    Yii::import('ext.twitter.SocialWrapper'); 
     class TwitterWrapper extends SocialWrapper
     {
 		function init(){}

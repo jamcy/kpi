@@ -5,7 +5,7 @@ form .counter{
    top:0;
    font-size:20px;
    font-weight:bold;
-   color:#ccc;
+   color:#eee;
    }
 form .warning{color:#600;} 
 form .exceeded{color:#e00;}   
