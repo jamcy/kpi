@@ -23,16 +23,14 @@
         $perms = $perms['data'][0];
         if(array_key_exists('publish_stream', $perms))
         {
-          $post = array('message'=>'hello');
-          print_r(Yii::app()->facebook->api('/me/feed', 'POST', $post));
+          return Yii::app()->facebook->getUser();
         }
         else
-          echo Yii::app()->facebook->getLoginUrl(array(
+          return Yii::app()->facebook->getLoginUrl(array(
                                                 'scope'=>'publish_stream',));
       }
     } catch(Exception $ex)
     {
-      echo $ex;
-      echo Yii::app()->facebook->getLoginUrl(array('scope'=>'publish_stream',));
+      return Yii::app()->facebook->getLoginUrl(array('scope'=>'publish_stream',));
     }
   }

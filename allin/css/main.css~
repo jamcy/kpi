@@ -1,9 +1,28 @@
 .container  {}
 .clear      {}
 .form       {}
-.logincontainer {}
+.logincontainer 
+{
+	margin-right: 10px;
+	display: inline;
+	height: 100;
+	width:  300;
+	background-color: green;
+}
+.login_btn
+{
+}
+
+#vk-login
+{
+}
 .clear      {height: 20px}
 
+
+#login_button 
+{
+	display: inline;
+}
 #page    {min-height: 100%}
 #header {}
 #footer {height: 160px; width: 100%; background-image: url('../images/footer.png'); background-repeat: repeat-x;}

@@ -4,16 +4,15 @@
 	<div class="row">
    	<form action="">
       	<div class="span6 offset3">
-         	<div class = "logincontainer" id="twitter">
+         	<div class = "logincontainer" id="twi">
               <a href="?authenticate=1">Sign in with Twitter</a>
               <?echo $url?>
               <a href="?wipe=1">Выйти</a>
             </div>
-            <div class="logincontainer" id="facebook">
-            	facebook
+            <div class="logincontainer" id="fb">
+            	<span id="load">Click me</span>
             </div>
             <div class="logincontainer" id="vk">
-            	<div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
             </div>
             <div class="clear"></div>
             <label style="display:block;" for="textarea"><h4>What's up?</h4></label>
@@ -48,7 +47,6 @@
 	Yii::app()->clientScript->registerScriptFile('protected/extensions/bootstrap/assets/js/bootstrap-modal.js');
 	Yii::app()->clientScript->registerScriptFile('protected/extensions/bootstrap/assets/js/bootstrap-button.js');
 	Yii::app()->clientScript->registerScriptFile('http://vkontakte.ru/js/api/openapi.js');
-	Yii::app()->clientScript->registerScriptFile('js/vk.js');
 	Yii::app()->clientScript->registerScriptFile('js/common.js');
 	Yii::app()->clientScript->registerCssFile('css/vlad.css'); 
 ?>

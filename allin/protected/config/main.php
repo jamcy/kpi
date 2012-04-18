@@ -34,13 +34,13 @@ return array(
 
 	// application components
 	'components'=>array(
-	  'urlManager'=>array(
-            'showScriptName' => false,  // что бы не цеплялся index.php к ссылкам
-            'urlFormat'=>'path'//,
+	  //'urlManager'=>array(
+     //       'showScriptName' => false,  // что бы не цеплялся index.php к ссылкам
+     //       'urlFormat'=>'path'//,
             //'rules'=>array(
 				//'/site/index'=>'site/index'
             //),
-       ),
+      // ),
       /* 'twitter'=>array(
 		'class'=>'ext.twitter.tmhOAuth',
 		'consumer_key'    => 'Npvej2chz2fmEJRZPrUPQ',
@@ -51,8 +51,11 @@ return array(
        'twitterUtils'=>array(
 		'class'=>'ext.twitter.tmhUtilities',
        ),*/
+       'fbAgg'=>array(
+       	'class'=>'ext.FacebookWrapper',
+       ),
        'twitAgg'=>array(
-		 'class'=>'ext.twitter.TwitterWrapper',
+		 	'class'=>'ext.TwitterWrapper',
        ),
       'facebook'=>array(
           'class' => 'ext.yii-facebook-opengraph.SFacebook',
