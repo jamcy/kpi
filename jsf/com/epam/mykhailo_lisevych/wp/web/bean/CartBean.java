@@ -1,8 +1,8 @@
 package com.epam.mykhailo_lisevych.wp.web.bean;
 
-import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import com.epam.mykhailo_lisevych.wp.ejb.OrderBuilder;
 import com.epam.mykhailo_lisevych.wp.ejb.OrderPriceProcessor;
@@ -13,8 +13,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Named("cartBean")
-@SessionScoped
+@ManagedBean
+@ViewScoped
 @SuppressWarnings("cdi-ambiguous-dependency")
 public class CartBean implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -63,19 +63,19 @@ public class CartBean implements Serializable {
 	public boolean containsProduct(Product p) {
 		return orderBuilder.containsProduct(p);
 	}
-	
+
 	public List<Product> productList() {
 		List<Product> result = new ArrayList<Product>();
-		for(OrderedProduct op : orderBuilder.getOrder().getOrderedProducts()) {
+		for (OrderedProduct op : orderBuilder.getOrder().getOrderedProducts()) {
 			result.add(op.getProduct());
 		}
 		return result;
 	}
-	
+
 	public String submit() {
-		//TODO create order here
+		// TODO create order here
 		orderBuilder.save();
-		//orderBuilder.clear();
+		// orderBuilder.clear();
 		return "catalogue";
 	}
 

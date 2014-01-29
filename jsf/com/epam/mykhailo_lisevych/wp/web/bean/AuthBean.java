@@ -20,6 +20,7 @@ public class AuthBean {
 	private String password;
 	private String returnUrl;
 
+
 	@PostConstruct
 	public void init() {
 		ExternalContext externalContext = FacesContext.getCurrentInstance()
@@ -45,7 +46,6 @@ public class AuthBean {
 				.getRequest();
 		try {
 			request.login(username, password);
-			// TODO replace injected users
 			externalContext.redirect(returnUrl);
 		} catch (ServletException e) {
 			e.printStackTrace();

@@ -66,15 +66,38 @@ body {
 	float: right;
 	position: relative;
 	top: -39px;
-	right: 20px;
-	background-color: #1BAD50;
+	right: 10px;
 	padding: 7px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	list-style: none;
 }
 
 #user-panel a {
 	color: #FFF;
 	text-decoration: none;
 	font-weight: bold;
+}
+
+#login-link {
+	background-color: #1BAD50;
+	padding-top: 7px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+}
+
+#logout {
+	margin: 0px;
+}
+
+#logout a {
+	background-color: red;
+	padding-top: 2px;
+	font-size: 10pt;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 2px;
 }
 
 #breadcrumbs {
