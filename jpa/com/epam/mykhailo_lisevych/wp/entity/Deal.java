@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "deal", schema = "public")
-@SequenceGenerator(name = "dealIdSeq", sequenceName = "deal_id_seq")
+@SequenceGenerator(name = "dealIdSeq", sequenceName = "deal_id_seq", allocationSize=1)
 public class Deal implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;

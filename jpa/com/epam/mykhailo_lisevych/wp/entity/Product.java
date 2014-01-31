@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "product", schema = "public")
-@SequenceGenerator(name = "productIdSeq", sequenceName = "product_id_seq")
+@SequenceGenerator(name = "productIdSeq", sequenceName = "product_id_seq", allocationSize=1)
 public class Product implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;

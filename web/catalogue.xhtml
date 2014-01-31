@@ -56,10 +56,10 @@ max-height: 200px;"
 					</h:panelGrid>
 					<p:commandButton oncomplete="PF('cartDialog').show()"
 						title="Add to cart" update=":cartForm" icon="ui-icon-cart"
-						rendered="#{!cartBean.productList().contains(p) and userBean.currentUser.role == 'COMPANY'}">
-						<f:setPropertyActionListener target="#{cartBean.selectedProduct}"
+						rendered="#{!cartBean.isProductInCart(p) and stateBean.userState.currentUser.role == 'COMPANY'}">
+						<f:setPropertyActionListener target="#{stateBean.cartSelectedProduct}"
 							value="#{p}" />
-						<f:setPropertyActionListener target="#{cartBean.quantity}"
+						<f:setPropertyActionListener target="#{stateBean.cartSelectedProductQuantity}"
 							value="1" />
 					</p:commandButton>
 				</h:panelGrid>
@@ -71,9 +71,9 @@ max-height: 200px;"
 			<h:form id="cartForm">
 				<h:panelGrid columns="2">
 					<h:outputLabel value="Name:" />
-					<h:outputText value="#{cartBean.selectedProduct.name}" />
+					<h:outputText value="#{stateBean.cartSelectedProduct.name}" />
 					<h:outputLabel value="Quantity:" />
-					<p:spinner value="#{cartBean.quantity}" min="1" max="1000000" />
+					<p:spinner value="#{stateBean.cartSelectedProductQuantity}" min="1" max="1000000" />
 				</h:panelGrid>
 				<div style="margin-top: 10px;"></div>
 				<p:commandButton actionListener="#{cartBean.add}" value="Add"

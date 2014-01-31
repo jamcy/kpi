@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "manager", schema = "public")
-@SequenceGenerator(name = "managerIdSeq", sequenceName = "manager_id_seq")
+@SequenceGenerator(name = "managerIdSeq", sequenceName = "manager_id_seq", allocationSize=1)
 public class Manager implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;

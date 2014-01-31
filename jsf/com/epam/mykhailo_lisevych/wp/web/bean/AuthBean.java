@@ -8,9 +8,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+
+import com.epam.mykhailo_lisevych.wp.ejb.UserStateBean;
 
 @ManagedBean
 @ViewScoped
@@ -20,6 +23,8 @@ public class AuthBean {
 	private String password;
 	private String returnUrl;
 
+	@Inject
+	private UserStateBean userState;
 
 	@PostConstruct
 	public void init() {
@@ -47,6 +52,7 @@ public class AuthBean {
 		try {
 			request.login(username, password);
 			externalContext.redirect(returnUrl);
+			userState.refresh();
 		} catch (ServletException e) {
 			e.printStackTrace();
 			context.addMessage(null, new FacesMessage("Failed to login"));
@@ -57,6 +63,7 @@ public class AuthBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = context.getExternalContext();
 		externalContext.invalidateSession();
+		userState.refresh();
 		externalContext.redirect(returnUrl);
 	}
 

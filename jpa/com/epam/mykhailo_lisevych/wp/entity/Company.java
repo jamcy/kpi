@@ -19,7 +19,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "company", schema = "public")
-@SequenceGenerator(name = "companyIdSeq", sequenceName = "company_id_seq")
+@SequenceGenerator(name = "companyIdSeq", sequenceName = "company_id_seq", allocationSize=1)
 @NamedQueries({ @NamedQuery(name = "Company.selectByUser", query = "SELECT c FROM Company c WHERE c.user = :u") })
 public class Company implements java.io.Serializable {
 

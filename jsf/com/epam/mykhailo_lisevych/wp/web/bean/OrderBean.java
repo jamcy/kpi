@@ -4,7 +4,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.epam.mykhailo_lisevych.wp.dao.OrderDao;
+import com.epam.mykhailo_lisevych.wp.controller.OrderController;
 import com.epam.mykhailo_lisevych.wp.entity.Order;
 import com.epam.mykhailo_lisevych.wp.entity.OrderStatusValue;
 import com.epam.mykhailo_lisevych.wp.web.converter.OrderFromId;
@@ -16,24 +16,22 @@ public class OrderBean {
 	@Inject
 	private OrderFromId converter;
 
-	@SuppressWarnings("cdi-ambiguous-dependency")
 	@Inject
-	private OrderDao odao;
-	
+	private OrderController orderController;
+
 	private String dealContents;
-	private String changeComment;
 	private OrderStatusValue statusValueLabel;
-	
+
 	private Order order;
 
 	public String[] getAvailableStatusLabels() {
 		String[] result = new String[OrderStatusValue.values().length];
-		for(int i=0; i< OrderStatusValue.values().length; i++) {
+		for (int i = 0; i < OrderStatusValue.values().length; i++) {
 			result[i] = OrderStatusValue.values()[i].name();
 		}
 		return result;
 	}
-	
+
 	public Order getOrder() {
 		return order;
 	}
@@ -65,6 +63,14 @@ public class OrderBean {
 	public void setStatusValueLabel(OrderStatusValue statusValueLabel) {
 		this.statusValueLabel = statusValueLabel;
 	}
-	
+
+	// TODO remove
+	public OrderController getOrderController() {
+		return orderController;
+	}
+
+	public void setOrderController(OrderController orderController) {
+		this.orderController = orderController;
+	}
 
 }

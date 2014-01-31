@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,23 +43,27 @@ public class Order implements java.io.Serializable {
 	@JoinColumn(name = "deal_id")
 	private Deal deal;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "time_created", nullable = false, length = 13)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "time_created", nullable = false)
 	private Date timeCreated;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "time_updated", nullable = true)
+	private Date timeUpdated;
 
 	@Column(name = "total_cost", nullable = false, precision = 131089, scale = 0)
 	private BigDecimal totalCost;
-	
-	@Column(name="summary", nullable=true)
+
+	@Column(name = "summary", nullable = true)
 	private String summary;
 
 	@Column(name = "payment_requisitions")
 	private String paymentRequisitions;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade=CascadeType.PERSIST)
 	private List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade=CascadeType.PERSIST)
 	private List<OrderStatus> orderStatuses = new ArrayList<OrderStatus>();
 
 	public Order() {
@@ -159,6 +164,11 @@ public class Order implements java.io.Serializable {
 			}
 		}
 		return OrderStatusValue.NEW;
+	}
+	
+	public void addOrderedProduct(OrderedProduct op) {
+		op.setOrder(this);
+		orderedProducts.add(op);
 	}
 
 }

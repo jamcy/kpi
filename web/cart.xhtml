@@ -6,26 +6,26 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="content">
-		<p:dataTable var="p" value="#{cartBean.productList()}">
-			<p:column headerText="Product">
-				<h:outputText value="#{p.name}" />
-			</p:column>
-			<p:column headerText="Price">
-				<h:outputText value="#{p.priceRetail}/#{p.priceWholesale} $" />
-			</p:column>
-			<p:column headerText="Count / Wholesale">
-				<h:outputText
-					value="Price" />
-			</p:column>
-			<p:column headerText="Total">
-				<h:outputText value="#{p.priceRetail}$TODO" />
-			</p:column>
-			<p:column headerText="Actions">
-				<h:outputText value="remove" />
-			</p:column>
-		</p:dataTable>
-		<h:form>
-			<h:commandButton action="#{cartBean.submit()}" value="Create order" style="float: right;"/>
+		<h:form id="order-lines">
+			<p:dataTable var="p" value="#{cartBean.orderedProducts}">
+				<p:column headerText="Product">
+					<h:outputText value="#{p.name}" />
+				</p:column>
+				<p:column headerText="Price">
+					<h:outputText value="#{p.priceRetail}|#{p.priceWholesale} $" />
+				</p:column>
+				<p:column headerText="Count / Wholesale">
+					<h:outputText value="#{cartBean.getQuantity(p)}" />
+				</p:column>
+				<p:column headerText="Total">
+					<h:outputText value="#{p.priceRetail}$TODO" />
+				</p:column>
+				<p:column headerText="Actions">
+					<h:outputText value="remove" />
+				</p:column>
+			</p:dataTable>
+			<h:commandButton action="#{cartBean.createOrder()}" value="Create order"
+				style="float: right;" />
 		</h:form>
 	</ui:define>
 </ui:composition>

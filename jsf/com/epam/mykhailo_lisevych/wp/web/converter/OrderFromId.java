@@ -12,7 +12,6 @@ import com.epam.mykhailo_lisevych.wp.entity.Order;
 @Named("converter.orderIdConverter")
 public class OrderFromId implements Converter {
 
-	@SuppressWarnings("cdi-ambiguous-dependency")
 	@Inject
 	private OrderDao odao;
 

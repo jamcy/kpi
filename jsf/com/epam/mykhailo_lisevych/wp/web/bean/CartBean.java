@@ -1,82 +1,58 @@
 package com.epam.mykhailo_lisevych.wp.web.bean;
 
+import java.io.Serializable;
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
-import com.epam.mykhailo_lisevych.wp.ejb.OrderBuilder;
-import com.epam.mykhailo_lisevych.wp.ejb.OrderPriceProcessor;
-import com.epam.mykhailo_lisevych.wp.entity.OrderedProduct;
+import com.epam.mykhailo_lisevych.wp.controller.CartController;
 import com.epam.mykhailo_lisevych.wp.entity.Product;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @ManagedBean
 @ViewScoped
-@SuppressWarnings("cdi-ambiguous-dependency")
 public class CartBean implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private OrderBuilder orderBuilder;
+	private CartController cart;
 
 	@Inject
-	private OrderPriceProcessor priceProcessor;
+	private StateBean stateBean;
 
-	private int quantity;
-	private Product selectedProduct;
-
-	public CartBean() {
-
+	public void add() {
+		cart.addLine(stateBean.getCartSelectedProduct(),
+				stateBean.getCartSelectedProductQuantity());
 	}
 
 	public void clear() {
-
+		cart.clear();
 	}
 
-	public void add() {
-		orderBuilder.addProduct(selectedProduct, quantity);
+	public boolean isProductInCart(Product p) {
+		return cart.containsLine(p);
 	}
 
-	public int getProductCount() {
-		return orderBuilder.getOrder().getOrderedProducts().size();
+	public int getCartSize() {
+		return cart.getCartSize();
 	}
 
-	public int getQuantity() {
-		return quantity;
+	public void remove(Product p) {
+		cart.removeLine(p);
 	}
 
-	public void setQuantity(int q) {
-		quantity = q;
+	public List<Product> getOrderedProducts() {
+		return cart.getOrderedProducts();
 	}
 
-	public Product getSelectedProduct() {
-		return selectedProduct;
+	public int getQuantity(Product p) {
+		return cart.getQuantity(p);
 	}
-
-	public void setSelectedProduct(Product selectedProduct) {
-		this.selectedProduct = selectedProduct;
+	
+	public String createOrder() {
+		cart.createOrder();
+		return "index";
 	}
-
-	public boolean containsProduct(Product p) {
-		return orderBuilder.containsProduct(p);
-	}
-
-	public List<Product> productList() {
-		List<Product> result = new ArrayList<Product>();
-		for (OrderedProduct op : orderBuilder.getOrder().getOrderedProducts()) {
-			result.add(op.getProduct());
-		}
-		return result;
-	}
-
-	public String submit() {
-		// TODO create order here
-		orderBuilder.save();
-		// orderBuilder.clear();
-		return "catalogue";
-	}
-
 }

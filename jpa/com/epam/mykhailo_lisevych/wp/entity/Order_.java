@@ -7,7 +7,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2014-01-29T00:00:54.857+0200")
+@Generated(value="Dali", date="2014-01-31T19:04:53.345+0200")
 @StaticMetamodel(Order.class)
 public class Order_ {
 	public static volatile SingularAttribute<Order, Integer> orderId;
@@ -20,4 +20,5 @@ public class Order_ {
 	public static volatile SingularAttribute<Order, String> paymentRequisitions;
 	public static volatile ListAttribute<Order, OrderedProduct> orderedProducts;
 	public static volatile ListAttribute<Order, OrderStatus> orderStatuses;
+	public static volatile SingularAttribute<Order, Date> timeUpdated;
 }

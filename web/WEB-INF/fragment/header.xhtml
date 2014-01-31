@@ -11,31 +11,31 @@
 			<li class="navlinks-border-right navlinks-border-left"><h:link
 					outcome="/catalogue.xhtml" value="Products" /></li>
 			<li
-				class="navlinks-border-left #{(userBean.currentUser.role == 'GUEST')? '' : 'navlinks-border-right'}"><h:link
+				class="navlinks-border-left #{(stateBean.userState.currentUser.role == 'GUEST')? '' : 'navlinks-border-right'}"><h:link
 					outcome="/contact.xhtml" value="Contact" /></li>
-			<c:if test="#{userBean.currentUser.role == 'COMPANY'}">
+			<c:if test="#{stateBean.userState.currentUser.role == 'COMPANY'}">
 				<li class="navlinks-border-left"><h:link
 						outcome="/order-list.xhtml" value="Orders" /></li>
 			</c:if>
-			<c:if test="#{userBean.currentUser.role == 'MANAGER'}">
+			<c:if test="#{stateBean.userState.currentUser.role == 'MANAGER'}">
 				<li class="navlinks-border-left"><h:link
 						outcome="/manager/orders.xhtml" value="Orders" /></li>
 			</c:if>
-			<c:if test="#{userBean.currentUser.role == 'ADMIN'}">
+			<c:if test="#{stateBean.userState.currentUser.role == 'ADMIN'}">
 				<li class="navlinks-border-left"><h:link
 						outcome="/admin/users.xhtml" value="Admin" /></li>
 			</c:if>
 		</ul>
 		<ul id="user-panel">
-			<c:if test="#{userBean.currentUser.role == 'GUEST'}">
+			<c:if test="#{stateBean.userState.currentUser.role == 'GUEST'}">
 				<li><h:link id="login-link" outcome="/login.xhtml"
 						value="Login" /></li>
 			</c:if>
-			<c:if test="#{userBean.currentUser.role == 'COMPANY'}">
+			<c:if test="#{stateBean.userState.currentUser.role == 'COMPANY'}">
 				<li><h:link id="cart-link" outcome="/cart.xhtml"
-						value="Cart(0)" /></li>
+						value="Cart(#{cartBean.getCartSize()})" /></li>
 			</c:if>
-			<c:if test="#{userBean.currentUser.role != 'GUEST'}">
+			<c:if test="#{stateBean.userState.currentUser.role != 'GUEST'}">
 				<li><h:form id="logout">
 						<h:commandLink action="#{authBean.logout()}" value="Logout" />
 					</h:form></li>
@@ -45,6 +45,7 @@
 	<div id="breadcrumbs">
 		<div id="page-name">
 			<h:outputText value="#{pageName}" />
+
 		</div>
 	</div>
 </ui:composition>

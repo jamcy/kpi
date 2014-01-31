@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "order_status", schema = "public")
-@SequenceGenerator(name = "orderStatusIdSeq", sequenceName = "order_status_id_seq")
+@SequenceGenerator(name = "orderStatusIdSeq", sequenceName = "order_status_id_seq", allocationSize=1)
 public class OrderStatus implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
