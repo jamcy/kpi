@@ -10,6 +10,7 @@ import com.epam.mykhailo_lisevych.wp.ejb.UserStateBean;
 @RequestScoped
 public class TestBean {
 
+	@SuppressWarnings("cdi-ambiguous-dependency")
 	@Inject
 	private UserStateBean userState;
 

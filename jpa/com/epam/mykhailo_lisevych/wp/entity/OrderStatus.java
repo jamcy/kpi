@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "order_status", schema = "public")
-@SequenceGenerator(name = "orderStatusIdSeq", sequenceName = "order_status_id_seq", allocationSize=1)
+@SequenceGenerator(name = "orderStatusIdSeq", sequenceName = "order_status_id_seq", allocationSize = 1)
 public class OrderStatus implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class OrderStatus implements java.io.Serializable {
 	@Column(name = "order_status_id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderStatusIdSeq")
 	private int orderStatusId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id", nullable = false)
 	private Order order;
 

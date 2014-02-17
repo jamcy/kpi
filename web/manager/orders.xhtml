@@ -6,6 +6,40 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="content">
-		Manager order list page
+
+		<h:form id="filters">
+			<p:selectOneButton converter="orderStatusValueConverter" id="status"
+				value="#{managerOrderBean.orderStatusValueFilter}">
+				<f:selectItems value="#{managerOrderBean.orderStatusValues}" />
+			</p:selectOneButton>
+		</h:form>
+		<h:form id="data">
+			<p:dataTable var="o" value="#{managerOrderBean.orders}">
+				<p:column headerText="Order" style="width: 100px;">
+					<h:outputText value="##{o.orderId}" />
+				</p:column>
+				<p:column headerText="Status">
+					<h:outputText value="#{o.currentStatus.status}" />
+				</p:column>
+				<p:column headerText="Company">
+					<h:outputText value="#{o.company.name}" />
+				</p:column>
+				<p:column headerText="Created">
+					<h:outputText value="#{o.timeCreated}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />s
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Changed">
+					<h:outputText value="#{o.timeUpdated}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width: 100px;">
+					<p:button outcome="/order.xhtml" icon="ui-icon-pencil">
+						<f:param name="oid" value="#{o.orderId}" />
+					</p:button>
+				</p:column>
+			</p:dataTable>
+		</h:form>
 	</ui:define>
 </ui:composition>

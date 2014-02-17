@@ -5,70 +5,77 @@
 	template="/WEB-INF/template/common.xhtml"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:define name="content">
+	<ui:param name="pageName" value="Order ##{orderBean.order.orderId}" />
 
+	<ui:define name="content">
 		<f:metadata>
-			<f:viewParam name="oid" value="#{orderBean.order}"
+			<f:viewParam required="true" name="oid" value="#{orderBean.order}"
 				converter="#{orderBean.converter}" />
 			<!-- <f:converter binding="#{converter.orderIdConverter}" /> -->
 		</f:metadata>
 
-		<div id="order-head">
-			<table>
-				<tbody>
-					<tr>
-						<td>Order #<h:outputText value="#{orderBean.order.orderId}" /></td>
-						<td>Customer: <h:outputLink value="company.xhtml">
-								<h:outputText value="#{orderBean.order.company.name}" />
-								<f:param name="cid" value="#{orderBean.order.company.companyId}" />
-							</h:outputLink>
-						</td>
-						<td>Created: <h:outputText
-								value="#{orderBean.order.timeCreated}" /></td>
-						<td>Status: <h:outputText
-								value="#{orderBean.order.currentStatus}" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 		<h:outputText value="No such order"
 			rendered="#{orderBean.order==null}" />
-		<div id="order-content">
+		<p:outputPanel id="order-content">
 			<div class="order-block">
-				<div class="order-block-header">
-					Order summary <span class="commands"><a href="/edit.xhtml">hide</a>
-					</span>
-				</div>
-				<h:outputText value="#{orderBean.order.summary}" escape="false"/>
+				<div class="order-block-header">Details</div>
+
+				<h:panelGrid columns="2">
+					Order ID:
+					<h:outputText value="#{orderBean.order.orderId}" />
+					Customer:
+					<h:outputText value="#{orderBean.order.company.name}" />
+					Deal:
+					<h:outputText value="No" />
+					<h:outputLabel value="Manager:" for="manager" />
+					<h:outputText id="manager" value="#{orderBean.order.manager.name}" />
+					Created:
+					<h:outputText value="#{orderBean.order.timeCreated}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+					Last change:
+					<h:outputText value="#{orderBean.order.timeUpdated}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+					Status:
+					<h:outputText value="#{orderBean.order.currentStatus.status}" />
+				</h:panelGrid>
 			</div>
+
 			<div class="order-block">
 				<div class="order-block-header">
-					Deal <span class="commands"><a href="#"
-						onclick="PF('dealEdit').show()">create</a> </span>
-				</div>
-			</div>
-			<div class="order-block">
-				<div class="order-block-header">
-					History <span class="commands"><a href="/edit.xhtml">hide</a>|<a
-						href="/edit.xhtml">edit</a> </span>
+					History
+					<!-- <span class="commands"><a href="/edit.xhtml">hide</a></span> -->
 				</div>
 				<ui:repeat var="hi" value="#{orderBean.order.orderStatuses}">
 					<table class="history-item-header">
-							<tr>
-								<td>Status:<h:outputText value=" #{hi.status}" /></td>
-								<td>From:</td>
-								<td>To:</td>
-							</tr>
+						<tr>
+							<td>Status:<h:outputText value=" #{hi.status}" /></td>
+							<td>From: <h:outputText value="#{hi.timeFrom}">
+									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								</h:outputText>
+							</td>
+							<td>To: <h:outputText value="#{hi.timeTo}">
+									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								</h:outputText>
+							</td>
+						</tr>
 					</table>
+
 					<div class="history-item">
-						<h:outputText value="#{hi.comment}" />
+						<pre>
+							<h:outputText value="#{hi.comment}" />
+						</pre>
 					</div>
+
 				</ui:repeat>
 			</div>
-			<div id="order-controls">
-				<button onclick="PF('orderEdit').show()">Edit order</button>
-			</div>
+		</p:outputPanel>
+		<div id="order-controls">
+			<!-- <p:commandButton onclick="PF('dealEdit').show()" value="Reports" /> -->
+			<p:commandButton onclick="PF('dealEdit').show()" value="Create deal" />
+			<p:commandButton onclick="PF('orderEdit').show()" value="Edit order"
+				update=":orderEditForm" />
 		</div>
 
 		<p:dialog header="Edit deal" widgetVar="dealEdit" resizable="false"
@@ -79,12 +86,16 @@
 					<p:outputLabel for="cost" value="Additional cost:" />
 					<p:inputText id="cost" />
 				</h:panelGrid>
-				<p:commandButton id="submitButton" value="Submit" />
+				<p:commandButton id="submitButton" value="Submit"
+					action="#{orderBean.createDeal()}" />
 				<p:commandButton id="previewButton" value="Preview"
 					update=":dealPreview" oncomplete="PF('dealPreview').show()" />
 			</h:form>
 		</p:dialog>
-		<p:dialog header="Deal edit" widgetVar="dealPreview" resizable="false">
+
+
+		<p:dialog header="Preview deal" widgetVar="dealPreview"
+			resizable="false">
 			<p:outputPanel id="dealPreview">
 				<div class="order-block">
 					<div class="order-block-header">Deal</div>
@@ -92,19 +103,37 @@
 				</div>
 			</p:outputPanel>
 		</p:dialog>
+
+
 		<p:dialog header="Edit order" widgetVar="orderEdit" resizable="false"
 			modal="true">
-			<h:form id="orderEdit">
+			<h:form id="orderEditForm">
+				<p:selectOneButton converter="orderStatusValueConverter" id="status"
+					value="#{orderBean.statusValue}">
+					<f:selectItems value="#{orderBean.statusValues}" />
+				</p:selectOneButton>
+				<!-- <p:outputLabel for="status" value="Order status:" /> -->
 				<h:panelGrid columns="2">
-					<p:outputLabel for="status" value="Order status:" />
-					<p:selectOneMenu id="status" value="#{orderBean.statusValueLabel}">
-						<f:selectItems value="#{orderBean.availableStatusLabels}" />
+
+					<p:outputLabel for="manager" value="Manager:" />
+					<p:selectOneMenu converter="#{orderBean.managerConverter}"
+						id="manager" value="#{orderBean.selectedManager}">
+						<f:selectItems value="#{orderBean.managers}" var="m"
+							itemLabel="#{m.name}" />
 					</p:selectOneMenu>
+
 					<p:outputLabel for="comment" value="Comment:" />
-					<p:inputTextarea id="comment" cols="80" rows="10" />
+					<p:inputTextarea id="comment" rows="4" cols="60" autoResize="true"
+						value="#{orderBean.comment}" />
 				</h:panelGrid>
-				<p:commandButton id="submitButton" value="Submit" />
+
+				<p:commandButton action="#{orderBean.updateOrder()}"
+					oncomplete="PF('orderEdit').hide()" update=":order-content"
+					value="Submit">
+					<f:param name="oid" value="#{orderBean.order.orderId}" />
+				</p:commandButton>
 			</h:form>
 		</p:dialog>
+
 	</ui:define>
 </ui:composition>

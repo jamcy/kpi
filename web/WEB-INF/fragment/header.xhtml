@@ -32,8 +32,10 @@
 						value="Login" /></li>
 			</c:if>
 			<c:if test="#{stateBean.userState.currentUser.role == 'COMPANY'}">
-				<li><h:link id="cart-link" outcome="/cart.xhtml"
-						value="Cart(#{cartBean.getCartSize()})" /></li>
+				<li><p:outputPanel id="header-cart-link">
+						<h:link id="cart-link" outcome="/cart.xhtml"
+							value="Cart(#{cartBean.getCartSize()})" />
+					</p:outputPanel></li>
 			</c:if>
 			<c:if test="#{stateBean.userState.currentUser.role != 'GUEST'}">
 				<li><h:form id="logout">

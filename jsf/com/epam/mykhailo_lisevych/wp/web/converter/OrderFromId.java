@@ -12,38 +12,21 @@ import com.epam.mykhailo_lisevych.wp.entity.Order;
 @Named("converter.orderIdConverter")
 public class OrderFromId implements Converter {
 
+	@SuppressWarnings("cdi-ambiguous-dependency")
 	@Inject
 	private OrderDao odao;
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
-		Integer oid = null;
-		try {
-			oid = Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			// TODO log
-			e.printStackTrace();
-			return null;
-		}
-		try {
-			if (odao == null) {
-				System.out.println("NULL");
-			}
-			Order result = odao.read(oid);
-			return result;
-		} catch (Exception e) {
-			// TODO log
-			e.printStackTrace();
-		}
-		return null;
+		return odao.read(Integer.parseInt(value));
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component,
 			Object value) {
 		if (value != null && value instanceof Order) {
-			return "Order #" + ((Order) value).getOrderId();
+			return Integer.toString(((Order) value).getOrderId());
 		}
 		return "";
 	}

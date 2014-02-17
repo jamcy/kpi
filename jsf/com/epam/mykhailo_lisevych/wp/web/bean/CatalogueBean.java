@@ -14,10 +14,14 @@ import com.epam.mykhailo_lisevych.wp.entity.Product;
 @ViewScoped
 public class CatalogueBean {
 
+	@SuppressWarnings("cdi-ambiguous-dependency")
 	@Inject
 	private ProductController product;
 
 	private List<Product> products;
+
+	private String searchFilter;
+	private String sortFilter;
 
 	public List<Product> getProducts() {
 		return products;
@@ -27,9 +31,28 @@ public class CatalogueBean {
 		this.products = products;
 	}
 
+	public String getSearchFilter() {
+		return searchFilter;
+	}
+
+	public void setSearchFilter(String searchFilter) {
+		this.searchFilter = searchFilter;
+	}
+
+	public String getSortFilter() {
+		return sortFilter;
+	}
+
+	public void setSortFilter(String sortFilter) {
+		this.sortFilter = sortFilter;
+	}
+
 	@PostConstruct
 	private void init() {
 		products = product.selectAll();
 	}
 
+	public void search() {
+		products = product.select(searchFilter, sortFilter);
+	}
 }

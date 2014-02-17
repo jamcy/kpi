@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "manager", schema = "public")
-@SequenceGenerator(name = "managerIdSeq", sequenceName = "manager_id_seq", allocationSize=1)
+@SequenceGenerator(name = "managerIdSeq", sequenceName = "manager_id_seq", allocationSize = 1)
 public class Manager implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -68,6 +68,19 @@ public class Manager implements java.io.Serializable {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Manager) {
+			return ((Manager) obj).managerId == managerId;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return managerId;
 	}
 
 }

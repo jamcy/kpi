@@ -8,6 +8,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import net.sf.jasperreports.engine.JRException;
+
 import com.epam.mykhailo_lisevych.wp.ejb.UserStateBean;
 import com.epam.mykhailo_lisevych.wp.entity.Product;
 
@@ -46,7 +48,7 @@ public class CartController {
 		userState.setOrderLines(new HashMap<Product, Integer>());
 	}
 
-	public void createOrder() {
+	public void createOrder() throws JRException {
 		order.createOrder(userState.getCurrentUser().getCompany().get(0),
 				userState.getOrderLines());
 		clear();
@@ -62,6 +64,29 @@ public class CartController {
 
 	public int getCartSize() {
 		return userState.getOrderLines().size();
+	}
+
+	public double getLineCost(Product p) {
+		for (Product l : userState.getOrderLines().keySet()) {
+			if (l.equals(p)) {
+				if (l.getWholesaleFloor() > userState.getOrderLines().get(l)) {
+					return l.getPriceRetail()
+							* userState.getOrderLines().get(l);
+				} else {
+					return l.getPriceWholesale()
+							* userState.getOrderLines().get(l);
+				}
+			}
+		}
+		return 0;
+	}
+
+	public double getTotalCost() {
+		double result = 0;
+		for (Product l : userState.getOrderLines().keySet()) {
+			result += getLineCost(l);
+		}
+		return result;
 	}
 
 }

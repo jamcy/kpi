@@ -15,4 +15,20 @@ public class ProductController {
 	public List<Product> selectAll() {
 		return pdao.selectAll();
 	}
+
+	public List<Product> select(String name, String sort) {
+		if (sort.equals("na")) {
+			return pdao.selectProducts(name, "name", true);
+		}
+		if (sort.equals("nd")) {
+			return pdao.selectProducts(name, "name", false);
+		}
+		if (sort.equals("pa")) {
+			return pdao.selectProducts(name, "price", true);
+		}
+		if (sort.equals("pd")) {
+			return pdao.selectProducts(name, "price", false);
+		}
+		return pdao.selectProducts(name, "name", true);
+	}
 }

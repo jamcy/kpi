@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -23,6 +25,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "order", schema = "public")
 @SequenceGenerator(name = "orderIdSeq", sequenceName = "order_id_seq", allocationSize = 1)
+@NamedQueries({ @NamedQuery(name = "Order.selectByCompany", query = "SELECT DISTINCT o from Order o WHERE o.company=:company ORDER BY o.timeCreated DESC") })
 public class Order implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -60,10 +63,10 @@ public class Order implements java.io.Serializable {
 	@Column(name = "payment_requisitions")
 	private String paymentRequisitions;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade=CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.PERSIST)
 	private List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade=CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderStatus> orderStatuses = new ArrayList<OrderStatus>();
 
 	public Order() {
@@ -157,18 +160,31 @@ public class Order implements java.io.Serializable {
 		this.summary = summary;
 	}
 
-	public OrderStatusValue getCurrentStatus() {
+	public Date getTimeUpdated() {
+		return timeUpdated;
+	}
+
+	public void setTimeUpdated(Date timeUpdated) {
+		this.timeUpdated = timeUpdated;
+	}
+
+	public OrderStatus getCurrentStatus() {
 		for (OrderStatus os : orderStatuses) {
 			if (os.getTimeTo() == null) {
-				return os.getStatus();
+				return os;
 			}
 		}
-		return OrderStatusValue.NEW;
+		return null;
 	}
-	
+
 	public void addOrderedProduct(OrderedProduct op) {
 		op.setOrder(this);
 		orderedProducts.add(op);
+	}
+
+	public void addStatus(OrderStatus os) {
+		os.setOrder(this);
+		orderStatuses.add(os);
 	}
 
 }

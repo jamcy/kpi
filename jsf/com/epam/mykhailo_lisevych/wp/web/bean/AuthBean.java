@@ -23,6 +23,7 @@ public class AuthBean {
 	private String password;
 	private String returnUrl;
 
+	@SuppressWarnings("cdi-ambiguous-dependency")
 	@Inject
 	private UserStateBean userState;
 

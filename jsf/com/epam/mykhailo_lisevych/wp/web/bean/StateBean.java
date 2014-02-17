@@ -15,6 +15,7 @@ public class StateBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	@SuppressWarnings("cdi-ambiguous-dependency")
 	@Inject
 	private UserStateBean userState;
 

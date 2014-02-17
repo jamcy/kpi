@@ -1,10 +1,12 @@
 package com.epam.mykhailo_lisevych.wp.dao;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import com.epam.mykhailo_lisevych.wp.entity.Company;
 import com.epam.mykhailo_lisevych.wp.entity.User;
 
+@Stateless
 public class CompanyDao extends AbstractJpaDao<Company> {
 
 	private static final long serialVersionUID = 1L;

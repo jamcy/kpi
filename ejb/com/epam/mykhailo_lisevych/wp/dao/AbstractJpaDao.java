@@ -3,14 +3,13 @@ package com.epam.mykhailo_lisevych.wp.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-
 public abstract class AbstractJpaDao<T> implements GenericDao<T> {
 
 	private static final long serialVersionUID = 1L;
-	
-	@PersistenceContext(name="wp_jpa")
+
+	@PersistenceContext(name = "wp_jpa")
 	private EntityManager em;
-	
+
 	@Override
 	public void create(T e) {
 		this.getEntityManager().persist(e);
