@@ -23,7 +23,6 @@ import com.epam.mykhailo_lisevych.wp.web.converter.OrderFromId;
 
 @ManagedBean
 @ViewScoped
-@SuppressWarnings("cdi-ambiguous-dependency")
 public class OrderBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -134,6 +133,11 @@ public class OrderBean implements Serializable {
 		orderController.updateOrder(order, statusValue, selectedManager,
 				comment);
 		comment = null;
+	}
+
+	public boolean isAssignManager() {
+		return orderController.isAllowed(OrderController.P_ASSIGN_MANAGER,
+				order);
 	}
 
 	public boolean isDeal() {

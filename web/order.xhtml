@@ -93,7 +93,6 @@
 			</h:form>
 		</p:dialog>
 
-
 		<p:dialog header="Preview deal" widgetVar="dealPreview"
 			resizable="false">
 			<p:outputPanel id="dealPreview">
@@ -104,20 +103,20 @@
 			</p:outputPanel>
 		</p:dialog>
 
-
 		<p:dialog header="Edit order" widgetVar="orderEdit" resizable="false"
 			modal="true">
 			<h:form id="orderEditForm">
-				<p:selectOneButton converter="orderStatusValueConverter" id="status"
-					value="#{orderBean.statusValue}">
-					<f:selectItems value="#{orderBean.statusValues}" />
-				</p:selectOneButton>
-				<!-- <p:outputLabel for="status" value="Order status:" /> -->
 				<h:panelGrid columns="2">
-
-					<p:outputLabel for="manager" value="Manager:" />
+					<p:outputLabel for="status" value="Status:" />
+					<p:selectOneMenu converter="orderStatusValueConverter" id="status"
+						value="#{orderBean.statusValue}">
+						<f:selectItems value="#{orderBean.statusValues}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="manager" value="Manager:"
+						rendered="#{orderBean.assignManager}" />
 					<p:selectOneMenu converter="#{orderBean.managerConverter}"
-						id="manager" value="#{orderBean.selectedManager}">
+						id="manager" value="#{orderBean.selectedManager}"
+						rendered="#{orderBean.assignManager}">
 						<f:selectItems value="#{orderBean.managers}" var="m"
 							itemLabel="#{m.name}" />
 					</p:selectOneMenu>

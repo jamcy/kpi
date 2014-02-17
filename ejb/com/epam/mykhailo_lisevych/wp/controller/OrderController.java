@@ -15,6 +15,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 
 import com.epam.mykhailo_lisevych.wp.dao.OrderDao;
+import com.epam.mykhailo_lisevych.wp.ejb.UserStateBean;
 import com.epam.mykhailo_lisevych.wp.entity.Company;
 import com.epam.mykhailo_lisevych.wp.entity.Manager;
 import com.epam.mykhailo_lisevych.wp.entity.Order;
@@ -22,14 +23,23 @@ import com.epam.mykhailo_lisevych.wp.entity.OrderStatus;
 import com.epam.mykhailo_lisevych.wp.entity.OrderStatusValue;
 import com.epam.mykhailo_lisevych.wp.entity.OrderedProduct;
 import com.epam.mykhailo_lisevych.wp.entity.Product;
+import com.epam.mykhailo_lisevych.wp.entity.UserRole;
 import com.epam.mykhailo_lisevych.wp.report.OrderSummaryReportTableDataModel;
 
 public class OrderController {
 
-	public static String REPORT_DIRECTORY = "/home/spawn/disk/projects/epam/reports";
+	public static String REPORT_DIRECTORY = "C:/Users/Mykhailo_Lisevych@epam.com/devel/commersium-ws/reports";
+
+	public static String P_VIEW_ORDER = "vo";
+	public static String P_EDIT_ORDER = "eo";
+	public static String P_CREATE_DEAL = "cd";
+	public static String P_ASSIGN_MANAGER = "am";
 
 	@Inject
 	private OrderDao odao;
+
+	@Inject
+	private UserStateBean userState;
 
 	public void createOrder(Company owner, Map<Product, Integer> content)
 			throws JRException {
@@ -79,9 +89,11 @@ public class OrderController {
 		params.put("productBaseUrl", "");
 		params.put("productUrlIdParamName", "oid");
 
-		JasperFillManager.fillReportToFile("/home/spawn/order.jasper",
-				REPORT_DIRECTORY + "/" + o.getSummary(), params,
-				new JREmptyDataSource());
+		JasperFillManager
+				.fillReportToFile(
+						"C:/Users/Mykhailo_Lisevych@epam.com/devel/commersium-ws/templates/order.jasper",
+						REPORT_DIRECTORY + "/" + o.getSummary(), params,
+						new JREmptyDataSource());
 	}
 
 	public void updateDeal(Order o, String newDealContents, double newOrderPrice) {
@@ -113,4 +125,30 @@ public class OrderController {
 		o.setTimeUpdated(new Date());
 		odao.merge(o);
 	}
+
+	public OrderStatusValue[] getAvailableOrderStatuses(
+			OrderStatusValue currentValue) {
+
+		switch (userState.getCurrentUser().getRole()) {
+		case ADMIN:
+			return OrderStatusValue.values();
+		case COMPANY:
+
+		case MANAGER:
+
+		default:
+			return new OrderStatusValue[0];
+		}
+	}
+
+	public boolean isAllowed(String permission, Order order) {
+		UserRole ur = userState.getCurrentUser().getRole();
+		if (permission.equals(P_ASSIGN_MANAGER)) {
+			if (ur.equals(UserRole.MANAGER) || ur.equals(UserRole.ADMIN)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

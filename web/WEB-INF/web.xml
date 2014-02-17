@@ -67,6 +67,22 @@
 		</user-data-constraint>
 	</security-constraint>
 
+	<security-constraint>
+		<display-name>Order</display-name>
+		<web-resource-collection>
+			<web-resource-name>order-area</web-resource-name>
+			<url-pattern>/order.xhtml</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>Order viewedit</description>
+			<role-name>COMPANY</role-name>
+			<role-name>MANAGER</role-name>
+			<role-name>ADMIN</role-name>
+		</auth-constraint>
+	</security-constraint>
+
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
