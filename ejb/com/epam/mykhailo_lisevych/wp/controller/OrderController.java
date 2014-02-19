@@ -101,31 +101,37 @@ public class OrderController {
 	}
 
 	public void updateOrder(Order o, OrderStatusValue newStatusValue,
-			Manager newManager, String comment) {
-		o.setManager(newManager);
-
-		// TODO fill report
-		if (newStatusValue.equals(o.getCurrentStatus().getStatus())) {
-			if (o.getCurrentStatus().getComment() == null) {
-				o.getCurrentStatus().setComment(comment);
-			} else {
-				o.getCurrentStatus().setComment(
-						o.getCurrentStatus().getComment() + comment);
-			}
-		} else {
+			Manager newManager, String changeComment) {
+		// Process changes
+		if (!newStatusValue.equals(o.getCurrentStatus().getStatus())) {
 			OrderStatus newStatus = new OrderStatus();
 			if (o.getCurrentStatus() != null) {
 				o.getCurrentStatus().setTimeTo(new Date());
 			}
 			newStatus.setTimeFrom(new Date());
 			newStatus.setStatus(newStatusValue);
-			newStatus.setComment(comment);
 			o.addStatus(newStatus);
 		}
+		
+		o.setManager(newManager);
 		o.setTimeUpdated(new Date());
+		// TODO Fill report
+		// TODO Append report to status
+		o.getCurrentStatus().appendComment(changeComment);
+		// Write changes to database
 		odao.merge(o);
+		// TODO Send email
+
 	}
 
+	/**
+	 * Returns possible future statuses of the order based on current status and
+	 * user role.
+	 * 
+	 * @param currentValue
+	 *            current status
+	 * @return array of possible statuses
+	 */
 	public OrderStatusValue[] getAvailableOrderStatuses(
 			OrderStatusValue currentValue) {
 
@@ -133,7 +139,9 @@ public class OrderController {
 		case ADMIN:
 			return OrderStatusValue.values();
 		case COMPANY:
-
+			OrderStatusValue[] values = new OrderStatusValue[2];
+			values[0] = OrderStatusValue.CANCELLED;
+			values[1] = OrderStatusValue.CONFIRMED;
 		case MANAGER:
 
 		default:

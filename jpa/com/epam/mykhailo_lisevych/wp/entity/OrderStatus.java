@@ -112,4 +112,12 @@ public class OrderStatus implements java.io.Serializable {
 		this.comment = comment;
 	}
 
+	public void appendComment(String comment) {
+		if (this.comment == null) {
+			this.comment = comment;
+		} else {
+			this.comment += comment;
+		}
+	}
+
 }
