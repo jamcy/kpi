@@ -121,7 +121,6 @@ public class OrderController {
 		// Write changes to database
 		odao.merge(o);
 		// TODO Send email
-
 	}
 
 	/**
@@ -143,7 +142,6 @@ public class OrderController {
 			values[0] = OrderStatusValue.CANCELLED;
 			values[1] = OrderStatusValue.CONFIRMED;
 		case MANAGER:
-
 		default:
 			return new OrderStatusValue[0];
 		}

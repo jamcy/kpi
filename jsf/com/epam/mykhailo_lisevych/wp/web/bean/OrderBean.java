@@ -1,20 +1,32 @@
 package com.epam.mykhailo_lisevych.wp.web.bean;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
+import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 import com.epam.mykhailo_lisevych.wp.controller.OrderController;
 import com.epam.mykhailo_lisevych.wp.dao.ManagerDao;
+import com.epam.mykhailo_lisevych.wp.dao.OrderDao;
 import com.epam.mykhailo_lisevych.wp.entity.Manager;
 import com.epam.mykhailo_lisevych.wp.entity.Order;
 import com.epam.mykhailo_lisevych.wp.entity.OrderStatusValue;
@@ -38,6 +50,9 @@ public class OrderBean implements Serializable {
 
 	@Inject
 	private ManagerDao mdao;
+
+	@Inject
+	private OrderDao odao;
 
 	private String dealContents;
 
@@ -145,7 +160,62 @@ public class OrderBean implements Serializable {
 	}
 
 	public void createDeal() {
-		// TODO implement
+		System.out.println("deal contents:");
+		System.out.println(dealContents);
 	}
 
+	public void viewOrderDeails() throws IOException, JRException {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		/*
+		 * ServletContext context = (ServletContext)
+		 * externalContext.getContext(); HttpServletRequest request =
+		 * (HttpServletRequest) externalContext .getRequest();
+		 */
+		HttpServletResponse response = (HttpServletResponse) externalContext
+				.getResponse();
+		JasperPrint jasperPrint = null; // TODO read from filled print
+
+		exportReportAsHtml(jasperPrint, response.getWriter());
+
+		/*
+		 * if (getExportOption().equals(ExportOption.HTML)) {
+		 *             ReportConfigUtil.exportReportAsHtml(jasperPrint,
+		 * response.getWriter());         } else if
+		 * (getExportOption().equals(ExportOption.EXCEL)) {
+		 *             ReportConfigUtil.exportReportAsExcel(jasperPrint,
+		 * response.getWriter());         } else {
+		 *             request.getSession
+		 * ().setAttribute(BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE
+		 * , jasperPrint);
+		 *             response.sendRedirect(request.getContextPath() +
+		 * "/servlets/report/" + getExportOption());         }
+		 */
+
+		FacesContext.getCurrentInstance().responseComplete();
+	}
+
+	private void exportReportAsHtml(JasperPrint jasperPrint, PrintWriter out)
+			throws JRException {
+		JRHtmlExporter exporter = new JRHtmlExporter();
+		exporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN,
+				Boolean.FALSE);
+		exporter.setParameter(JRExporterParameter.OUTPUT_WRITER, out);
+		exporter.setParameter(
+				JRHtmlExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS,
+				Boolean.TRUE);
+		exporter.setParameter(JRHtmlExporterParameter.CHARACTER_ENCODING,
+				"UTF-8");
+		/*exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, false);
+		exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, false);*/
+		exportReport(exporter, jasperPrint, out);
+	}
+
+	private void exportReport(JRAbstractExporter exporter,
+			JasperPrint jasperPrint, PrintWriter out) throws JRException {
+		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+		exporter.setParameter(JRExporterParameter.OUTPUT_WRITER, out);
+
+		exporter.exportReport();
+	}
 }

@@ -19,7 +19,6 @@
 		<p:outputPanel id="order-content">
 			<div class="order-block">
 				<div class="order-block-header">Details</div>
-
 				<h:panelGrid columns="2">
 					Order ID:
 					<h:outputText value="#{orderBean.order.orderId}" />
@@ -51,11 +50,13 @@
 					<table class="history-item-header">
 						<tr>
 							<td>Status:<h:outputText value=" #{hi.status}" /></td>
-							<td>From: <h:outputText value="#{hi.timeFrom}">
+							<td style="width: 200px;">From: <h:outputText
+									value="#{hi.timeFrom}">
 									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 								</h:outputText>
 							</td>
-							<td>To: <h:outputText value="#{hi.timeTo}">
+							<td style="width: 200px;">To: <h:outputText
+									value="#{hi.timeTo}">
 									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 								</h:outputText>
 							</td>
@@ -63,11 +64,10 @@
 					</table>
 
 					<div class="history-item">
-						<pre>
+						<pre style="word-wrap: break-word;">
 							<h:outputText value="#{hi.comment}" />
 						</pre>
 					</div>
-
 				</ui:repeat>
 			</div>
 		</p:outputPanel>
@@ -82,14 +82,16 @@
 			modal="true">
 			<h:form id="dealEdit">
 				<p:editor id="content" value="#{orderBean.dealContents}" width="600" />
-				<h:panelGrid columns="3">
-					<p:outputLabel for="cost" value="Additional cost:" />
-					<p:inputText id="cost" />
-				</h:panelGrid>
+				<p:outputLabel for="cost" value="Additional cost:" />
+				<p:inputText id="cost" />
+				<br />
 				<p:commandButton id="submitButton" value="Submit"
-					action="#{orderBean.createDeal()}" />
-				<p:commandButton id="previewButton" value="Preview"
-					update=":dealPreview" oncomplete="PF('dealPreview').show()" />
+					action="#{orderBean.createDeal()}"
+					oncomplete="PF('dealEdit').hide()">
+					<f:param name="oid" value="#{orderBean.order.orderId}" />
+				</p:commandButton>
+				<!-- <p:commandButton id="previewButton" value="Preview"
+					update=":dealPreview" oncomplete="PF('dealPreview').show()" /> -->
 			</h:form>
 		</p:dialog>
 

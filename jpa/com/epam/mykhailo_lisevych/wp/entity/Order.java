@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -67,6 +68,7 @@ public class Order implements java.io.Serializable {
 	private List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
+	@OrderBy("timeFrom DESC")
 	private List<OrderStatus> orderStatuses = new ArrayList<OrderStatus>();
 
 	public Order() {
@@ -184,7 +186,7 @@ public class Order implements java.io.Serializable {
 
 	public void addStatus(OrderStatus os) {
 		os.setOrder(this);
-		orderStatuses.add(os);
+		orderStatuses.add(0, os);
 	}
 
 }
