@@ -122,30 +122,7 @@ public class OrderController {
 		odao.merge(o);
 		// TODO Send email
 	}
-
-	/**
-	 * Returns possible future statuses of the order based on current status and
-	 * user role.
-	 * 
-	 * @param currentValue
-	 *            current status
-	 * @return array of possible statuses
-	 */
-	public OrderStatusValue[] getAvailableOrderStatuses(
-			OrderStatusValue currentValue) {
-
-		switch (userState.getCurrentUser().getRole()) {
-		case ADMIN:
-			return OrderStatusValue.values();
-		case COMPANY:
-			OrderStatusValue[] values = new OrderStatusValue[2];
-			values[0] = OrderStatusValue.CANCELLED;
-			values[1] = OrderStatusValue.CONFIRMED;
-		case MANAGER:
-		default:
-			return new OrderStatusValue[0];
-		}
-	}
+	
 
 	public boolean isAllowed(String permission, Order order) {
 		UserRole ur = userState.getCurrentUser().getRole();

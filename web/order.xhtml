@@ -19,26 +19,30 @@
 		<p:outputPanel id="order-content">
 			<div class="order-block">
 				<div class="order-block-header">Details</div>
-				<h:panelGrid columns="2">
+				<h:form>
+					<h:panelGrid columns="2">
 					Order ID:
 					<h:outputText value="#{orderBean.order.orderId}" />
 					Customer:
 					<h:outputText value="#{orderBean.order.company.name}" />
 					Deal:
 					<h:outputText value="No" />
-					<h:outputLabel value="Manager:" for="manager" />
-					<h:outputText id="manager" value="#{orderBean.order.manager.name}" />
+						<h:outputLabel value="Manager:" for="manager" />
+						<h:outputText id="manager" value="#{orderBean.order.manager.name}" />
 					Created:
 					<h:outputText value="#{orderBean.order.timeCreated}">
-						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-					</h:outputText>
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
 					Last change:
 					<h:outputText value="#{orderBean.order.timeUpdated}">
-						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-					</h:outputText>
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
 					Status:
 					<h:outputText value="#{orderBean.order.currentStatus.status}" />
-				</h:panelGrid>
+					Details:
+					<h:commandLink action="#{orderBean.viewOrderDeails()}">Details</h:commandLink>
+					</h:panelGrid>
+				</h:form>
 			</div>
 
 			<div class="order-block">
@@ -109,9 +113,10 @@
 			modal="true">
 			<h:form id="orderEditForm">
 				<h:panelGrid columns="2">
-					<p:outputLabel for="status" value="Status:" />
+					<p:outputLabel for="status" value=" New status:" />
 					<p:selectOneMenu converter="orderStatusValueConverter" id="status"
 						value="#{orderBean.statusValue}">
+						<f:selectItem itemLabel="select" noSelectionOption="true" />
 						<f:selectItems value="#{orderBean.statusValues}" />
 					</p:selectOneMenu>
 					<p:outputLabel for="manager" value="Manager:"
@@ -130,11 +135,10 @@
 
 				<p:commandButton action="#{orderBean.updateOrder()}"
 					oncomplete="PF('orderEdit').hide()" update=":order-content"
-					value="Submit">
+					icon="ui-icon-check">
 					<f:param name="oid" value="#{orderBean.order.orderId}" />
 				</p:commandButton>
 			</h:form>
 		</p:dialog>
-
 	</ui:define>
 </ui:composition>
