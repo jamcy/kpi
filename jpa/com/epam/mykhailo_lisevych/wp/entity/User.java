@@ -38,6 +38,9 @@ public class User implements java.io.Serializable {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private List<Company> company;
 
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private List<Manager> manager;
+
 	public User() {
 	}
 
@@ -86,6 +89,10 @@ public class User implements java.io.Serializable {
 
 	public void setCompany(List<Company> company) {
 		this.company = company;
+	}
+
+	public List<Manager> getManager() {
+		return manager;
 	}
 
 }

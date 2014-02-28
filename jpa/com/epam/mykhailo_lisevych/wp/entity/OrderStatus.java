@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 public class OrderStatus implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "order_status_id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderStatusIdSeq")

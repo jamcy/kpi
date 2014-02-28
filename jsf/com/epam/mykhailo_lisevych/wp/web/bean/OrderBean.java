@@ -13,12 +13,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
-import org.xml.sax.Attributes;
-
-import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
@@ -140,32 +136,49 @@ public class OrderBean implements Serializable {
 		this.managerConverter = managerConverter;
 	}
 
-	public void test() throws JRException {
-		JasperPrint jrPrint = (JasperPrint) (JRLoader.loadObject(new File(
-				OrderController.REPORT_DIRECTORY + "/" + "3fd0a99237e21fb4")));
-		JasperExportManager.exportReportToHtmlFile(jrPrint,
-				"/home/spawn/test.html");
-	}
-
 	public void updateOrder() {
 		orderController.updateOrder(order, statusValue, selectedManager,
 				comment);
 		comment = null;
 	}
 
-	public boolean isAssignManager() {
-		return orderController.isAllowed(OrderController.P_ASSIGN_MANAGER,
-				order);
+	public boolean isOrderEditable() {
+		if (order.getCurrentStatus().getStatus()
+				.equals(OrderStatusValue.CLOSED)
+				|| order.getCurrentStatus().getStatus()
+						.equals(OrderStatusValue.CANCELLED)) {
+			return false;
+		}
+		return true;
 	}
 
-	public boolean isDeal() {
-		return order.getDeal() == null;
+	// Status buttons actions
+	public void assignManager() {
+		assignManager(userState.getCurrentUser().getManager().get(0));
+	}
+
+	public void assignManager(Manager m) {
+
+	}
+
+	public void cancelOrder() {
+		// TODO implement
 	}
 
 	public void createDeal() {
-		if (orderController.isAllowed(orderController.P_CREATE_DEAL, order)) {
-			// TODO create deal
-		}
+		// TODO implement
+	}
+
+	public void confirmDeal() {
+		// TODO implement
+	}
+
+	public void closeOrder() {
+		// TODO implement
+	}
+
+	public void commentOrder() {
+		// TODO implement
 	}
 
 	public OrderStatusValue[] getAvailableOrderStatuses(
@@ -188,37 +201,12 @@ public class OrderBean implements Serializable {
 	public void viewOrderDeails() throws IOException, JRException {
 		ExternalContext externalContext = FacesContext.getCurrentInstance()
 				.getExternalContext();
-		/*
-		 * ServletContext context = (ServletContext)
-		 * externalContext.getContext(); HttpServletRequest request =
-		 * (HttpServletRequest) externalContext .getRequest();
-		 */
 		HttpServletResponse response = (HttpServletResponse) externalContext
 				.getResponse();
 		JasperPrint jrPrint = (JasperPrint) (JRLoader.loadObject(new File(
 				OrderController.REPORT_DIRECTORY + "/" + order.getSummary())));
 		exportReportAsHtml(jrPrint, response.getWriter());
-
-		/*
-		 * if (getExportOption().equals(ExportOption.HTML)) {
-		 *             ReportConfigUtil.exportReportAsHtml(jasperPrint,
-		 * response.getWriter());         } else if
-		 * (getExportOption().equals(ExportOption.EXCEL)) {
-		 *             ReportConfigUtil.exportReportAsExcel(jasperPrint,
-		 * response.getWriter());         } else {
-		 *             request.getSession
-		 * ().setAttribute(BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE
-		 * , jasperPrint);
-		 *             response.sendRedirect(request.getContextPath() +
-		 * "/servlets/report/" + getExportOption());         }
-		 */
-
 		FacesContext.getCurrentInstance().responseComplete();
-	}
-
-	private void updateStatus(OrderStatusValue newStatusValue, String comment,
-			String action) {
-
 	}
 
 	private void exportReportAsHtml(JasperPrint jasperPrint, PrintWriter out)
@@ -232,15 +220,8 @@ public class OrderBean implements Serializable {
 				Boolean.TRUE);
 		exporter.setParameter(JRHtmlExporterParameter.CHARACTER_ENCODING,
 				"UTF-8");
-		/*
-		 * exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, false);
-		 * exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, false);
-		 */
-		exportReport(exporter, jasperPrint, out);
-	}
-
-	private void exportReport(JRAbstractExporter exporter,
-			JasperPrint jasperPrint, PrintWriter out) throws JRException {
+		// exporter.setParameter(JRHtmlExporterParameter.HTML_HEADER, false);
+		// exporter.setParameter(JRHtmlExporterParameter.HTML_FOOTER, false);
 		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
 		exporter.setParameter(JRExporterParameter.OUTPUT_WRITER, out);
 		exporter.exportReport();
