@@ -34,6 +34,10 @@ import com.epam.mykhailo_lisevych.wp.web.converter.OrderFromId;
 @ViewScoped
 public class OrderBean implements Serializable {
 
+	public enum SelectedAction {
+		COMMENT, CLOSE, CANCEL
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@Inject
@@ -64,9 +68,7 @@ public class OrderBean implements Serializable {
 
 	private Order order;
 
-	public OrderStatusValue[] getStatusValues() {
-		return getAvailableOrderStatuses(order.getCurrentStatus().getStatus());
-	}
+	private SelectedAction selectedAction;
 
 	public Order getOrder() {
 		return order;
@@ -136,66 +138,20 @@ public class OrderBean implements Serializable {
 		this.managerConverter = managerConverter;
 	}
 
+	public SelectedAction getSelectedAction() {
+		return selectedAction;
+	}
+
+	public void setSelectedAction(SelectedAction selectedAction) {
+		this.selectedAction = selectedAction;
+	}
+
 	public void updateOrder() {
-		orderController.updateOrder(order, statusValue, selectedManager,
-				comment);
-		comment = null;
-	}
-
-	public boolean isOrderEditable() {
-		if (order.getCurrentStatus().getStatus()
-				.equals(OrderStatusValue.CLOSED)
-				|| order.getCurrentStatus().getStatus()
-						.equals(OrderStatusValue.CANCELLED)) {
-			return false;
-		}
-		return true;
-	}
-
-	// Status buttons actions
-	public void assignManager() {
-		assignManager(userState.getCurrentUser().getManager().get(0));
-	}
-
-	public void assignManager(Manager m) {
-
-	}
-
-	public void cancelOrder() {
-		// TODO implement
-	}
-
-	public void createDeal() {
-		// TODO implement
-	}
-
-	public void confirmDeal() {
-		// TODO implement
-	}
-
-	public void closeOrder() {
-		// TODO implement
-	}
-
-	public void commentOrder() {
-		// TODO implement
-	}
-
-	public OrderStatusValue[] getAvailableOrderStatuses(
-			OrderStatusValue currentValue) {
-		switch (userState.getCurrentUser().getRole()) {
-		case ADMIN:
-			return OrderStatusValue.values();
-		case COMPANY:
-			OrderStatusValue[] values = new OrderStatusValue[2];
-			values[0] = OrderStatusValue.CANCELLED;
-			values[1] = OrderStatusValue.CONFIRMED;
-			return values;
-		case MANAGER:
-
-		default:
-			return new OrderStatusValue[0];
-		}
+		System.out.println(selectedAction);
+		/*
+		 * orderController.updateOrder(order, statusValue, selectedManager,
+		 * comment); comment = null;
+		 */
 	}
 
 	public void viewOrderDeails() throws IOException, JRException {

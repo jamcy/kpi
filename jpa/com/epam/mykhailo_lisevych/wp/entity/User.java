@@ -1,7 +1,5 @@
 package com.epam.mykhailo_lisevych.wp.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -35,11 +34,13 @@ public class User implements java.io.Serializable {
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private List<Company> company;
+	@OneToOne(fetch = FetchType.EAGER)
+	@PrimaryKeyJoinColumn
+	private Company company;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	private List<Manager> manager;
+	@OneToOne(fetch = FetchType.EAGER)
+	@PrimaryKeyJoinColumn
+	private Manager manager;
 
 	public User() {
 	}
@@ -83,16 +84,20 @@ public class User implements java.io.Serializable {
 		this.role = role;
 	}
 
-	public List<Company> getCompany() {
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompany(List<Company> company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 
-	public List<Manager> getManager() {
+	public Manager getManager() {
 		return manager;
+	}
+
+	public void setManager(Manager manager) {
+		this.manager = manager;
 	}
 
 }

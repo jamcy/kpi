@@ -11,7 +11,6 @@
 		<f:metadata>
 			<f:viewParam required="true" name="oid" value="#{orderBean.order}"
 				converter="#{orderBean.converter}" />
-			<!-- <f:converter binding="#{converter.orderIdConverter}" /> -->
 		</f:metadata>
 
 		<h:outputText value="No such order"
@@ -29,14 +28,14 @@
 					<h:outputText value="No" />
 						<h:outputLabel value="Manager:" for="manager" />
 						<h:outputText id="manager" value="#{orderBean.order.manager.name}" />
-					Created:
+						<!-- Created:
 					<h:outputText value="#{orderBean.order.timeCreated}">
 							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 						</h:outputText>
 					Last change:
 					<h:outputText value="#{orderBean.order.timeUpdated}">
 							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-						</h:outputText>
+						</h:outputText> -->
 					Status:
 					<h:outputText value="#{orderBean.order.currentStatus.status}" />
 					Details:
@@ -76,10 +75,51 @@
 			</div>
 		</p:outputPanel>
 		<div id="order-controls">
-			<!-- <p:commandButton onclick="PF('dealEdit').show()" value="Reports" /> -->
-			<p:commandButton onclick="PF('dealEdit').show()" value="Create deal" />
-			<p:commandButton onclick="PF('orderEdit').show()" value="Edit order"
-				update=":orderEditForm" />
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content" value="Comment">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="COMMENT">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content" value="Cancel">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="CANCEL">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content" value="Create deal">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="CANCEL">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content :orderEditForm" value="Close">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="CANCEL">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content" value="ViewDeal">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="CANCEL">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
 		</div>
 
 		<p:dialog header="Edit deal" widgetVar="dealEdit" resizable="false"
@@ -88,14 +128,6 @@
 				<p:editor id="content" value="#{orderBean.dealContents}" width="600" />
 				<p:outputLabel for="cost" value="Additional cost:" />
 				<p:inputText id="cost" />
-				<br />
-				<p:commandButton id="submitButton" value="Submit"
-					action="#{orderBean.createDeal()}"
-					oncomplete="PF('dealEdit').hide()">
-					<f:param name="oid" value="#{orderBean.order.orderId}" />
-				</p:commandButton>
-				<!-- <p:commandButton id="previewButton" value="Preview"
-					update=":dealPreview" oncomplete="PF('dealPreview').show()" /> -->
 			</h:form>
 		</p:dialog>
 
@@ -109,36 +141,29 @@
 			</p:outputPanel>
 		</p:dialog>
 
-		<p:dialog header="Edit order" widgetVar="orderEdit" resizable="false"
+		<p:dialog header="Add comment" widgetVar="orderEdit" resizable="false"
 			modal="true">
 			<h:form id="orderEditForm">
-				<h:panelGrid columns="2">
-					<p:outputLabel for="status" value=" New status:" />
-					<p:selectOneMenu converter="orderStatusValueConverter" id="status"
-						value="#{orderBean.statusValue}">
-						<f:selectItem itemLabel="select" noSelectionOption="true" />
-						<f:selectItems value="#{orderBean.statusValues}" />
-					</p:selectOneMenu>
-					<p:outputLabel for="manager" value="Manager:"
-						rendered="#{orderBean.assignManager}" />
+				<!--
 					<p:selectOneMenu converter="#{orderBean.managerConverter}"
-						id="manager" value="#{orderBean.selectedManager}"
-						rendered="#{orderBean.assignManager}">
+						id="manager" value="#{orderBean.selectedManager}">
 						<f:selectItems value="#{orderBean.managers}" var="m"
 							itemLabel="#{m.name}" />
-					</p:selectOneMenu>
-
-					<p:outputLabel for="comment" value="Comment:" />
-					<p:inputTextarea id="comment" rows="4" cols="60" autoResize="true"
-						value="#{orderBean.comment}" />
-				</h:panelGrid>
-
+					</p:selectOneMenu> -->
+				<p:inputTextarea id="comment" rows="4" cols="60" autoResize="true"
+					value="#{orderBean.comment}" />
+				<br />
 				<p:commandButton action="#{orderBean.updateOrder()}"
 					oncomplete="PF('orderEdit').hide()" update=":order-content"
-					icon="ui-icon-check">
+					value="Ok">
+					<f:param name="oid" value="#{orderBean.order.orderId}" />
+				</p:commandButton>
+				<p:commandButton oncomplete="PF('orderEdit').hide()"
+					update=":order-content" value="Cancel">
 					<f:param name="oid" value="#{orderBean.order.orderId}" />
 				</p:commandButton>
 			</h:form>
 		</p:dialog>
+	
 	</ui:define>
 </ui:composition>

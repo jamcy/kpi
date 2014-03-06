@@ -49,7 +49,7 @@ public class CartController {
 	}
 
 	public void createOrder() throws JRException {
-		order.createOrder(userState.getCurrentUser().getCompany().get(0),
+		order.createOrder(userState.getCurrentUser().getCompany(),
 				userState.getOrderLines());
 		clear();
 	}

@@ -67,8 +67,8 @@ public class Order implements java.io.Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.PERSIST)
 	private List<OrderedProduct> orderedProducts = new ArrayList<OrderedProduct>();
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
 	@OrderBy("timeFrom DESC")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderStatus> orderStatuses = new ArrayList<OrderStatus>();
 
 	public Order() {

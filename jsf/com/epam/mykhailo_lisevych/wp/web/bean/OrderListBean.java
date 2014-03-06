@@ -28,8 +28,7 @@ public class OrderListBean {
 
 	@PostConstruct
 	public void init() {
-		orders = odao.selectByCompany(userState.getCurrentUser().getCompany()
-				.get(0));
+		orders = odao.selectByCompany(userState.getCurrentUser().getCompany());
 	}
 
 	public List<Order> getOrders() {

@@ -28,7 +28,7 @@ import com.epam.mykhailo_lisevych.wp.report.OrderSummaryReportTableDataModel;
 
 public class OrderController {
 
-	public static String REPORT_DIRECTORY = "C:/Users/Mykhailo_Lisevych@epam.com/devel/commersium-ws/reports";
+	public static String REPORT_DIRECTORY = "/home/spawn/disk/projects/epam/commersium-data/reports";
 
 	public static String P_VIEW_ORDER = "vo";
 	public static String P_EDIT_ORDER = "eo";
@@ -91,7 +91,7 @@ public class OrderController {
 
 		JasperFillManager
 				.fillReportToFile(
-						"C:/Users/Mykhailo_Lisevych@epam.com/devel/commersium-ws/templates/order.jasper",
+						"/home/spawn/disk/projects/epam/commersium-data/templates/order.jasper",
 						REPORT_DIRECTORY + "/" + o.getSummary(), params,
 						new JREmptyDataSource());
 	}
@@ -112,7 +112,7 @@ public class OrderController {
 			newStatus.setStatus(newStatusValue);
 			o.addStatus(newStatus);
 		}
-		
+
 		o.setManager(newManager);
 		o.setTimeUpdated(new Date());
 		// TODO Fill report
@@ -122,7 +122,6 @@ public class OrderController {
 		odao.merge(o);
 		// TODO Send email
 	}
-	
 
 	public boolean isAllowed(String permission, Order order) {
 		UserRole ur = userState.getCurrentUser().getRole();

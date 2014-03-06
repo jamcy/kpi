@@ -10,16 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "company", schema = "public")
-@SequenceGenerator(name = "companyIdSeq", sequenceName = "company_id_seq", allocationSize=1)
+@SequenceGenerator(name = "companyIdSeq", sequenceName = "company_id_seq", allocationSize = 1)
 @NamedQueries({ @NamedQuery(name = "Company.selectByUser", query = "SELECT c FROM Company c WHERE c.user = :u") })
 public class Company implements java.io.Serializable {
 
@@ -30,8 +31,9 @@ public class Company implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "companyIdSeq")
 	private int companyId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name = "user_id")
+	@PrimaryKeyJoinColumn
 	private User user;
 
 	@Column(name = "name", nullable = false, length = 200)
