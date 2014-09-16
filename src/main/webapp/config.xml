@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vmlconfig>
+	<moodle-config>
+		<base-url>http://localhost/moodle</base-url>
+		<user>vml</user>
+		<password>Metcetr@sha2</password>
+	</moodle-config>
+	<dir-config>
+		<resource-dir>/home/spawn/disk/projects/vml/vmldata</resource-dir>
+	</dir-config>
+</vmlconfig>
