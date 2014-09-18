@@ -12,7 +12,8 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/room/*</url-pattern>
+        <url-pattern>/*</url-pattern>
+        <!-- <url-pattern>/room/*</url-pattern>
         <url-pattern>/module/*</url-pattern>
         <url-pattern>/page/*</url-pattern>
         <url-pattern>/common/*</url-pattern>
@@ -20,7 +21,7 @@
         <url-pattern>/admin/*</url-pattern>
         <url-pattern>/language/*</url-pattern>
         <url-pattern>/course/*</url-pattern>
-        <url-pattern>/file/*</url-pattern>
+        <url-pattern>/file/*</url-pattern> -->
     </servlet-mapping>
     <!--<filter>
         <filter-name>screen</filter-name>
