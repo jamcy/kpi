@@ -2,20 +2,18 @@ package model.entity;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class TranslationValuePk implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
-	private Translation id;
+	private Long translationId;
 	private String language;
-	
 
-	public Translation getId() {
-		return id;
+	public Long getTranslationId() {
+		return translationId;
 	}
 
-	public void setId(Translation id) {
-		this.id = id;
+	public void setTranslationId(Long translationId) {
+		this.translationId = translationId;
 	}
 
 	public String getLanguage() {

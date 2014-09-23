@@ -4,20 +4,8 @@
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
-		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.password">vmladmin</property>
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true</property>
-		<property name="hibernate.connection.username">vmladmin</property>
-		<property name="hibernate.default_schema">vml</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
-		<property name="hibernate.current_session_context_class">thread</property>
-		<!-- <property name="hibernate.connection.provider_class">org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider</property> -->
-
-		<property name="hibernate.c3p0.min_size">5</property>
-		<property name="hibernate.c3p0.max_size">150</property>
-		<property name="hibernate.c3p0.timeout">60</property>
-		<property name="hibernate.c3p0.idle_test_period">120</property>
-
+		
 		<mapping class="model.entity.User" />
 		<mapping class="model.entity.Translation" />
 		<mapping class="model.entity.TranslationValue" />
