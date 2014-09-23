@@ -1,7 +1,5 @@
 package ua.kpi.eec.vml.controller;
 
-import model.entity.Room;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.kpi.eec.vml.model.dao.ModuleDao;
 import ua.kpi.eec.vml.model.dao.RoomDao;
+import ua.kpi.eec.vml.model.entity.Room;
 
 @Controller
 public class RoomController {

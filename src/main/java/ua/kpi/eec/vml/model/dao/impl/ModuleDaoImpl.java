@@ -1,8 +1,8 @@
 package ua.kpi.eec.vml.model.dao.impl;
 
-import model.entity.Module;
 import ua.kpi.eec.vml.model.dao.AbstractHibernateDao;
 import ua.kpi.eec.vml.model.dao.ModuleDao;
+import ua.kpi.eec.vml.model.entity.Module;
 
 public class ModuleDaoImpl extends AbstractHibernateDao<Module> implements
 		ModuleDao {

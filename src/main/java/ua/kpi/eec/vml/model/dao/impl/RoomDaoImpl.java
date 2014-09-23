@@ -1,8 +1,8 @@
 package ua.kpi.eec.vml.model.dao.impl;
 
-import model.entity.Room;
 import ua.kpi.eec.vml.model.dao.AbstractHibernateDao;
 import ua.kpi.eec.vml.model.dao.RoomDao;
+import ua.kpi.eec.vml.model.entity.Room;
 
 public class RoomDaoImpl extends AbstractHibernateDao<Room> implements RoomDao {
 

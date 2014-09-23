@@ -15,9 +15,9 @@
 	<!-- Database configuration -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="driverClass" value="org.postgresql.Driver" />
 		<property name="jdbcUrl"
-			value="jdbc:mysql://localhost:3306/vml?useUnicode=true&amp;characterEncoding=utf8" />
+			value="jdbc:postgresql://localhost/vml?useUnicode=true&amp;characterEncoding=utf8" />
 		<property name="user" value="vmladmin" />
 		<property name="password" value="vmladmin" />
 		<property name="acquireIncrement" value="1" />
@@ -31,20 +31,21 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>model.entity.User</value>
-				<value>model.entity.Translation</value>
-				<value>model.entity.TranslationValue</value>
-				<value>model.entity.Room</value>
-				<value>model.entity.Page</value>
-				<value>model.entity.Course</value>
-				<value>model.entity.CourseRole</value>
-				<value>model.entity.Task</value>
-				<value>model.entity.TaskLog</value>
+				<value>ua.kpi.eec.vml.model.entity.Account</value>
+				<value>ua.kpi.eec.vml.model.entity.Course</value>
+				<value>ua.kpi.eec.vml.model.entity.CourseRole</value>
+				<value>ua.kpi.eec.vml.model.entity.I18n</value>
+				<value>ua.kpi.eec.vml.model.entity.I18nValue</value>
+				<value>ua.kpi.eec.vml.model.entity.Module</value>
+				<value>ua.kpi.eec.vml.model.entity.Page</value>
+				<value>ua.kpi.eec.vml.model.entity.Room</value>
+				<value>ua.kpi.eec.vml.model.entity.Task</value>
+				<value>ua.kpi.eec.vml.model.entity.TaskLog</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
 			</props>
 		</property>
 		<!--<property name="configLocation" value="hibernate.cfg.xml" /> -->
