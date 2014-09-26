@@ -31,14 +31,6 @@
         <filter-name>screen</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>-->
-    <jsp-config>
-        <jsp-property-group>
-            <display-name>common</display-name>
-            <url-pattern>/WEB-INF/view/*</url-pattern>
-            <include-prelude>/WEB-INF/view/fragment/prelude.jsp</include-prelude>
-            <include-coda>/WEB-INF/view/fragment/coda.jsp</include-coda>
-        </jsp-property-group>
-    </jsp-config>
     <error-page>
         <location>/WEB-INF/view/error.jsp</location>
     </error-page>
