@@ -12,6 +12,7 @@ public abstract class AbstractHibernateDao<T> implements GenericDao<T> {
 	public abstract Class<?> getEntityClass();
 
 	@Override
+	@Transactional
 	public void create(T entity) throws Exception {
 		getSessionFactory().getCurrentSession().saveOrUpdate(entity);
 	}

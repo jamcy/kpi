@@ -2,13 +2,18 @@ package ua.kpi.eec.vml.model.entity;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -40,6 +45,8 @@ public class Room implements java.io.Serializable {
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_seq_gen")
+	@SequenceGenerator(name = "room_seq_gen", sequenceName = "room_id_seq")
 	public long getId() {
 		return this.id;
 	}
@@ -48,7 +55,7 @@ public class Room implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "name_i18n_id", nullable = false)
 	public I18n getI18n() {
 		return this.i18n;

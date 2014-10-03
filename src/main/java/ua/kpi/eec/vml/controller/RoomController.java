@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.kpi.eec.vml.model.dao.ModuleDao;
 import ua.kpi.eec.vml.model.dao.RoomDao;
+import ua.kpi.eec.vml.model.entity.I18n;
 import ua.kpi.eec.vml.model.entity.Room;
 
 @Controller
@@ -48,6 +49,16 @@ public class RoomController {
 		// return resp;
 		// }
 		// resp.setPageDataAttribute("modules", modules);
+		/*Room r = new Room();
+		r.setImageUrl("image.png");
+		r.setI18n(new I18n());
+		try {
+			roomDao.create(r);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		Room r = roomDao.read(new Long(0));
 		return "room";
 	}
 

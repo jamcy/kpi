@@ -1,5 +1,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
 <%@page language="java" pageEncoding="UTF-8"%>
+
 <%-- <%
     //Room room = (Room) request.getAttribute("room");
    /*  List<Module> modules = (List<Module>) request

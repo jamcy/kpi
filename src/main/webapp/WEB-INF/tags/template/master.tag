@@ -1,16 +1,19 @@
-<%@ tag language="java" pageEncoding="UTF-8"%>
+<%@tag language="java" pageEncoding="UTF-8"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
 <title>Virtual Multimedia Laboratory</title>
+
 <link rel="shortcut icon" href="/images/favicon.ico" />
-<link rel="Stylesheet" href="/css/jquery.ui.css" type="text/css" />
+<link rel="stylesheet" href="/css/jquery.ui.css" type="text/css" />
 <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="/css/responsive-main.css" rel="stylesheet" media="screen">
 <link href="/css/smoothness/jquery-ui-1.10.4.custom.min.css"
-	rel="stylesheet" media="screen">
+	rel="stylesheet">
 
 <script src="/js/jquery-1.9.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -68,8 +71,8 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-4 col-md-3">
-					<a href="<spring:url value="/"/>"> <img src="/images/logo.png" />
-
+					<a href="<spring:url value="/"/>"> 
+						<img src="/img/logo.png" />
 						<div class="vml">
 							<div class="title">
 								<b class="pt">Virtual</b> <b class="pt">Multimedia</b> <b
@@ -94,18 +97,23 @@
 			</div>
 		</div>
 	</div>
+
 	<jsp:doBody />
 
 	<div id="footer" class="footer">
-		<%-- <div class="btn-group ib">
-		<a <%if (!lang.equals("en")) {%> href="/language?val=en" <%}%>
-			class="btn btn-default <%if (lang.equals("en")) {%>active<%}%>">English</a>
-		<a <%if (!lang.equals("uk")) {%> href="/language?val=uk" <%}%>
-			class="btn btn-default <%if (lang.equals("uk")) {%>active<%}%>"><%="\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430"%></a>
-	</div> --%>
+		<spring:url value="/" var="localeEn" htmlEscape="true">
+			<spring:param name="locale" value="en"></spring:param>
+		</spring:url>
+		<spring:url value="/" var="localeUk" htmlEscape="true">
+			<spring:param name="locale" value="uk"></spring:param>
+		</spring:url>
+		<div class="btn-group ib">
+			<%-- <a <%if (!lang.equals("en")) {%> href="/language?val=en" <%}%>
+				class="btn btn-default <%if (lang.equals("en")) {%>active<%}%>">English</a>
+			<a <%if (!lang.equals("uk")) {%> href="/language?val=uk" <%}%>
+				class="btn btn-default <%if (lang.equals("uk")) {%>active<%}%>"><%="\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430"%></a> --%>
+			<a href="${localeEn}">English</a> <a href="${localeUk}">Українська</a>
+		</div>
 	</div>
-	</div>
-</body>
-</html>
 </body>
 </html>

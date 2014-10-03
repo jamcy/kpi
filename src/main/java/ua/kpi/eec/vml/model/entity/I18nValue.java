@@ -2,10 +2,12 @@ package ua.kpi.eec.vml.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -17,22 +19,21 @@ public class I18nValue implements java.io.Serializable {
 	private static final long serialVersionUID = 1680664449868652714L;
 
 	private int id;
-	private I18n i18n;
-	private String languageCode;
+	private LanguageCode languageCode;
 	private String content;
 
 	public I18nValue() {
 	}
 
-	public I18nValue(int id, I18n i18n, String languageCode, String content) {
-		this.id = id;
-		this.i18n = i18n;
+	public I18nValue(LanguageCode languageCode, String content) {
 		this.languageCode = languageCode;
 		this.content = content;
 	}
 
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "i18n_value_seq_gen")
+	@SequenceGenerator(name = "i18n_value_seq_gen", sequenceName = "i18n_value_id_seq")
 	public int getId() {
 		return this.id;
 	}
@@ -41,22 +42,13 @@ public class I18nValue implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "i18n_id", nullable = false)
-	public I18n getI18n() {
-		return this.i18n;
-	}
-
-	public void setI18n(I18n i18n) {
-		this.i18n = i18n;
-	}
-
 	@Column(name = "language_code", nullable = false, length = 2)
-	public String getLanguageCode() {
+	@Enumerated(EnumType.STRING)
+	public LanguageCode getLanguageCode() {
 		return this.languageCode;
 	}
 
-	public void setLanguageCode(String languageCode) {
+	public void setLanguageCode(LanguageCode languageCode) {
 		this.languageCode = languageCode;
 	}
 

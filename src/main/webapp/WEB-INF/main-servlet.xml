@@ -95,6 +95,17 @@
 	</mvc:interceptors>
 
 	<!-- Web configuration -->
+
+	<mvc:annotation-driven />
+
+	<mvc:resources mapping="/js/**" location="/assets/js/" />
+	<mvc:resources mapping="/css/**" location="/assets/css/" />
+	<mvc:resources mapping="/img/**" location="/assets/img/" />
+	<mvc:resources location="file:/d:/projects/vmldata/static/"
+		mapping="/static/**" />
+
+	<mvc:view-controller path="/" view-name="index" />
+
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass"
@@ -103,6 +114,16 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-	<bean id="roomController" class="ua.kpi.eec.vml.controller.RoomController"></bean>
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/view/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+	<bean id="roomController" class="ua.kpi.eec.vml.controller.RoomController" />
 
 </beans>
