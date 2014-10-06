@@ -23,7 +23,7 @@ import ua.kpi.eec.vml.controller.ControllerResponse;
 public class DispatcherServlet extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response, String httpMethod) {
-        ConfigurationHelper.init("confFilePath", getServletContext().getRealPath("/"));
+        //ConfigurationProperties.init("confFilePath", getServletContext().getRealPath("/"));
         try {
             request.setCharacterEncoding("UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -31,9 +31,7 @@ public class DispatcherServlet extends HttpServlet {
         }
 
         RequestData rd = new HttpRequestData(request);
-        ControllerCreator creator = new ControllerCreator();
-        Controller c = creator.FactoryMethod(rd);
-        ControllerResponse resp = c.processRequest(rd);
+        ControllerResponse resp = null;
 
         if (resp.isNoresp()) {
             return;

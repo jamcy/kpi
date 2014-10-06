@@ -9,7 +9,7 @@ import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
-import ua.kpi.eec.vml.common.ConfigurationHelper;
+import ua.kpi.eec.vml.common.ConfigurationProperties;
 
 public class MysqlDataSource {
 	private static MysqlDataSource instance = null;
@@ -20,8 +20,8 @@ public class MysqlDataSource {
 		try {
 			Configuration configuration = new Configuration();
 			configuration.setNamingStrategy(new ImprovedNamingStrategy());
-			File config = new File(ConfigurationHelper.getRootDir() + "hibernate.cfg.xml");
-			configuration.configure(config);
+			//File config = new File(ConfigurationProperties.getRootDir() + "hibernate.cfg.xml");
+			//configuration.configure(config);
 			ServiceRegistry serviceRegistry = new ServiceRegistryBuilder()
 					.applySettings(configuration.getProperties())
 					.buildServiceRegistry();

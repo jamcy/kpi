@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.Part;
 
-import ua.kpi.eec.vml.common.ConfigurationHelper;
+import ua.kpi.eec.vml.common.ConfigurationProperties;
 
 
 public class FileDao {
@@ -19,7 +19,7 @@ public class FileDao {
 	private String basePath = "";
 
 	public FileDao() {
-		this.basePath = ConfigurationHelper.getResourceDir();
+		//this.basePath = ConfigurationProperties.getResourceDir();
 	}
 
 	public List<String> listFiles(String path) {

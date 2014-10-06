@@ -4,9 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -21,6 +24,7 @@ public class I18nValue implements java.io.Serializable {
 	private int id;
 	private LanguageCode languageCode;
 	private String content;
+	private I18n i18n;
 
 	public I18nValue() {
 	}
@@ -59,6 +63,16 @@ public class I18nValue implements java.io.Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "i18n_id", nullable = false)
+	public I18n getI18n() {
+		return i18n;
+	}
+
+	public void setI18n(I18n i18n) {
+		this.i18n = i18n;
 	}
 
 }

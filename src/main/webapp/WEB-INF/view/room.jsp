@@ -1,4 +1,6 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%@page language="java" pageEncoding="UTF-8"%>
 
 <%-- <%
@@ -95,53 +97,6 @@
 		</div>
 		<div class="divider"></div>
 	</div>
-	<!--
-<div class="center">
-<h4 class="p">EXPERIMENT DEVELOPERS</h4>
-</div>
-<div class="row">
-<div class="dev-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-<div class="dev">
-<a href="#" ><img src="images/dev1.jpg"/></a>
-<div class="desc">
-<h4>Petro Ivanovi4</h4>
-<h6>Lead developer. CAthedral assistant</h6>
-<h5><b>6</b> Experiments</h5>
-</div>
-</div>
-</div>
-<div class="dev-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-<div class="dev">
-<a href="#" ><img src="images/dev2.jpg"/></a>
-<div class="desc">
-<h4>Ivan Petrovich</h4>
-<h6>Lead developer. CAthedral assistant</h6>
-<h5><b>0</b> Experiments</h5>
-</div>
-</div>
-</div>
-<div class="dev-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-<div class="dev">
-<a href="#" ><img src="images/dev3.jpg"/></a>
-<div class="desc">
-<h4>Olooevich</h4>
-<h6>Lead developer. CAthedral assistant</h6>
-<h5><b>2</b> Experiments</h5>
-</div>
-</div>
-</div>
-<div class="dev-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-<div class="dev">
-<a href="#" ><img src="images/dev4.jpg"/></a>
-<div class="desc">
-<h4>Nostal'ji</h4>
-<h6>Lead developer. CAthedral assistant</h6>
-<h5><b>666</b> Experiments</h5>
-</div>
-</div>
-</div>
-</div>
--->
 
 	<!-- <script src="js/3ds/globe.js"></script> -->
 	</jsp:body>

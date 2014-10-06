@@ -1,5 +1,7 @@
-<%@tag language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<%@tag language="java" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -8,12 +10,14 @@
 
 <title>Virtual Multimedia Laboratory</title>
 
-<link rel="shortcut icon" href="/images/favicon.ico" />
-<link rel="stylesheet" href="/css/jquery.ui.css" type="text/css" />
-<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="/css/responsive-main.css" rel="stylesheet" media="screen">
-<link href="/css/smoothness/jquery-ui-1.10.4.custom.min.css"
-	rel="stylesheet">
+<link rel="shortcut icon" href="/img/favicon.ico" />
+
+<link href="<spring:url value="/static/css/jquery.ui.css" />" rel="stylesheet" />
+<link href="<spring:url value="/static/css/bootstrap.min.css" />" rel="stylesheet">
+<link href="<spring:url value="/static/css/responsive-main.css" />" rel="stylesheet">
+<link href="<spring:url value="/static/css/smoothness/jquery-ui-1.10.4.custom.min.css" />" rel="stylesheet">
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 
 <script src="/js/jquery-1.9.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -72,7 +76,7 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-4 col-md-3">
 					<a href="<spring:url value="/"/>"> 
-						<img src="/img/logo.png" />
+						<img src="<spring:url value="/img/logo.png" />" />
 						<div class="vml">
 							<div class="title">
 								<b class="pt">Virtual</b> <b class="pt">Multimedia</b> <b
@@ -102,10 +106,10 @@
 
 	<div id="footer" class="footer">
 		<spring:url value="/" var="localeEn" htmlEscape="true">
-			<spring:param name="locale" value="en"></spring:param>
+			<spring:param name="locale" value="en" />
 		</spring:url>
 		<spring:url value="/" var="localeUk" htmlEscape="true">
-			<spring:param name="locale" value="uk"></spring:param>
+			<spring:param name="locale" value="uk" />
 		</spring:url>
 		<div class="btn-group ib">
 			<%-- <a <%if (!lang.equals("en")) {%> href="/language?val=en" <%}%>

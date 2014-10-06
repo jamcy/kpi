@@ -1,15 +1,15 @@
 package ua.kpi.eec.vml.model.entity;
 
 public enum LanguageCode {
-	UK("ua"), EN("en");
+	UK("uk"), EN("en");
 
-	private String languageCode;
+	private String code;
 
-	private LanguageCode(String languageCode) {
-		this.languageCode = languageCode;
+	private LanguageCode(String code) {
+		this.code = code;
 	}
 
-	public String languageCode() {
-		return languageCode;
+	public String getCode() {
+		return code;
 	}
 }

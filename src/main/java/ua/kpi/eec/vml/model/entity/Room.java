@@ -23,24 +23,16 @@ public class Room implements java.io.Serializable {
 	private static final long serialVersionUID = 3765804669205960914L;
 
 	private long id;
-	private I18n i18n;
+	private I18n name;
 	private String imageUrl;
 	private Set<Module> modules = new HashSet<Module>(0);
 
 	public Room() {
 	}
 
-	public Room(long id, I18n i18n, String imageUrl) {
-		this.id = id;
-		this.i18n = i18n;
+	public Room(I18n i18n, String imageUrl) {
+		this.name = i18n;
 		this.imageUrl = imageUrl;
-	}
-
-	public Room(long id, I18n i18n, String imageUrl, Set<Module> modules) {
-		this.id = id;
-		this.i18n = i18n;
-		this.imageUrl = imageUrl;
-		this.modules = modules;
 	}
 
 	@Id
@@ -55,14 +47,14 @@ public class Room implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "name_i18n_id", nullable = false)
-	public I18n getI18n() {
-		return this.i18n;
+	public I18n getName() {
+		return this.name;
 	}
 
-	public void setI18n(I18n i18n) {
-		this.i18n = i18n;
+	public void setName(I18n i18n) {
+		this.name = i18n;
 	}
 
 	@Column(name = "image_url", nullable = false, length = 200)

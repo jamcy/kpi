@@ -23,29 +23,23 @@ public class I18n implements java.io.Serializable {
 	private int id;
 	private List<I18nValue> i18nValues = new ArrayList<I18nValue>();
 
-	public I18n() {
-	}
-
-	public I18n(List<I18nValue> i18nValues) {
-		this.i18nValues = i18nValues;
-	}
-
-	public void addStringValue(String stringValue, LanguageCode languageCode) {
-		I18nValue i18nValue = new I18nValue(languageCode, stringValue);
-		addI18nValue(i18nValue);
-	}
-
-	public void addI18nValue(I18nValue value) {
-
-	}
-
-	public String getStringByLanguage(LanguageCode languageCode) {
-		for (I18nValue i18n : i18nValues) {
-			if (i18n.getLanguageCode().equals(languageCode)) {
-				return i18n.getContent();
-			}
+	public String getContentByLanguage(LanguageCode languageCode) {
+		for (I18nValue value : i18nValues) {
+			if (languageCode.equals(value.getLanguageCode()))
+				return value.getContent();
 		}
 		return null;
+	}
+
+	public void setContentByLanguage(LanguageCode languageCode, String content) {
+		if (getContentByLanguage(languageCode) == null) {
+			i18nValues.add(new I18nValue(languageCode, content));
+			return;
+		}
+		for (I18nValue value : i18nValues) {
+			if (languageCode.equals(value.getLanguageCode()))
+				value.setContent(content);
+		}
 	}
 
 	@Id
@@ -60,7 +54,7 @@ public class I18n implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "i18n", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "i18n", cascade = CascadeType.ALL)
 	public List<I18nValue> getI18nValues() {
 		return this.i18nValues;
 	}

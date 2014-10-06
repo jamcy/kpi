@@ -1,0 +1,157 @@
+
+
+@font-face
+{
+	font-family: nevis;
+	src: url("../fonts/nevis.ttf");	
+}
+
+@font-face
+{
+	font-family: pt-font;
+	src: url("../fonts/PT.ttf");	
+}
+
+.nevis{
+	font-family: nevis;
+}
+
+.pt{
+	font-family: pt-font;	
+}
+
+
+/*MAIN*/
+
+body{
+	/*background-color: rgb(250,250,250);*/
+	padding-top: 0;
+	background-image: url("../images/white-wall.jpg");
+}
+
+.container{
+	/*background-color: white;*/
+	width: 1024px;
+}
+
+.top{
+	width: 100%;
+	height: 128px;
+	/*background-color: #e55;*/
+	margin-top: 0;
+	display: inline-block;
+	border-bottom: 1px solid #ccc;
+	background-image: url("../images/blue-wall.jpg");	
+}
+
+.top img{
+	width: 100px;
+	height: 100px;
+	margin-left: 14px;
+	margin-top: 14px;
+	display: inline-block;	
+	float: left;
+}
+
+.top .vml{
+	display: inline-block;	
+	font-size: 24px;
+}
+
+.top .navi{
+	display: inline-block;			
+}
+
+.top .navi .search{
+	display: inline-block;		
+}
+ .top .navi .links{
+	display: inline-block;	
+	padding-top: 34px;	
+}
+
+.top .navi .nav li a{
+	border-radius: 0px;
+	font-family: pt-font;
+	font-size: 18px;
+}
+
+.title, .title b{
+	display: block;
+	font-weight: normal;
+}
+
+.title{
+	margin-top: 14px;
+	margin-left: 14px;
+}
+
+
+.top .user-box{
+	display: block;
+	width: 100%;
+	text-align: right;
+	padding-top: 14px;
+}
+
+
+.canvas-box{
+	padding-top: 14px;
+}
+.main-canvas{
+	width: 100%;
+	height: 400px;
+	background-color: #e55;
+}
+
+
+.footer{
+	font-family: pt-font;
+	height: 64px;
+	text-align: center;
+	width: 100%;
+	padding-top: 28px;
+}
+
+.footer a { 
+margin-left: 14px; 
+}
+
+
+/*THREE.JS*/
+#stats{
+	display: none;
+}
+/*END THREE.JS*/
+
+.nav-tabs{ border: 0; }
+.breadcrumb { font-family: pt-font; }
+.btn-default{ border-radius: 0px; font-family: pt-font; }
+
+.rooms{
+	height: 400px;
+	display: inline-block;
+	padding-top: 32px;
+	text-align: center;
+	padding-left: 55px;
+}
+.room{
+	padding: 0px;
+	display: inline-block;
+	background-color: #eee;
+	width: 260px;
+	height: 100%;
+	margin-right: 50px;
+	box-shadow: 00px 10px 5px #888888;
+}
+
+.room .name{
+	color: white;
+	background-color: #55e;
+	width: 100%;
+	height: 48px;
+	font-family: pt-sans;
+	font-size: 26px;
+	padding-top: 5px;
+	
+}

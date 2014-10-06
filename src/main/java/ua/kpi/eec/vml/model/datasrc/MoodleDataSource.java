@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import ua.kpi.eec.vml.common.ConfigurationHelper;
+import ua.kpi.eec.vml.common.ConfigurationProperties;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -31,12 +31,12 @@ public class MoodleDataSource {
     public static final String FUNCTION_GET_COURSE_CONTENTS = "core_course_get_contents";
 
     private MoodleDataSource() {
-        this.moodleBase = ConfigurationHelper.getMoodleBase();
-        try {
-            this.moodleToken = this.getToken(ConfigurationHelper.getMoodleUser(), ConfigurationHelper.getMoodlePassword(), "vml");
-        } catch (MoodleRequestException e) {
-
-        }
+        //this.moodleBase = ConfigurationProperties.getMoodleBase();
+//        try {
+//            //this.moodleToken = this.getToken(ConfigurationProperties.getMoodleUser(), ConfigurationProperties.getMoodlePassword(), "vml");
+//        } catch (MoodleRequestException e) {
+//
+//        }
     }
 
     public static MoodleDataSource getInstance() {
