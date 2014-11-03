@@ -10,4 +10,7 @@
 	<c:if test="${i18nValue.languageCode.code eq locale}">
 		<c:out value="${i18nValue.content}" />
 	</c:if>
+	<%=request.getRequestURL() %>
+	<%=request.getRequestURI() %>
+	<%=request.getQueryString() %>
 </c:forEach>
