@@ -1,4 +1,4 @@
-<jsp:directive.taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"/>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:directive.tag language="java" pageEncoding="UTF-8"/>
 <jsp:directive.attribute name="value" description="" required="true" type="ua.kpi.eec.vml.model.entity.I18n"/>
