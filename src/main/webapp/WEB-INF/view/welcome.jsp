@@ -11,7 +11,7 @@
 	<jsp:body>
 	<div id="present" class=" present">
 		<div id="vml3d" class="container"></div>
-		<img src="<spring:url value="/img/present_main2.jpg" />" />
+		<img src="<spring:url value="/images/present_main2.jpg" />" />
 		<div class="container">
 			<div class="over">
 				<h1>

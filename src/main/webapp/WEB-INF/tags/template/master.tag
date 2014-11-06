@@ -1,7 +1,8 @@
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<jsp:directive.taglib prefix="spring" uri="http://www.springframework.org/tags" />
+<jsp:directive.taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" />
+<jsp:directive.taglib prefix="sec" uri="http://www.springframework.org/security/tags" />
 
-<%@tag language="java" pageEncoding="UTF-8"%>
+<jsp:directive.tag language="java" pageEncoding="UTF-8" />
 
 <!DOCTYPE html>
 <html>
@@ -10,73 +11,46 @@
 
 <title>Virtual Multimedia Laboratory</title>
 
-<link rel="shortcut icon" href="/img/favicon.ico" />
+<link rel="shortcut icon" href="/images/favicon.ico" />
 
-<link href="<spring:url value="/static/css/jquery.ui.css" />" rel="stylesheet" />
-<link href="<spring:url value="/static/css/bootstrap.min.css" />" rel="stylesheet">
-<link href="<spring:url value="/static/css/responsive-main.css" />" rel="stylesheet">
-<link href="<spring:url value="/static/css/smoothness/jquery-ui-1.10.4.custom.min.css" />" rel="stylesheet">
+<link href="<spring:url value="/css/bootstrap.min.css" />" rel="stylesheet">
+<link href="<spring:url value="/css/responsive-main.css" />" rel="stylesheet">
+<link href="<spring:url value="/css/smoothness/jquery-ui-1.10.4.custom.min.css" />" rel="stylesheet">
 
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="<spring:url value="/js/jquery-1.9.1.min.js" />"></script>
+<script src="<spring:url value="/js/bootstrap.min.js" />"></script>
+<script src="<spring:url value="/js/jquery-ui-1.10.4.custom.min.js" />"></script>
 
-<script src="/js/jquery-1.9.1.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="<spring:url value="/js/three.min.js" />"></script>
+<script src="<spring:url value="/js/libs/stats.min.js" />"></script>
 
-<script src="/js/three.min.js"></script>
-<script src="/js/libs/stats.min.js"></script>
 </head>
 <body>
 	<div class="top">
 		<div class="container rel">
 			<div class="" style="position: absolute; right: 0px; z-index: 5;">
-				<%-- <%
-                if (user == null) {
-            %> --%>
-				<a href="/login" class="btn btn-primary"><spring:message
-						code="header.login-message" /> </a>
-				<%-- <%
-            } else {
-            %> --%>
-				<div class="dropdown">
-					<%--  <a href="#" class="dropdown-toggle btn btn-primary"
-                   data-toggle="dropdown"><%=user.getFirstName() + " " + user.getLastName()%> --%>
-					<b class="caret"></b></a>
+			 	<sec:authentication var="username" property="principal"/>
+			 	<c:choose>
+			 	<c:when test="${username eq 'anonymous'}">
+		 		<a href="<spring:url value="/login"/>" class="btn btn-primary"><spring:message code="header.login-message" /></a>
+			 	</c:when>
+			 	<c:otherwise>
+		 		<div class="dropdown">
+					<a href="#" class="dropdown-toggle btn btn-primary" data-toggle="dropdown">
+						<c:out value="${username}" /><b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="/course"><spring:message
-									code="user.menu.courses" /> </a></li>
-						<%-- <%
-                        boolean admin = false;
-                        if (!user.getRole().equals(User.SR_USER)) {
-                            admin = true;
-                        }
-                        for (CourseRole cr : user.getCourseRoles()) {
-                            if (cr.getRole().equals(CourseRole.CR_TEACHER)
-                                    || cr.getRole().equals(CourseRole.CR_MODERATOR)) {
-                                admin = true;
-                            }
-                        }
-
-                        if (admin == true) {
-                    %> --%>
-						<li><a href="/admin"><spring:message
-									code="user.menu.admin" /> </a></li>
-						<%-- <%
-                        }
-                    %> --%>
-						<li><a href="/login?action=logout"><spring:message
-									code="user.menu.logout" /> </a></li>
+						<li><a href="<spring:url value="/course" />"><spring:message code="user.menu.courses" /></a></li>
+						<li><a href="<spring:url value="/admin" />"><spring:message code="user.menu.admin" /> </a></li>
+						<li><a href="<spring:url value="/j_spring_security_logout" />"><spring:message code="user.menu.logout" /></a></li>
 					</ul>
 				</div>
-				<%--  <%
-                }
-            %> --%>
+			 	</c:otherwise>
+				</c:choose>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-4 col-md-3">
 					<a href="<spring:url value="/"/>"> 
-						<img src="<spring:url value="/img/logo.png" />" />
+						<img src="<spring:url value="/images/logo.png" />" />
 						<div class="vml">
 							<div class="title">
 								<b class="pt">Virtual</b> <b class="pt">Multimedia</b> <b
@@ -112,11 +86,8 @@
 			<spring:param name="locale" value="uk" />
 		</spring:url>
 		<div class="btn-group ib">
-			<%-- <a <%if (!lang.equals("en")) {%> href="/language?val=en" <%}%>
-				class="btn btn-default <%if (lang.equals("en")) {%>active<%}%>">English</a>
-			<a <%if (!lang.equals("uk")) {%> href="/language?val=uk" <%}%>
-				class="btn btn-default <%if (lang.equals("uk")) {%>active<%}%>"><%="\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430"%></a> --%>
-			<a href="${localeEn}">English</a> <a href="${localeUk}">Українська</a>
+			 <!-- TODO: fix localization links  -->
+			<a href="${localeEn}" class="btn btn-default active">English</a> <a href="${localeUk}" class="btn btn-default">Українська</a>
 		</div>
 	</div>
 </body>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -11,7 +14,9 @@
         http://www.springframework.org/schema/tx 
        	http://www.springframework.org/schema/tx/spring-tx.xsd
        	http://www.springframework.org/schema/mvc 
-       	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       	http://www.springframework.org/schema/security
+       	http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<context:property-placeholder location="config.properties" />
 	<context:component-scan base-package="ua.kpi.eec.vml" />
@@ -20,8 +25,7 @@
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="org.postgresql.Driver" />
-		<property name="jdbcUrl"
-			value="${db.connection.url}" />
+		<property name="jdbcUrl" value="${db.connection.url}" />
 		<property name="user" value="${db.user}" />
 		<property name="password" value="${db.password}" />
 		<property name="acquireIncrement" value="1" />
@@ -63,54 +67,20 @@
 	<tx:annotation-driven />
 
 	<!-- Data access object beans -->
-	<bean id="abstractDao" class="ua.kpi.eec.vml.model.dao.AbstractHibernateDao"
-		abstract="true">
+	<bean id="abstractDao" class="ua.kpi.eec.vml.model.dao.AbstractHibernateDao" abstract="true">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
-	<bean id="moduleDao" class="ua.kpi.eec.vml.model.dao.impl.ModuleDaoImpl"
-		parent="abstractDao"></bean>
-
-	<bean id="roomDao" class="ua.kpi.eec.vml.model.dao.impl.RoomDaoImpl"
-		parent="abstractDao"></bean>
-
-	<!-- Resource configuration -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-		<property name="basename" value="classpath:messages" />
-		<property name="defaultEncoding" value="UTF-8" />
-	</bean>
-
-	<bean id="localeResolver"
-		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-		<property name="defaultLocale" value="en" />
-		<property name="cookieName" value="locale" />
-		<property name="cookieMaxAge" value="3600" />
-	</bean>
-
-	<mvc:interceptors>
-		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-			<property name="paramName" value="locale" />
-		</bean>
-	</mvc:interceptors>
-
-	<!-- Web configuration -->
-
-	<mvc:annotation-driven />
-
-	<mvc:resources location="file:/${static.content.root}/" mapping="/static/**" />
-	<mvc:resources location="file:/${static.content.root}/images/" mapping="/img/**" />
-	<!-- <mvc:resources location="/resources/css/" mapping="/css/**" />
-	<mvc:resources location="/resources/js/" mapping="/js/**" /> -->
-
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/view/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
-
-	<bean id="roomController" class="ua.kpi.eec.vml.controller.RoomController" />
+	<bean id="moduleDao" class="ua.kpi.eec.vml.model.dao.impl.ModuleDaoImpl" parent="abstractDao" />	
+	<bean id="roomDao" class="ua.kpi.eec.vml.model.dao.impl.RoomDaoImpl" parent="abstractDao" />
+	
+	<!-- Security configuration -->
+	<bean id="moodleAuthenticationManager" class="ua.kpi.eec.vml.authentication.MoodleAuthenticationManager" />
+	<security:authentication-manager/>
+	
+	<security:http authentication-manager-ref="moodleAuthenticationManager">
+		<security:form-login login-page="/login"  authentication-failure-url="/login?error"/>
+		<security:logout invalidate-session="true" logout-success-url="/"/>
+		<security:anonymous username="anonymous"/>
+	</security:http>
 
 </beans>
