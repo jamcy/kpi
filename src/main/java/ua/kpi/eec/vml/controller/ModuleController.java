@@ -1,18 +1,30 @@
 package ua.kpi.eec.vml.controller;
 
-import java.io.ByteArrayInputStream;
-import java.net.URL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import ua.kpi.eec.vml.common.RequestData;
 import ua.kpi.eec.vml.model.dao.ModuleDao;
 import ua.kpi.eec.vml.model.entity.Module;
-import ua.kpi.eec.vml.model.json.ModuleInitData;
 
-import com.google.gson.Gson;
+@Controller
+public class ModuleController {
+	
+	@Autowired
+	private ModuleDao moduleDao;
+	
+	@RequestMapping(value="/module", method=RequestMethod.GET)
+	public ModelAndView showModulePage(@RequestParam int id) {
+		ModelAndView model = new ModelAndView("module");
+		Module module = moduleDao.find(id);
+		model.addObject("module", module);
+		return model;
+	}
 
-public class ModuleController implements Controller {
-
-	@Override
 	public ControllerResponse processRequest(RequestData rd) {
 		ControllerResponse resp = new ControllerResponse();
 //
@@ -311,5 +323,9 @@ public class ModuleController implements Controller {
 //			resp.setRedirect(true);
 //			resp.setRedirectAddress("/course");
 //		}
+	}
+	
+	public void setModuleDao(ModuleDao moduleDao) {
+		this.moduleDao = moduleDao;
 	}
 }

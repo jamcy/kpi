@@ -66,7 +66,7 @@ public class Room implements java.io.Serializable {
 		this.imageUrl = imageUrl;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
 	public Set<Module> getModules() {
 		return this.modules;
 	}

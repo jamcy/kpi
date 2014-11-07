@@ -5,7 +5,7 @@ import java.io.Serializable;
 public interface GenericDao<T> {
     void create(T e) throws Exception;
 
-    T read(Serializable id);
+    T find(Serializable id);
 
     void update(T e);
 

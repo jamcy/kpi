@@ -16,30 +16,14 @@ import org.w3c.dom.NodeList;
 
 import ua.kpi.eec.vml.model.datasrc.MoodleDataSource;
 import ua.kpi.eec.vml.model.datasrc.MoodleRequestException;
-import ua.kpi.eec.vml.model.datasrc.MysqlDataSource;
 import ua.kpi.eec.vml.model.entity.Course;
 
 public class CourseDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Course> selectAll() {
-		Session session = null;
-		Transaction tx = null;
-		List<Course> result = null;
-		try {
-			session = MysqlDataSource.getInstance().getFactory()
-					.getCurrentSession();
-			tx = session.beginTransaction();
-			result = (List<Course>) session.createQuery(
-					"FROM Course ORDER BY id").list();
-			tx.commit();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			if (tx != null) {
-				tx.rollback();
-			}
-		}
-		return result;
+		//TODO implement
+		return null;
 	}
 
 	public HashMap<Long, String> getMoodleCourses() {
@@ -79,38 +63,11 @@ public class CourseDao {
 	}
 
 	public void saveOrUpdate(Course course) {
-		Transaction tx = null;
-		Session session = null;
-		try {
-			session = MysqlDataSource.getInstance().getFactory()
-					.getCurrentSession();
-			tx = session.beginTransaction();
-			session.saveOrUpdate(course);
-			tx.commit();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			if (tx != null) {
-				tx.rollback();
-			}
-		}
+		//TODO implement
 	}
 
 	public Course selectById(Long id) {
-		Session session = null;
-		Transaction tx = null;
-		Course result = null;
-		try {
-			session = MysqlDataSource.getInstance().getFactory()
-					.getCurrentSession();
-			tx = session.beginTransaction();
-			result = (Course) session.get(Course.class, id);
-			tx.commit();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-			if (tx != null) {
-				tx.rollback();
-			}
-		}
-		return result;
+		//TODO get rid of
+		return null;
 	}
 }

@@ -1,20 +1,9 @@
 package ua.kpi.eec.vml.controller;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ua.kpi.eec.vml.common.RequestData;
-import ua.kpi.eec.vml.model.dao.CourseDao;
-import ua.kpi.eec.vml.model.dao.TaskDao;
-import ua.kpi.eec.vml.model.dao.TaskLogDao;
-import ua.kpi.eec.vml.model.entity.Course;
-import ua.kpi.eec.vml.model.entity.CourseRole;
-import ua.kpi.eec.vml.model.entity.Task;
-import ua.kpi.eec.vml.model.entity.TaskLog;
 
-public class CourseController implements Controller {
+public class CourseController {
 
-	@Override
 	public ControllerResponse processRequest(RequestData rd) {
 
 		ControllerResponse resp = new ControllerResponse();

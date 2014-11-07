@@ -6,9 +6,8 @@ import ua.kpi.eec.vml.model.json.FileManagerContents;
 
 import com.google.gson.Gson;
 
-public class FileController implements Controller {
+public class FileController {
 
-	@Override
 	public ControllerResponse processRequest(RequestData rd) {
 		String action = rd.getParameter("action");
 		String root = rd.getParameter("root");

@@ -72,6 +72,7 @@
 	</bean>
 	<bean id="moduleDao" class="ua.kpi.eec.vml.model.dao.impl.ModuleDaoImpl" parent="abstractDao" />	
 	<bean id="roomDao" class="ua.kpi.eec.vml.model.dao.impl.RoomDaoImpl" parent="abstractDao" />
+	<bean id="pageDao" class="ua.kpi.eec.vml.model.dao.impl.PageDaoImpl" parent="abstractDao" />
 	
 	<!-- Security configuration -->
 	<bean id="moodleAuthenticationManager" class="ua.kpi.eec.vml.authentication.MoodleAuthenticationManager" />

@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +27,7 @@ public class Account implements java.io.Serializable {
 	private int moodleId;
 	private String email;
 	private String fullName;
-	private String role;
+	private SystemRole role;
 	private Set<TaskLog> taskLogs = new HashSet<TaskLog>(0);
 	private Set<CourseRole> courseRoles = new HashSet<CourseRole>(0);
 
@@ -33,7 +35,7 @@ public class Account implements java.io.Serializable {
 	}
 
 	public Account(long id, int moodleId, String email, String fullName,
-			String role) {
+			SystemRole role) {
 		this.id = id;
 		this.moodleId = moodleId;
 		this.email = email;
@@ -42,7 +44,7 @@ public class Account implements java.io.Serializable {
 	}
 
 	public Account(long id, int moodleId, String email, String fullName,
-			String role, Set<TaskLog> taskLogs, Set<CourseRole> courseRoles) {
+			SystemRole role, Set<TaskLog> taskLogs, Set<CourseRole> courseRoles) {
 		this.id = id;
 		this.moodleId = moodleId;
 		this.email = email;
@@ -92,11 +94,12 @@ public class Account implements java.io.Serializable {
 	}
 
 	@Column(name = "role", nullable = false, length = 200)
-	public String getRole() {
+	@Enumerated(EnumType.STRING)
+	public SystemRole getRole() {
 		return this.role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(SystemRole role) {
 		this.role = role;
 	}
 

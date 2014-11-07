@@ -19,7 +19,6 @@ public class RoomDaoImpl extends AbstractHibernateDao<Room> implements RoomDao {
 	@Override
 	@Transactional
 	public List<Room> findAll() throws Exception {
-		return getSessionFactory().getCurrentSession().createQuery("from Room")
-				.list();
+		return getSessionFactory().getCurrentSession().createQuery("from Room order by id").list();
 	}
 }

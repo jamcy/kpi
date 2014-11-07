@@ -1,14 +1,16 @@
 package ua.kpi.eec.vml.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import ua.kpi.eec.vml.model.dao.ModuleDao;
 import ua.kpi.eec.vml.model.dao.RoomDao;
-import ua.kpi.eec.vml.model.entity.I18n;
+import ua.kpi.eec.vml.model.entity.Module;
 import ua.kpi.eec.vml.model.entity.Room;
 
 @Controller
@@ -21,19 +23,21 @@ public class RoomController {
 	private RoomDao roomDao;
 
 	@RequestMapping("/room")
-	public String viewRoom(@RequestParam("id") Long roomId, Model model) {
-		Room room = roomDao.read(roomId);
-		model.addAttribute("room", room);
+	public ModelAndView viewRoomPage(@RequestParam("id") Long roomId) {
+		ModelAndView model = new ModelAndView("room");
+		Room room = roomDao.find(roomId);
+		model.addObject("room", room);
 		if (room == null) {
-			model.addAttribute("message", "There is no such room");
+			model.addObject("message", "There is no room with id=" + roomId);
 		}
-		// List<Module> modules = modd.selectByRoomId(room.getId());
+		return model;
+	}
+
+	public List<Module> restModules() {
+		// TODO: implement modules via rest?
+
 		// if (rd.getParameter("raw") != null
 		// && rd.getParameter("raw").equals("true")) {
-		// String lang = (String) rd.getClientStateAttribute("lang");
-		// if (lang == null) {
-		// lang = "en";
-		// }
 		// ModuleJson[] mja = new ModuleJson[modules.size()];
 		// for (int i = 0; i < modules.size(); i++) {
 		// ModuleJson mj = new ModuleJson();
@@ -48,18 +52,7 @@ public class RoomController {
 		// resp.setRaw(true);
 		// return resp;
 		// }
-		// resp.setPageDataAttribute("modules", modules);
-		/*Room r = new Room();
-		r.setImageUrl("image.png");
-		r.setI18n(new I18n());
-		try {
-			roomDao.create(r);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		Room r = roomDao.read(new Long(0));
-		return "room";
+		return null;
 	}
 
 	public void setModuleDao(ModuleDao moduleDao) {

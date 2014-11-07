@@ -18,18 +18,18 @@ public class Page implements java.io.Serializable {
 	private static final long serialVersionUID = 3752039564906723751L;
 
 	private int id;
-	private I18n i18nByNameI18nId;
-	private I18n i18nByContentI18nId;
+	private I18n name;
+	private I18n content;
 	private String urlSuffix;
 
 	public Page() {
 	}
 
-	public Page(int id, I18n i18nByNameI18nId, I18n i18nByContentI18nId,
+	public Page(int id, I18n name, I18n content,
 			String urlSuffix) {
 		this.id = id;
-		this.i18nByNameI18nId = i18nByNameI18nId;
-		this.i18nByContentI18nId = i18nByContentI18nId;
+		this.name = name;
+		this.content = content;
 		this.urlSuffix = urlSuffix;
 	}
 
@@ -45,24 +45,24 @@ public class Page implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "name_i18n_id", nullable = false)
-	public I18n getI18nByNameI18nId() {
-		return this.i18nByNameI18nId;
+	public I18n getName() {
+		return this.name;
 	}
 
-	public void setI18nByNameI18nId(I18n i18nByNameI18nId) {
-		this.i18nByNameI18nId = i18nByNameI18nId;
+	public void setName(I18n name) {
+		this.name = name;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "content_i18n_id", nullable = false)
-	public I18n getI18nByContentI18nId() {
-		return this.i18nByContentI18nId;
+	public I18n getContent() {
+		return this.content;
 	}
 
-	public void setI18nByContentI18nId(I18n i18nByContentI18nId) {
-		this.i18nByContentI18nId = i18nByContentI18nId;
+	public void setContent(I18n content) {
+		this.content = content;
 	}
 
 	@Column(name = "url_suffix", nullable = false, length = 200)

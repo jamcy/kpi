@@ -1,11 +1,11 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
 <%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@page language="java" pageEncoding="UTF-8"%>
-<%@page import="ua.kpi.eec.vml.model.entity.Room"%>
-<%@page import="java.util.List"%>
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
+<jsp:directive.page import="ua.kpi.eec.vml.model.entity.Room" />
+<jsp:directive.page import="java.util.List" />
 
 <t:master>
 	<jsp:body>
@@ -42,12 +42,12 @@
 				</spring:url>
 				<div class="room-wrap">
 					<div class="room" id="room_${room.id}">
-						<div class="name">
-							<a href="${roomUrl}" class="link"><u:i18n value="${room.name}" /></a>
-						</div>
 						<div class="body">
-							<a href="${roomUrl}" class="link"><img src="${room.imageUrl}" /></a>
+							<a href="${roomUrl}" class="link"><img src="<spring:url value="/static/${room.imageUrl}"/>"/></a>
 							<!-- <div class="experiments"></div> -->
+						</div>
+						<div class="name">
+							<a href="${roomUrl}" class="link"><u:i18n value="${room.name}"/></a>
 						</div>
 					</div>
 				</div>
@@ -69,11 +69,6 @@
 <!-- <script src="js/3ds/graphics_room.js"></script>
 <script src="js/3ds/audio_room.js"></script>
 <script src="js/3ds/app_room.js"></script> -->
-	<script type="text/javascript">
-		$($(".room a .body img")[0]).attr("src", "images/room_graphics.jpg");
-		$($(".room a .body img")[1]).attr("src", "images/room_audio.jpg");
-		$($(".room a .body img")[2]).attr("src", "images/room_app.jpg");
-	</script>
 	</jsp:body>
 </t:master>
 

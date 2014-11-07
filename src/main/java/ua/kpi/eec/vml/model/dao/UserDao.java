@@ -1,71 +1,7 @@
 package ua.kpi.eec.vml.model.dao;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-import ua.kpi.eec.vml.model.datasrc.MoodleDataSource;
-import ua.kpi.eec.vml.model.datasrc.MoodleRequestException;
-import ua.kpi.eec.vml.model.datasrc.MysqlDataSource;
-import ua.kpi.eec.vml.model.entity.CourseRole;
-
 public class UserDao {
 
-//	private String token = null;
-//
-//	@SuppressWarnings("unchecked")
-//	public List<User> selectAll() {
-//		List<User> result = null;
-//		SessionFactory factory = MysqlDataSource.getInstance().getFactory();
-//		try {
-//			factory.getCurrentSession().beginTransaction();
-//			result = (List<User>) factory.getCurrentSession()
-//					.createQuery("from User order by lastName").list();
-//			factory.getCurrentSession().getTransaction().commit();
-//		} catch (RuntimeException e) {
-//			factory.getCurrentSession().getTransaction().rollback();
-//			e.printStackTrace();
-//		}
-//		return result;
-//	}
-//
-//	public User selectById(long id) {
-//		User result = null;
-//		Session session = null;
-//		Transaction tx = null;
-//		try {
-//			session = MysqlDataSource.getInstance().getFactory()
-//					.getCurrentSession();
-//			tx = session.beginTransaction();
-//			result = (User) session.get(User.class, id);
-//			tx.commit();
-//		} catch (HibernateException e) {
-//			e.printStackTrace();
-//			if (tx != null) {
-//				tx.rollback();
-//			}
-//		}
-//		return result;
-//	}
-//
-//	/**
-//	 * Updates user data based on data receieved from moodle.
-//	 * 
-//	 * @param user
-//	 * @throws HibernateException
-//	 */
 //	public void updateUserData(User user) throws HibernateException {
 //		try {
 //			User u = (User) selectById(user.getMoodleId());
@@ -101,37 +37,6 @@ public class UserDao {
 //
 //	}
 //
-//	public void update(User user) {
-//		Session session = null;
-//		Transaction tx = null;
-//		try {
-//			session = MysqlDataSource.getInstance().getFactory()
-//					.getCurrentSession();
-//			tx = session.beginTransaction();
-//			session.update(user);
-//			tx.commit();
-//		} catch (HibernateException e) {
-//			e.printStackTrace();
-//			tx.rollback();
-//		}
-//	}
-//
-//	public void save(User user) {
-//		Session session = null;
-//		Transaction tx = null;
-//		try {
-//			session = MysqlDataSource.getInstance().getFactory()
-//					.getCurrentSession();
-//			tx = session.beginTransaction();
-//
-//			session.save(user);
-//
-//			tx.commit();
-//		} catch (HibernateException e) {
-//			e.printStackTrace();
-//			tx.rollback();
-//		}
-//	}
 //
 //	/**
 //	 * Checks user identity and saves obtained token as internal variable.
@@ -155,65 +60,6 @@ public class UserDao {
 //		}
 //	}
 //
-//	/**
-//	 * Reads user data from moodle by user token.
-//	 * 
-//	 * @param token
-//	 * @return
-//	 */
-//	public User getByToken(String token) {
-//
-//		HashMap<String, String> par = new HashMap<String, String>();
-//		par.put("token", token);
-//		MoodleDataSource mdl_ds = MoodleDataSource.getInstance();
-//		Document doc = null;
-//		try {
-//			doc = mdl_ds.request(MoodleDataSource.FUNCTION_GET_USER_BY_TOKEN, par);
-//		} catch (MoodleRequestException e) {
-//			e.printStackTrace();
-//		}
-//
-//		XPathFactory factory = javax.xml.xpath.XPathFactory.newInstance();
-//		XPath xPath = factory.newXPath();
-//
-//		User result = new User();
-//		try {
-//			XPathExpression expr = xPath.compile("//KEY[@name='username']");
-//			NodeList res = (NodeList) expr
-//					.evaluate(doc, XPathConstants.NODESET);
-//			result.setUsername(res.item(0).getTextContent().trim());
-//
-//			expr = xPath.compile("//KEY[@name='firstname']");
-//			res = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-//			result.setFirstName(res.item(0).getTextContent().trim());
-//
-//			expr = xPath.compile("//KEY[@name='lastname']");
-//			res = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-//			result.setLastName(res.item(0).getTextContent().trim());
-//
-//			expr = xPath.compile("//KEY[@name='lang']");
-//			res = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-//			String lang = res.item(0).getTextContent().trim();
-//			if (lang.equals("ua")) {
-//				lang = "uk";
-//			} else {
-//				if (!lang.equals("en")) {
-//					lang = "en";
-//				}
-//			}
-//			result.setLanguage(lang);
-//
-//			expr = xPath.compile("//KEY[@name='userid']");
-//			res = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-//			result.setMoodleId(Long.parseLong(res.item(0).getTextContent()
-//					.trim()));
-//
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//
-//		return result;
-//	}
 //
 //	public List<Long> getEnrolledCourses(User user) {
 //		HashMap<String, String> par = new HashMap<String, String>();

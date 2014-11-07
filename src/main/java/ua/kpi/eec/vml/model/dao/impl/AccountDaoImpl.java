@@ -16,7 +16,7 @@ public class AccountDaoImpl extends AbstractHibernateDao<Account> implements Acc
 	@Transactional
 	@Override
 	public Account findByEmail(String email) {
-		//TODO implement
+		//TODO implement find by email
 		return null;
 	}
 

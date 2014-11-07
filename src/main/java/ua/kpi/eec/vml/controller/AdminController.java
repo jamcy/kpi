@@ -12,9 +12,8 @@ import ua.kpi.eec.vml.model.entity.Module;
 import ua.kpi.eec.vml.model.form.ModuleAddForm;
 import ua.kpi.eec.vml.model.form.ModuleEditForm;
 
-public class AdminController implements Controller {
+public class AdminController {
 
-    @Override
     public ControllerResponse processRequest(RequestData rd) {
         ControllerResponse resp = new ControllerResponse();
         String function = rd.getFunction();

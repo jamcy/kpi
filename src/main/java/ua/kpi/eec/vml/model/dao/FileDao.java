@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.servlet.http.Part;
 
-import ua.kpi.eec.vml.common.ConfigurationProperties;
 
 
 public class FileDao {

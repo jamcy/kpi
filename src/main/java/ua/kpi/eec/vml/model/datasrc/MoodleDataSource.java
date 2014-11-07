@@ -11,7 +11,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import ua.kpi.eec.vml.common.ConfigurationProperties;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

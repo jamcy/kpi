@@ -56,14 +56,14 @@ public class UserForm implements FormData {
 
 	// METODS
 	public void load(Account user) {
-		this.systemRole = user.getRole();
+		//this.systemRole = user.getRole();
 //		for (CourseRole role : user.getCourseRoles()) {
 //			this.courseRoles.put(role.getCourseId(), role.getRole());
 //		}
 	}
 
 	public void update(Account user) {
-		user.setRole(this.systemRole);
+		//user.setRole(this.systemRole);
 //		Set<Long> courseids = this.courseRoles.keySet();
 //		for(Long courseid: courseids) {
 //			user.setRole(courseid, this.courseRoles.get(courseid));

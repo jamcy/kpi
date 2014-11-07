@@ -25,7 +25,7 @@
 							<label for="inputEmail3" class="col-sm-4 control-label"><spring:message code="form.login.username" /></label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" id="inputEmail3"
-											name="j_username" value="<%-- TOODO: popula --%>"
+											name="j_username" value="<%-- TOODO: populate username --%>"
 											placeholder="<spring:message code="form.login.username" />" />
 							</div>
 						</div>

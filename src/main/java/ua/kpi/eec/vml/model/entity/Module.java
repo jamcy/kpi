@@ -22,9 +22,9 @@ public class Module implements java.io.Serializable {
 	private static final long serialVersionUID = 4101240065544284978L;
 
 	private int id;
-	private I18n i18nByNameI18nId;
-	private I18n i18nByDescriptionI18nId;
-	private I18n i18nByPageContentI18nId;
+	private I18n name;
+	private I18n description;
+	private I18n pageContent;
 	private Room room;
 	private String code;
 	private String embed;
@@ -34,26 +34,26 @@ public class Module implements java.io.Serializable {
 	public Module() {
 	}
 
-	public Module(int id, I18n i18nByNameI18nId, I18n i18nByDescriptionI18nId,
-			I18n i18nByPageContentI18nId, Room room, String code, String embed,
+	public Module(int id, I18n name, I18n description,
+			I18n pageContent, Room room, String code, String embed,
 			String imageUrl) {
 		this.id = id;
-		this.i18nByNameI18nId = i18nByNameI18nId;
-		this.i18nByDescriptionI18nId = i18nByDescriptionI18nId;
-		this.i18nByPageContentI18nId = i18nByPageContentI18nId;
+		this.name = name;
+		this.description = description;
+		this.pageContent = pageContent;
 		this.room = room;
 		this.code = code;
 		this.embed = embed;
 		this.imageUrl = imageUrl;
 	}
 
-	public Module(int id, I18n i18nByNameI18nId, I18n i18nByDescriptionI18nId,
-			I18n i18nByPageContentI18nId, Room room, String code, String embed,
+	public Module(int id, I18n name, I18n description,
+			I18n pageContent, Room room, String code, String embed,
 			String imageUrl, Set<Task> tasks) {
 		this.id = id;
-		this.i18nByNameI18nId = i18nByNameI18nId;
-		this.i18nByDescriptionI18nId = i18nByDescriptionI18nId;
-		this.i18nByPageContentI18nId = i18nByPageContentI18nId;
+		this.name = name;
+		this.description = description;
+		this.pageContent = pageContent;
 		this.room = room;
 		this.code = code;
 		this.embed = embed;
@@ -73,34 +73,34 @@ public class Module implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "name_i18n_id", nullable = false)
-	public I18n getI18nByNameI18nId() {
-		return this.i18nByNameI18nId;
+	public I18n getName() {
+		return this.name;
 	}
 
-	public void setI18nByNameI18nId(I18n i18nByNameI18nId) {
-		this.i18nByNameI18nId = i18nByNameI18nId;
+	public void setName(I18n name) {
+		this.name = name;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "description_i18n_id", nullable = false)
-	public I18n getI18nByDescriptionI18nId() {
-		return this.i18nByDescriptionI18nId;
+	public I18n getDescription() {
+		return this.description;
 	}
 
-	public void setI18nByDescriptionI18nId(I18n i18nByDescriptionI18nId) {
-		this.i18nByDescriptionI18nId = i18nByDescriptionI18nId;
+	public void setDescription(I18n description) {
+		this.description = description;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "page_content_i18n_id", nullable = false)
-	public I18n getI18nByPageContentI18nId() {
-		return this.i18nByPageContentI18nId;
+	public I18n getPageContent() {
+		return this.pageContent;
 	}
 
-	public void setI18nByPageContentI18nId(I18n i18nByPageContentI18nId) {
-		this.i18nByPageContentI18nId = i18nByPageContentI18nId;
+	public void setPageContent(I18n pageContent) {
+		this.pageContent = pageContent;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -1,38 +1,31 @@
 package ua.kpi.eec.vml.controller;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
-import ua.kpi.eec.vml.common.RequestData;
 import ua.kpi.eec.vml.model.dao.PageDao;
-import ua.kpi.eec.vml.model.dao.RoomDao;
 import ua.kpi.eec.vml.model.entity.Page;
-import ua.kpi.eec.vml.model.entity.Room;
 
-public class PageController implements Controller {
+@Controller
+public class PageController {
 
-	@Override
-	public ControllerResponse processRequest(RequestData rd) {
-		String suffix = rd.getFunction();
-		ControllerResponse resp = new ControllerResponse();
-//		resp.setNextView("error");
-//		if (suffix.equals("main")) {
-//			RoomDao rdao = new RoomDao();
-//			List<Room> rooms = rdao.selectAll();
-//			resp.setPageDataAttribute("rooms", rooms);
-//			resp.setNextView("index");
-//		} else {
-//			PageDao pdao = new PageDao();
-//			Page content = pdao.selectBySuffix(suffix);
-//			if (content == null) {
-//				resp.setPageDataAttribute("message", "Page doesn't exists");
-//				resp.setNextView("error");
-//				return resp;
-//			}
-//			
-//			resp.setPageDataAttribute("content", content);
-//			resp.setNextView("page");
-//		}
-		return resp;
+	@Autowired
+	private PageDao pageDao;
+
+	@RequestMapping(value = "/page/{urlSuffix}", method = RequestMethod.GET)
+	public ModelAndView showPage(@PathVariable String urlSuffix) {
+		ModelAndView model = new ModelAndView("page");
+		Page page = pageDao.findByUrlSuffix(urlSuffix);
+		model.addObject("page", page);
+		return model;
+	}
+
+	public void setPageDao(PageDao pageDao) {
+		this.pageDao = pageDao;
 	}
 
 }

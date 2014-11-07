@@ -20,7 +20,7 @@ public abstract class AbstractHibernateDao<T> implements GenericDao<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public T read(Serializable id) {
+	public T find(Serializable id) {
 		return (T) getSessionFactory().getCurrentSession().get(
 				getEntityClass(), id);
 	}

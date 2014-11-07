@@ -21,9 +21,6 @@
 <script src="<spring:url value="/js/bootstrap.min.js" />"></script>
 <script src="<spring:url value="/js/jquery-ui-1.10.4.custom.min.js" />"></script>
 
-<script src="<spring:url value="/js/three.min.js" />"></script>
-<script src="<spring:url value="/js/libs/stats.min.js" />"></script>
-
 </head>
 <body>
 	<div class="top">
@@ -67,8 +64,7 @@
 							<li><a href="http://moodle.vml.eec.kpi.ua" target="_top">Moodle</a></li>
 							<li><a href="http://eec.kpi.ua">EEC</a></li>
 							<!--<li ><a href="/page/mission"><spring:message code="header.menu.mission" /></a></li>-->
-							<li><a href="/page/about"><spring:message
-										code="header.menu.about" /> </a></li>
+							<li><a href="<spring:url value="/page/about" />"><spring:message code="header.menu.about" /> </a></li>
 						</ul>
 					</div>
 				</div>
@@ -85,9 +81,20 @@
 		<spring:url value="/" var="localeUk" htmlEscape="true">
 			<spring:param name="locale" value="uk" />
 		</spring:url>
+		<c:choose>
+			<c:when test="${pageContext.response.locale eq 'en'}">
+				<c:set var="enActive" value="active" />
+				<c:set var="ukActive" value="" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="enActive" value="" />
+				<c:set var="ukActive" value="active" />
+			</c:otherwise>
+		</c:choose>
+		
 		<div class="btn-group ib">
-			 <!-- TODO: fix localization links  -->
-			<a href="${localeEn}" class="btn btn-default active">English</a> <a href="${localeUk}" class="btn btn-default">Українська</a>
+			<a href="${localeEn}" class="btn btn-default ${enActive}">English</a> 
+			<a href="${localeUk}" class="btn btn-default ${ukActive}">Українська</a>
 		</div>
 	</div>
 </body>
