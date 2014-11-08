@@ -24,37 +24,37 @@ public class Task implements java.io.Serializable {
 	private int id;
 	private Course course;
 	private Module module;
-	private I18n i18nByContentI18nId;
-	private I18n i18nByDefinitionI18nId;
+	private I18n content;
+	private I18n definition;
 	private int moodleId;
-	private int nameI18nId;
+	private int name;
 	private String startingTemplateUrl;
 	private Set<TaskLog> taskLogs = new HashSet<TaskLog>(0);
 
 	public Task() {
 	}
 
-	public Task(int id, Course course, Module module, I18n i18nByContentI18nId,
-			I18n i18nByDefinitionI18nId, int moodleId, int nameI18nId) {
+	public Task(int id, Course course, Module module, I18n content,
+			I18n definition, int moodleId, int name) {
 		this.id = id;
 		this.course = course;
 		this.module = module;
-		this.i18nByContentI18nId = i18nByContentI18nId;
-		this.i18nByDefinitionI18nId = i18nByDefinitionI18nId;
+		this.content = content;
+		this.definition = definition;
 		this.moodleId = moodleId;
-		this.nameI18nId = nameI18nId;
+		this.name = name;
 	}
 
-	public Task(int id, Course course, Module module, I18n i18nByContentI18nId,
-			I18n i18nByDefinitionI18nId, int moodleId, int nameI18nId,
+	public Task(int id, Course course, Module module, I18n content,
+			I18n definition, int moodleId, int name,
 			String startingTemplateUrl, Set<TaskLog> taskLogs) {
 		this.id = id;
 		this.course = course;
 		this.module = module;
-		this.i18nByContentI18nId = i18nByContentI18nId;
-		this.i18nByDefinitionI18nId = i18nByDefinitionI18nId;
+		this.content = content;
+		this.definition = definition;
 		this.moodleId = moodleId;
-		this.nameI18nId = nameI18nId;
+		this.name = name;
 		this.startingTemplateUrl = startingTemplateUrl;
 		this.taskLogs = taskLogs;
 	}
@@ -93,22 +93,22 @@ public class Task implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "content_i18n_id", nullable = false)
-	public I18n getI18nByContentI18nId() {
-		return this.i18nByContentI18nId;
+	public I18n getcontent() {
+		return this.content;
 	}
 
-	public void setI18nByContentI18nId(I18n i18nByContentI18nId) {
-		this.i18nByContentI18nId = i18nByContentI18nId;
+	public void setcontent(I18n content) {
+		this.content = content;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "definition_i18n_id", nullable = false)
-	public I18n getI18nByDefinitionI18nId() {
-		return this.i18nByDefinitionI18nId;
+	public I18n getdefinition() {
+		return this.definition;
 	}
 
-	public void setI18nByDefinitionI18nId(I18n i18nByDefinitionI18nId) {
-		this.i18nByDefinitionI18nId = i18nByDefinitionI18nId;
+	public void setdefinition(I18n definition) {
+		this.definition = definition;
 	}
 
 	@Column(name = "moodle_id", nullable = false)
@@ -121,12 +121,12 @@ public class Task implements java.io.Serializable {
 	}
 
 	@Column(name = "name_i18n_id", nullable = false)
-	public int getNameI18nId() {
-		return this.nameI18nId;
+	public int getname() {
+		return this.name;
 	}
 
-	public void setNameI18nId(int nameI18nId) {
-		this.nameI18nId = nameI18nId;
+	public void setname(int name) {
+		this.name = name;
 	}
 
 	@Column(name = "starting_template_url", length = 200)
