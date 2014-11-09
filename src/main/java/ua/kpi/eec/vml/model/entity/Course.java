@@ -75,7 +75,7 @@ public class Course implements java.io.Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "account_id"))
+	@JoinTable(name = "account_course", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "account_id"))
 	public Set<Account> getStudents() {
 		return this.students;
 	}

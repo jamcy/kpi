@@ -1,6 +1,8 @@
 package ua.kpi.eec.vml.model.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -24,6 +26,14 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "account", schema = "public", uniqueConstraints = { @UniqueConstraint(columnNames = "moodle_id"),
 		@UniqueConstraint(columnNames = "username") })
 public class Account implements java.io.Serializable {
+	
+	private static Account guestAccount;
+	
+	static {
+		guestAccount = new Account();
+		guestAccount.setUsername("anonymous");
+		guestAccount.setRole(SystemRole.GUEST);
+	}
 
 	private long id;
 	private int moodleId;
@@ -31,7 +41,7 @@ public class Account implements java.io.Serializable {
 	private String fullName;
 	private SystemRole role;
 	private Set<TaskLog> taskLogs = new HashSet<TaskLog>(0);
-	private Set<Course> courses = new HashSet<Course>(0);
+	private List<Course> courses = new ArrayList<Course>();
 
 	public Account() {
 	}
@@ -42,6 +52,10 @@ public class Account implements java.io.Serializable {
 		this.username = username;
 		this.fullName = fullName;
 		this.role = role;
+	}
+	
+	public static Account getGuestAccount() {
+		return guestAccount;
 	}
 
 	@Id
@@ -104,12 +118,12 @@ public class Account implements java.io.Serializable {
 
 	// TODO add cascades
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
-	public Set<Course> getCourses() {
+	@JoinTable(name = "account_course", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	public List<Course> getCourses() {
 		return this.courses;
 	}
 
-	public void setCourses(Set<Course> courses) {
+	public void setCourses(List<Course> courses) {
 		this.courses = courses;
 	}
 

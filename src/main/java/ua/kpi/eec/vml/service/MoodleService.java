@@ -1,7 +1,7 @@
 package ua.kpi.eec.vml.service;
 
-import ua.kpi.eec.vml.model.entity.Account;
+import ua.kpi.eec.vml.model.dto.AccountData;
 
 public interface MoodleService {
-    public Account authenticate(String username, String password) throws MoodleRequestException;
+    public AccountData authenticate(String username, String password) throws MoodleRequestException;
 }

@@ -72,6 +72,8 @@
 	<bean id="moduleDao" class="ua.kpi.eec.vml.model.dao.impl.ModuleDaoImpl" parent="abstractDao" />	
 	<bean id="roomDao" class="ua.kpi.eec.vml.model.dao.impl.RoomDaoImpl" parent="abstractDao" />
 	<bean id="pageDao" class="ua.kpi.eec.vml.model.dao.impl.PageDaoImpl" parent="abstractDao" />
+	<bean id="courseDao" class="ua.kpi.eec.vml.model.dao.impl.CourseDaoImpl" parent="abstractDao" />
+	<bean id="accountDao" class="ua.kpi.eec.vml.model.dao.impl.AccountDaoImpl" parent="abstractDao" />
 	
 	<!-- Service beans -->
 	<bean id="moodleService" class="ua.kpi.eec.vml.service.impl.MoodleServiceImpl">
@@ -85,10 +87,35 @@
 	</bean>
 	<security:authentication-manager/>
 	
-	<security:http authentication-manager-ref="moodleAuthenticationManager">
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+    	<constructor-arg ref="roleHierarchy" />
+	</bean>
+	<bean id="roleHierarchy"
+	        class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+	    <property name="hierarchy">
+	        <value>
+	            ROLE_ADMIN > ROLE_TEACHER
+	            ROLE_TEACHER > ROLE_MODERATOR
+	            ROLE_MODERATOR > ROLE_USER
+	            ROLE_USER > ROLE_GUEST
+	        </value>
+	    </property>
+	</bean>
+	
+	<bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<property name="decisionVoters">
+			<list>
+				<ref bean="roleVoter"/>
+			</list>
+		</property>
+	</bean>
+	
+	<security:http authentication-manager-ref="moodleAuthenticationManager" access-decision-manager-ref="accessDecisionManager">
 		<security:form-login login-page="/login"  authentication-failure-url="/login?error"/>
 		<security:logout invalidate-session="true" logout-success-url="/"/>
-		<security:anonymous username="anonymous"/>
+		<security:anonymous username="anonymous" granted-authority="ROLE_GUEST" />
+		
+		<security:intercept-url pattern="/course/**" access="ROLE_USER" />
 	</security:http>
-
+	
 </beans>

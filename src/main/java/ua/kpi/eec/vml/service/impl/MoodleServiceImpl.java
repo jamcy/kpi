@@ -21,6 +21,7 @@ import org.w3c.dom.NodeList;
 
 import com.google.gson.Gson;
 
+import ua.kpi.eec.vml.model.dto.AccountData;
 import ua.kpi.eec.vml.model.dto.MoodleTokenResponse;
 import ua.kpi.eec.vml.model.entity.Account;
 import ua.kpi.eec.vml.service.MoodleRequestException;
@@ -39,7 +40,7 @@ public class MoodleServiceImpl implements MoodleService {
 	private String loginService = "vml";
 
 	@Override
-	public Account authenticate(String username, String password) throws MoodleRequestException {
+	public AccountData authenticate(String username, String password) throws MoodleRequestException {
 		MoodleTokenResponse tokenResponse = tokenRequest(username, password);
 		if (tokenResponse.getToken() != null)
 			return getByToken(tokenResponse.getToken());
@@ -107,9 +108,9 @@ public class MoodleServiceImpl implements MoodleService {
 		return result;
 	}
 
-	private Account getByToken(String token) throws MoodleRequestException {
+	private AccountData getByToken(String token) throws MoodleRequestException {
 		Document doc = request(buildRequestUrl(FUNCTION_GET_USER_BY_TOKEN, new HashMap<String, String>(), token));
-		Account account = new Account();
+		AccountData account = new AccountData();
 		try {
 			account.setUsername(getXPathAsString(doc, "//KEY[@name='username']"));
 			String firstName = getXPathAsString(doc, "//KEY[@name='firstname']");

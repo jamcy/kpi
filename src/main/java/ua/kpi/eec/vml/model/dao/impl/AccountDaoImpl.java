@@ -1,5 +1,8 @@
 package ua.kpi.eec.vml.model.dao.impl;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.kpi.eec.vml.model.dao.AccountDao;
@@ -14,9 +17,13 @@ public class AccountDaoImpl extends AbstractHibernateDao<Account> implements Acc
 
 	@Transactional
 	@Override
-	public Account findByEmail(String email) {
-		//TODO implement find by email
-		return null;
+	public Account findByUsername(String username) {
+		Session session = getSessionFactory().getCurrentSession();
+		Query q = session.createQuery("FROM Account where username=:username");
+		q.setParameter("username", username);
+		Account result = (Account)q.uniqueResult();
+		Hibernate.initialize(result.getCourses());
+		return result;
 	}
 	
 //	public void updateUserData(User user) throws HibernateException {
