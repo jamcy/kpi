@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Transactional;
 
-import ua.kpi.eec.vml.model.dao.AbstractHibernateDao;
 import ua.kpi.eec.vml.model.dao.ModuleDao;
 import ua.kpi.eec.vml.model.entity.Module;
 

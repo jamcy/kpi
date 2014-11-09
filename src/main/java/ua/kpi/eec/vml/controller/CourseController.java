@@ -1,18 +1,23 @@
 package ua.kpi.eec.vml.controller;
 
-import ua.kpi.eec.vml.common.RequestData;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+@Controller
 public class CourseController {
-
-	public ControllerResponse processRequest(RequestData rd) {
-
-		ControllerResponse resp = new ControllerResponse();
-		
-		if(rd.getClientStateAttribute("user")==null) {
+	
+	@RequestMapping("/course")
+	public ModelAndView listCourses() {
+		ModelAndView model = new ModelAndView("course-list");
+		return model;
+	}
+	
+	public void processRequest() {
+		/*if(rd.getClientStateAttribute("user")==null) {
 			resp.setNextView("error");
 			resp.setPageDataAttribute("message", "Login  before viewing this page");
-			return resp;
-		}
+		}*/
 //		User user = (User)rd.getClientStateAttribute("user");
 //		
 //		if(rd.getParameter("id")!=null) {
@@ -59,8 +64,6 @@ public class CourseController {
 //		}
 		
 //		resp.setPageDataAttribute("courses", courses);
-		resp.setNextView("course-list");
-		return resp;
 	}
 
 }

@@ -1,76 +1,19 @@
-<%@page import="java.util.LinkedList"%>
-<%@page import="model.dao.TaskLogDao"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.text.DateFormat"%>
-<%@page import="model.dao.TaskDao"%>
-<%@page import="model.dao.UserDao"%>
-<%@page import="model.entity.CourseRole"%>
-<%@page import="model.entity.TaskLog"%>
-<%@page import="model.entity.Task"%>
-<%@page import="model.entity.Course"%>
-<%@page import="java.util.List"%>
-<%
-	Course course = (Course) request.getAttribute("course");
-	List<Task> tasks = (List<Task>) request.getAttribute("tasks");
-	List<TaskLog> tasks_status = (List<TaskLog>) request
-			.getAttribute("tasks_status");
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
-	List<Long> taskIds = new ArrayList<Long>();
-	for (Task tsk : tasks) {
-		taskIds.add(tsk.getId());
-	}
-	List<Long> stProgress = new ArrayList<Long>();
-	List<Long> stChecked = new ArrayList<Long>();
-	List<Long> stRejected = new ArrayList<Long>();
-	List<Long> stCommitted = new ArrayList<Long>();
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
 
-	for (TaskLog tlg : tasks_status) {
-		if (!taskIds.contains(tlg.getTask())) {
-			continue;
-		}
-		if (tlg.getStatus().equals(TaskLog.TS_PROGRESS)) {
-			stProgress.add(tlg.getTask());
-			continue;
-		}
-		if (tlg.getStatus().equals(TaskLog.TS_COMMITED)) {
-			stCommitted.add(tlg.getTask());
-			continue;
-		}
-		if (tlg.getStatus().equals(TaskLog.TS_REJECTED)) {
-			stRejected.add(tlg.getTask());
-			continue;
-		}
-		if (tlg.getStatus().equals(TaskLog.TS_CHECKED)) {
-			stChecked.add(tlg.getTask());
-		}
-	}
-%>
+<t:master>
+<jsp:body>
 
 <div class="present">
-	<%
-		//TODO remove hardcoded
-		System.out.println("TODO: remove hardcoded course images");
-		String courseImg = "/images/";
-		int crsid = (int) course.getId();
-		switch (crsid) {
-		case 2:
-			courseImg += "course_1.jpg";
-			break;
-		case 3:
-			courseImg += "course_2.jpg";
-			break;
-		case 4:
-			courseImg += "course_3.jpg";
-			break;
-		default:
-			courseImg += "course_placeholder.jpg";
-		}
-	%>
-	<img src="<%=courseImg %>" />
+	<img src="<s:url value="/static/${course.imageUrl }" />" />
 	<div class="container">
 		<div class="over">
 			<h1>
-				<b><%=course.getName().toString(lang)%></b>
+				<b><u:i18n value="${course.name }" /></b>
 			</h1>
 			<h4>
 				<a class="overlink" href="#more">Learn more &gt;&gt;</a>
@@ -408,5 +351,7 @@
 		</div>
 		-->
 </div>
+</jsp:body>
+</t:master>
 
 

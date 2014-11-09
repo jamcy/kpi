@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import ua.kpi.eec.vml.common.RequestData;
 import ua.kpi.eec.vml.model.dao.ModuleDao;
 import ua.kpi.eec.vml.model.entity.Module;
 
@@ -18,58 +18,23 @@ public class ModuleController {
 	private ModuleDao moduleDao;
 	
 	@RequestMapping(value="/module", method=RequestMethod.GET)
-	public ModelAndView showModulePage(@RequestParam int id) {
+	public ModelAndView modulePage(@RequestParam int id) {
 		ModelAndView model = new ModelAndView("module");
 		Module module = moduleDao.find(id);
 		model.addObject("module", module);
+		model.addObject("room", module.getRoom());
 		return model;
 	}
-
-	public ControllerResponse processRequest(RequestData rd) {
-		ControllerResponse resp = new ControllerResponse();
-//
-//		if (rd.getFunction() != null && !rd.getFunction().equals("")) {
-//			if (rd.getFunction().equals("task")) {
-//				this.task(rd, resp);
-//				return resp;
-//			}
-//			if (rd.getFunction().equals("resource")) {
-//				this.resource(rd, resp);
-//				return resp;
-//			}
-//			if (rd.getFunction().equals("app")) {
-//				this.app(rd, resp);
-//				return resp;
-//			}
-//		}
-//
-//		String id = rd.getParameter("id");
-//		if (id == null) {
-//			resp.setNextView("error");
-//			return resp;
-//		}
-//
-//		ModuleDao mdao = new ModuleDao();
-//		Module module = mdao.selectById(Long.parseLong(id));
-//
-//		if (module == null) {
-//			resp.setNextView("error");
-//			resp.setPageDataAttribute("message", "No such module");
-//			return resp;
-//		}
-//
-//		resp.setPageDataAttribute("module", module);
-//
-//		resp.setNextView("module");
-		return resp;
-	}
-
-	public void app(RequestData rd, ControllerResponse resp) {
-
-//		Long id = Long.parseLong(rd.getParameter("id"));
-//		Module m = new ModuleDao().selectById(id);
-//		ModuleInitData data = null;
-//
+	
+	//TODO: task
+	//TODO: resource
+	//TODO: app
+	
+	@RequestMapping(value="/module/app", method=RequestMethod.GET, produces="text/html; charset=utf-8")
+	@ResponseBody
+	public String moduleApplicationPage(@RequestParam int id) {
+		Module module = moduleDao.find(id);
+		return module.getEmbed();
 //		User user = (User) rd.getClientStateAttribute("user");
 //		String mode = rd.getParameter("mode");
 //
@@ -102,7 +67,6 @@ public class ModuleController {
 //					}
 //				}
 //			}
-//
 //		}
 //
 //		if (user != null && mode != null && mode.equals("view")) {
@@ -139,191 +103,6 @@ public class ModuleController {
 //		resp.setRawContentType("text/html");
 	}
 
-	public void resource(RequestData rd, ControllerResponse resp) {
-//		resp.setRaw(true);
-//		System.out.println(rd.getParameter("url"));
-//		try {
-//			resp.setContent(new URL(rd.getParameter("url")).openConnection()
-//					.getInputStream());
-//		} catch (Exception e) {
-//			resp.setPageDataAttribute("content", "Error:bad url");
-//		}
-	}
-
-	public void task(RequestData rd, ControllerResponse resp) {
-//		String action = rd.getParameter("action");
-//		Long id = null;
-//		try {
-//			id = Long.parseLong(rd.getParameter("id"));
-//		} catch (NumberFormatException e) {
-//		}
-//
-//		User user = (User) rd.getClientStateAttribute("user");
-//
-//		// do task
-//		if (user != null && action == null) {
-//			Task task = new TaskDao().selectById(id);
-//			if (task == null) {
-//				resp.setNextView("error");
-//				resp.setPageDataAttribute("message", "No such task");
-//				return;
-//			}
-//			if(!user.getRole(task.getCourseId()).equals(CourseRole.CR_STUDENT)) {
-//				resp.setNextView("error");
-//				resp.setPageDataAttribute("message", "You must have a student role to do this");
-//				return;
-//			}
-//			
-//			resp.setPageDataAttribute("task-mode", "execute");
-//			resp.setPageDataAttribute("module-mode", "task");
-//			resp.setPageDataAttribute("task", task);
-//			resp.setPageDataAttribute("task-status",
-//					new TaskLogDao().select(task.getId(), user.getMoodleId()));
-//			resp.setPageDataAttribute("module",
-//					new ModuleDao().selectById(task.getModuleId()));
-//			resp.setNextView("module");
-//			return;
-//		}
-//		
-//		// view task
-//		if (user != null && action.equals("view")) {
-//			TaskLog tlg = new TaskLogDao().selectById(id);
-//			if (tlg == null) {
-//				resp.setNextView("error");
-//				resp.setPageDataAttribute("message", "No such task log");
-//				return;
-//			}
-//			Task task = new TaskDao().selectById(tlg.getTask());
-//
-//			if (!user.getRole(task.getCourseId()).equals(CourseRole.CR_TEACHER)) {
-//				resp.setNextView("error");
-//				resp.setPageDataAttribute("message",
-//						"You must have teacher rights to check tasks");
-//				return;
-//			}
-//
-//			resp.setPageDataAttribute("task-mode", "check");
-//			resp.setPageDataAttribute("module-mode", "view");
-//			resp.setPageDataAttribute("task", task);
-//			resp.setPageDataAttribute("task-status", tlg);
-//			resp.setPageDataAttribute("module",
-//					new ModuleDao().selectById(task.getModuleId()));
-//			resp.setNextView("module");
-//			return;
-//		}
-//
-//		// save progress
-//		if (user != null && action.equals("save")) {
-//			
-//			if (id == null) {
-//				resp.setRaw(true);
-//				resp.setPageDataAttribute("content", new Gson()
-//						.toJson(new RequestError("No such task", 105)));
-//				return;
-//			}
-//
-//			Task task = new TaskDao().selectById(id);
-//
-//			if (!user.getRole(task.getCourseId()).equals(CourseRole.CR_STUDENT)) {
-//				resp.setRaw(true);
-//				resp.setPageDataAttribute("content", new Gson()
-//						.toJson(new RequestError(
-//								"Operation is not permitted for non-students",
-//								110)));
-//				return;
-//			}
-//
-//			TaskLogDao tlgd = new TaskLogDao();
-//			TaskLog tlg = tlgd.select(id, user.getMoodleId());
-//			FileDao fdao = new FileDao();
-//
-//			if (tlg == null) {
-//				tlg = new TaskLog();
-//				tlg.setFile(fdao.generateName("/tasks"));
-//				tlg.setTask(id);
-//			} else {
-//				if (tlg.getStatus().equals(TaskLog.TS_CHECKED)) {
-//					resp.setRaw(true);
-//					resp.setPageDataAttribute("content", new Gson()
-//							.toJson(new RequestError("Task is readonly", 153)));
-//					return;
-//				}
-//			}
-//			System.out.println(ConfigurationHelper.getRootDir());
-//			tlg.setUser(user.getMoodleId());
-//			tlg.setStatus(TaskLog.TS_PROGRESS);
-//
-//			if (rd.getParameter("data") == null) {
-//				resp.setRaw(true);
-//				resp.setPageDataAttribute("content", new Gson()
-//						.toJson(new RequestError("No data to save", 114)));
-//				return;
-//			}
-//			try {
-//				fdao.save("/tasks", tlg.getFile(), new ByteArrayInputStream(rd
-//						.getParameter("data").getBytes("UTF-8")));
-//			}catch(Exception e) {
-//				
-//			}
-//			
-//			tlgd.saveOrUpdate(tlg);
-//
-//			resp.setRaw(true);
-//			resp.setPageDataAttribute("content",
-//					new Gson().toJson(new Response("OK")));
-//			return;
-//		}
-//
-//		
-//		// change status
-//		if (action.equals("status")) {
-//			//Task task = new Task();
-//			String status = rd.getParameter("status");
-//			/*if (user.getRole(task.getCourseId()).equals(
-//					CourseRole.CR_NOTENROLLED)
-//					|| user.getRole(task.getCourseId()).equals(
-//							CourseRole.CR_MODERATOR)) {
-//				resp.setNextView("error");
-//				resp.setPageDataAttribute("message", "No rights");
-//				return;
-//			}*/
-//			/*if ((status.equals(TaskLog.TS_PROGRESS) || status
-//					.equals(TaskLog.TS_COMMITED))
-//					&& user.getRole(task.getCourseId()).equals(
-//							CourseRole.CR_TEACHER)
-//					|| (status.equals(TaskLog.TS_REJECTED) || status
-//							.equals(TaskLog.TS_CHECKED))
-//					&& user.getRole(task.getCourseId()).equals(
-//							CourseRole.CR_STUDENT)) {
-//				resp.setNextView("error");
-//				resp.setPageDataAttribute("message", "NO rights2");
-//				return;
-//			}*/
-//
-//			TaskLog tlg = null;
-//			
-//			if(rd.getParameter("tid")!=null) {
-//				Long tid = Long.parseLong(rd.getParameter("tid"));
-//				tlg = new TaskLogDao().select(tid, user.getMoodleId());
-//			} else {
-//				Long lid = Long.parseLong(rd.getParameter("lid"));
-//				tlg = new TaskLogDao().selectById(lid);
-//			}
-//			
-//			if (tlg == null) {
-//				resp.setNextView("error");
-//				resp.setPageDataAttribute("message", "No record");
-//				return;
-//			}
-//			
-//			tlg.setStatus(status);
-//
-//			new TaskLogDao().saveOrUpdate(tlg);
-//
-//			resp.setRedirect(true);
-//			resp.setRedirectAddress("/course");
-//		}
-	}
 	
 	public void setModuleDao(ModuleDao moduleDao) {
 		this.moduleDao = moduleDao;

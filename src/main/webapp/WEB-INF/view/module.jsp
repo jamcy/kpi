@@ -10,16 +10,15 @@
 <div class="container">
 	<ol class="breadcrumb">
 		<li><a href="/">Home</a></li>
-		<!-- TODO: Fix breadcrumbs -->
-		<%-- <li><a href="/room?id=<%=rm.getId()%>"><%=rm.getName().getByLanguage(lang)%></a></li> --%>
+		<li><a href="<s:url value="/room?id=${module.room.id}"/>"><u:i18n value="${module.room.name }"></u:i18n></a></li>
 		<li class="active"><u:i18n value="${module.name }"/></li>
 	</ol>
 	<div class="row">
 		<div class="col-xs-6 col-sm-6 col-md-7 col-lg-8 exp-desc">
-			<h1><u:i18n value="${module.name }"/></h1>
+			<h2><u:i18n value="${module.name }"/></h2>
 			<div class="tabbable2">
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#pane1" data-toggle="tab"><s:message code="page.module.description" /> </a></li>
+					<li class="active"><a href="#pane1" data-toggle="tab"><s:message code="page.module.description" /></a></li>
 					<c:if test="${not empty task }">
 					<li><a href="#pane2" data-toggle="tab"><s:message code="page.module.task"/></a></li>
 					<li><a href="#pane3" data-toggle="tab"><s:message code="page.module.tdesc"/></a></li>
@@ -34,7 +33,7 @@
 							<div class="exp-desc">
 								<u:i18n value="${module.description }" />
 								<div class="divider"></div>
-								<u:i18n value="${module.content }"/>
+								<u:i18n value="${module.pageContent }" escape="false"/>
 							</div>
 						</div>
 					</div>
@@ -61,16 +60,16 @@
 				<div class='exp-img-box'>
 					<div class='rel' style="text-align: center;">
 						<div class='over center'>
-							<img src="/images/launch.jpg" alt="Launch"
+							<img src="<s:url value="/images/launch.jpg"/>" alt="Launch"
 								class="btn-launch img-rounded">
 						</div>
-						<img class="exp-img" src="<%=(m.getPicture()==null || m.getPicture().trim().equals(""))? "/img/logo.png" : m.getPicture() %>" />
+						<img class="exp-img" src="<s:url value="/static/${module.imageUrl }"/>" />
 					</div>
-					<div id="module-launch" class="btn launch"><%=messages.getString("page.module.show-module")%></div>
+					<div id="module-launch" class="btn launch"><s:message code="page.module.show-module" /></div>
 				</div>
 			</a>
-			<div class="divider"></div>
-
+			<!-- TODO: do task display -->
+			<%-- <div class="divider"></div>
 			<%
 				if (task_mode != null
 						&& (tsk_status == null || tsk_status != null
@@ -108,14 +107,14 @@
 				}
 			%>
 
-		</div>
+		</div> --%>
 	</div>
-
-	<iframe id="module" style="display:none; margin-top: 10px; "
+	
+	<%-- <iframe id="module" style="display:none; margin-top: 10px; "
 		src="/module/app?id=${module.id}<%=(mode == null) ? "" : ("&mode=" + mode + (mode
 					.equals("task") ? ("&taskid=" + task.getId())
 					: ("&tlgid=" + tsk_status.getId())))%>"
-		width="1230" height="640" align="center" frameborder="no"> </iframe>
+		width="1230" height="640" align="center" frameborder="no"> </iframe> --%>
 
 	<script>
 	$(function(){
@@ -139,7 +138,6 @@
 		    document.getElementById(id).width= (newwidth+15) + "px";
 		}
 		
-		
 		$("#launch_module").click(function(e){
 			var id = "module";
 			$("#"+id).show();
@@ -147,6 +145,7 @@
 			});
 	})
 	</script>
+</div>
 </div>
 </jsp:body>
 </t:master>

@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.transaction.annotation.Transactional;
 
-import ua.kpi.eec.vml.model.dao.AbstractHibernateDao;
 import ua.kpi.eec.vml.model.dao.RoomDao;
 import ua.kpi.eec.vml.model.entity.Room;
 

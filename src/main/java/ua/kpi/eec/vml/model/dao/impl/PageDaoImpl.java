@@ -4,7 +4,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-import ua.kpi.eec.vml.model.dao.AbstractHibernateDao;
 import ua.kpi.eec.vml.model.dao.PageDao;
 import ua.kpi.eec.vml.model.entity.Page;
 

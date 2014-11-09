@@ -10,7 +10,7 @@
 <div class="container">
 	<ol class="breadcrumb">
 		<li><a href="<s:url value="/" />">Home</a></li>
-		<li class="active"><a href="#"><u:i18n value="${room.name }"/></a></li>
+		<li class="active"><u:i18n value="${room.name }"/></li>
 	</ol>
 	<div class="row">
 		<div class="col-xs-6 col-sm-6 col-md-7 col-lg-8 exp-desc">
@@ -44,8 +44,8 @@
 			<div class="exp">
 				<div class="body" id="container2">
 					<a href="${moduleUrl }">
-                       <img src="<s:url value="/static/${module.imageUrl}" />" />
-                       <div class="over"></div>
+                    	<img src="<s:url value="/static/${module.imageUrl}" />" />
+                		<div class="over"></div>
                 	</a>
 				</div>
 				<div class="desc">

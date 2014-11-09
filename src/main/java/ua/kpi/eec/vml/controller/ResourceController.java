@@ -1,47 +1,19 @@
 package ua.kpi.eec.vml.controller;
 
-import ua.kpi.eec.vml.common.RequestData;
-import ua.kpi.eec.vml.model.dao.FileDao;
-import ua.kpi.eec.vml.model.json.FileManagerContents;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-
-public class FileController {
-
-	public ControllerResponse processRequest(RequestData rd) {
-		String action = rd.getParameter("action");
-		String root = rd.getParameter("root");
-		
-		String path ="/resource";
-		FileDao fdao = new FileDao();
-		FileManagerContents data = new FileManagerContents();
-		data.setFiles(fdao.listFiles("/resource"));
-		ControllerResponse resp = new ControllerResponse();
-		resp.setRaw(true);
-		resp.setPageDataAttribute("content", new Gson().toJson(data));
-		return resp;
-	}
+public class ResourceController {
 	
-	public String list(RequestData rd) {
-		String path = rd.getParameter("path");
-		FileDao fdao = new FileDao();
-		
-		
-		
-		FileManagerContents data = new FileManagerContents();
-		return new Gson().toJson(data);
+	@RequestMapping(value="/module/resource")
+	@ResponseBody
+	public void resource(@RequestParam String url) {
+//		try {
+//			resp.setContent(new URL(rd.getParameter("url")).openConnection()
+//					.getInputStream());
+//		} catch (Exception e) {
+//			resp.setPageDataAttribute("content", "Error:bad url");
+//		}
 	}
-	
-	public String upload(RequestData rd) {
-		return "";
-	}
-	
-	public String delete(RequestData rd) {
-		return "";
-	}
-	
-	public String dir(RequestData rd) {
-		return "";
-	}
-
 }

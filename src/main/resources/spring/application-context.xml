@@ -18,7 +18,7 @@
        	http://www.springframework.org/schema/security
        	http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<context:property-placeholder location="config.properties" />
+	<context:property-placeholder location="classpath:/config/application.properties" />
 	<context:component-scan base-package="ua.kpi.eec.vml" />
 
 	<!-- Database configuration -->
@@ -74,8 +74,16 @@
 	<bean id="roomDao" class="ua.kpi.eec.vml.model.dao.impl.RoomDaoImpl" parent="abstractDao" />
 	<bean id="pageDao" class="ua.kpi.eec.vml.model.dao.impl.PageDaoImpl" parent="abstractDao" />
 	
+	<!-- Service beans -->
+	<bean id="moodleService" class="ua.kpi.eec.vml.service.impl.MoodleServiceImpl">
+		<property name="baseUrl" value="${moodle.url}"/>
+		<property name="token" value="${moodle.token}" />
+	</bean>
+	
 	<!-- Security configuration -->
-	<bean id="moodleAuthenticationManager" class="ua.kpi.eec.vml.authentication.MoodleAuthenticationManager" />
+	<bean id="moodleAuthenticationManager" class="ua.kpi.eec.vml.authentication.MoodleAuthenticationManager">
+		<property name="moodleService" ref="moodleService" />
+	</bean>
 	<security:authentication-manager/>
 	
 	<security:http authentication-manager-ref="moodleAuthenticationManager">

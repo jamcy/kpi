@@ -1,19 +1,12 @@
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
-<%@page import="java.util.LinkedList"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="model.dao.TaskDao"%>
-<%@page import="model.entity.Task"%>
-<%@page import="model.entity.TaskLog"%>
-<%@page import="model.dao.TaskLogDao"%>
-<%@page import="model.entity.Course"%>
-<%@page import="java.util.List"%>
-<%
-	try {
-		List<Course> courses = (List<Course>) request
-				.getAttribute("courses");
-		List<TaskLog> labs = new TaskLogDao().selectByUserId(user
-				.getMoodleId());
-%>
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
+
+<t:master>
+<jsp:body>
 
 <div class="container">
 	<ol class="breadcrumb">
@@ -136,99 +129,11 @@
 			</ul>
 
 		</div>
-		<!--
-			<div class="col-xs-6 col-sm-6 col-md-5 col-lg-4">
-				<h3 class="p gray">Ruslan Hadyniak</h3>					
-				<div class="user-info">	
-					<div class="user-img-wrap ">
-						<img class="user-img" src="images/dev2.jpg" />				
-					</div>
-					<div class="user-about">
-						<h4 class="p"> About<h4>
-						<h5>Student of NTUU 'KPI'. Bachelor. Google bla-bla participant. Bla-bla active bla</h5>
-					</div>
-				</div>				
-				<div class="divider"></div>
-				<div class="user-info">	
-				<h4 class="p"> Some statistics<h4>
-				<h5>Bla-bla bla. Bla-bla bla. Bla-bla bla.</h5>					
-				</div>				
-			</div>
-			-->
 	</div>
 	<div class="divider"></div>
-	<!--
-		<div class="center">
-			<h4 class="p">DEVELOPER OF</h4>
-		</div>
-		<div class="row">
-					<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-						<div class="exp">							
-							<div class="body" id="container2">
-								<a href="#">
-									<img src="images/app1.jpg" />
-									<div class="over"></div>
-								</a>
-
-						    </div>
-							<div class="desc">
-								<b>Virtual Reality</b>
-								<h6>Demonstrates the virtual reality the virtual reality the virtual reality the virtual reality the virtual reality</h6>
-								<a href="#" class="link">More &gt;&gt;</a>
-							</div>
-						</div>
-					</div>
-					<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-						<div class="exp">							
-							<div class="body" id="container2">
-								<a href="#">
-									<img src="images/app2.jpg" />
-									<div class="over"></div>
-								</a>
-
-						    </div>
-							<div class="desc">
-								<b>Virtual Reality</b>
-								<h6>Demonstrates the virtual reality the virtual reality the virtual reality the virtual reality the virtual reality</h6>
-								<a href="#" class="link">More &gt;&gt;</a>
-							</div>
-						</div>
-					</div>
-					<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-						<div class="exp">							
-							<div class="body" id="container2">
-								<a href="#">
-									<img src="images/app3.jpg" />
-									<div class="over"></div>
-								</a>
-
-						    </div>
-							<div class="desc">
-								<b>Virtual Reality</b>
-								<h6>Demonstrates the virtual reality the virtual reality the virtual reality the virtual reality the virtual reality</h6>
-								<a href="#" class="link">More &gt;&gt;</a>
-							</div>
-						</div>
-					</div>
-					<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-						<div class="exp">							
-							<div class="body" id="container2">
-								<a href="#">
-									<img src="images/app4.jpg" />
-									<div class="over"></div>
-								</a>
-
-						    </div>
-							<div class="desc">
-								<b>Virtual Reality</b>
-								<h6>Demonstrates the virtual reality the virtual reality the virtual reality the virtual reality the virtual reality</h6>
-								<a href="#" class="link">More &gt;&gt;</a>
-							</div>
-						</div>
-					</div>					
-		</div>
-		-->
 </div>
+</jsp:body>
+</t:master>
 
 
 

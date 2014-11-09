@@ -1,7 +1,9 @@
-package ua.kpi.eec.vml.model.dao;
+package ua.kpi.eec.vml.model.dao.impl;
 
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import ua.kpi.eec.vml.model.dao.GenericDao;
 
 import java.io.Serializable;
 

@@ -27,14 +27,12 @@ public class RoomController {
 		ModelAndView model = new ModelAndView("room");
 		Room room = roomDao.find(roomId);
 		model.addObject("room", room);
-		if (room == null) {
-			model.addObject("message", "There is no room with id=" + roomId);
-		}
 		return model;
 	}
 
 	public List<Module> restModules() {
 		// TODO: implement modules via rest?
+		// Main page navigation module
 
 		// if (rd.getParameter("raw") != null
 		// && rd.getParameter("raw").equals("true")) {

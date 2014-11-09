@@ -1,23 +1,8 @@
 package ua.kpi.eec.vml.controller;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import ua.kpi.eec.vml.common.RequestData;
-import ua.kpi.eec.vml.model.dao.FileDao;
-import ua.kpi.eec.vml.model.dao.ModuleDao;
-import ua.kpi.eec.vml.model.entity.Module;
-import ua.kpi.eec.vml.model.form.ModuleAddForm;
-import ua.kpi.eec.vml.model.form.ModuleEditForm;
-
 public class AdminController {
 
-    public ControllerResponse processRequest(RequestData rd) {
-        ControllerResponse resp = new ControllerResponse();
-        String function = rd.getFunction();
-        resp.setNextView("admin");
+    public void processRequest() {
 //        if (function.equals("module")) {
 //            module(rd, resp);
 //        }
@@ -34,7 +19,6 @@ public class AdminController {
 //            task(rd, resp);
 //        }
 
-        return resp;
     }
 
     //@Override
