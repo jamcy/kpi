@@ -41,7 +41,6 @@
 			<list>
 				<value>ua.kpi.eec.vml.model.entity.Account</value>
 				<value>ua.kpi.eec.vml.model.entity.Course</value>
-				<value>ua.kpi.eec.vml.model.entity.CourseRole</value>
 				<value>ua.kpi.eec.vml.model.entity.I18n</value>
 				<value>ua.kpi.eec.vml.model.entity.I18nValue</value>
 				<value>ua.kpi.eec.vml.model.entity.Module</value>

@@ -7,7 +7,6 @@
 
 <t:master>
 <jsp:body>
-
 <div class="present">
 	<img src="<s:url value="/static/${course.imageUrl }" />" />
 	<div class="container">

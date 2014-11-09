@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -22,26 +24,13 @@ public class Course implements java.io.Serializable {
 	private static final long serialVersionUID = -4824245796884766335L;
 
 	private int id;
-	private I18n i18n;
-	private int nameI18nId;
+	private I18n name;
+	private I18n description;
+	private String imageUrl;
 	private Set<Task> tasks = new HashSet<Task>(0);
-	private Set<CourseRole> courseRoles = new HashSet<CourseRole>(0);
+	private Set<Account> students = new HashSet<Account>(0);
 
 	public Course() {
-	}
-
-	public Course(int id, I18n i18n, int nameI18nId) {
-		this.id = id;
-		this.i18n = i18n;
-		this.nameI18nId = nameI18nId;
-	}
-
-	public Course(int id, I18n i18n, int nameI18nId, Set<Task> tasks, Set<CourseRole> courseRoles) {
-		this.id = id;
-		this.i18n = i18n;
-		this.nameI18nId = nameI18nId;
-		this.tasks = tasks;
-		this.courseRoles = courseRoles;
 	}
 
 	@Id
@@ -56,23 +45,24 @@ public class Course implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "description_i18n_id", nullable = false)
-	public I18n getI18n() {
-		return this.i18n;
+	public I18n getDescription() {
+		return this.description;
 	}
 
-	public void setI18n(I18n i18n) {
-		this.i18n = i18n;
+	public void setDescription(I18n description) {
+		this.description = description;
 	}
 
-	@Column(name = "name_i18n_id", nullable = false)
-	public int getNameI18nId() {
-		return this.nameI18nId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "name_i18n_id", nullable = false)
+	public I18n getName() {
+		return this.name;
 	}
 
-	public void setNameI18nId(int nameI18nId) {
-		this.nameI18nId = nameI18nId;
+	public void setName(I18n name) {
+		this.name = name;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course")
@@ -84,13 +74,23 @@ public class Course implements java.io.Serializable {
 		this.tasks = tasks;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "course")
-	public Set<CourseRole> getCourseRoles() {
-		return this.courseRoles;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "account_id"))
+	public Set<Account> getStudents() {
+		return this.students;
 	}
 
-	public void setCourseRoles(Set<CourseRole> courseRoles) {
-		this.courseRoles = courseRoles;
+	public void setStudents(Set<Account> students) {
+		this.students = students;
+	}
+
+	@Column(name = "image_url", nullable = true)
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

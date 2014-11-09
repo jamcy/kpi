@@ -1,7 +1,7 @@
 create table account (
 	id serial primary key,
 	moodle_id int not null unique,
-	email varchar(200) not null unique,
+	username varchar(200) not null unique,
 	full_name varchar(200) not null,
 	role varchar(200) not null
 );
@@ -22,7 +22,7 @@ create table i18n_value (
 create table room (
 	id serial primary key,
 	name_i18n_id int not null,
-	image_url varchar(200) not null,
+	image_url varchar(200),
 	foreign key(name_i18n_id) references i18n(id)
 );
 
@@ -54,6 +54,7 @@ create table course (
 	id serial primary key,
 	name_i18n_id int not null,
 	description_i18n_id int not null,
+	image_url varchar(200),
 	foreign key (description_i18n_id) references i18n(id)
 );
 
@@ -72,13 +73,12 @@ create table task (
 	foreign key (module_id) references module(id)
 );
 
-create table course_role (
-	id serial primary key,
+create table account_course (
 	account_id int not null, 
 	course_id int not null, 
-	role varchar(200) not null,
 	foreign key (account_id) references account(id), 
-	foreign key (course_id) references course(id)
+	foreign key (course_id) references course(id),
+	primary key(course_id, account_id)
 );
 	
 create table task_log (

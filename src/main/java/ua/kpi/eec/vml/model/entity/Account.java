@@ -11,6 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -18,40 +21,27 @@ import javax.persistence.UniqueConstraint;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "account", schema = "public", uniqueConstraints = {
-		@UniqueConstraint(columnNames = "moodle_id"),
-		@UniqueConstraint(columnNames = "email") })
+@Table(name = "account", schema = "public", uniqueConstraints = { @UniqueConstraint(columnNames = "moodle_id"),
+		@UniqueConstraint(columnNames = "username") })
 public class Account implements java.io.Serializable {
 
 	private long id;
 	private int moodleId;
-	private String email;
+	private String username;
 	private String fullName;
 	private SystemRole role;
 	private Set<TaskLog> taskLogs = new HashSet<TaskLog>(0);
-	private Set<CourseRole> courseRoles = new HashSet<CourseRole>(0);
+	private Set<Course> courses = new HashSet<Course>(0);
 
 	public Account() {
 	}
 
-	public Account(long id, int moodleId, String email, String fullName,
-			SystemRole role) {
+	public Account(long id, int moodleId, String username, String fullName, SystemRole role) {
 		this.id = id;
 		this.moodleId = moodleId;
-		this.email = email;
+		this.username = username;
 		this.fullName = fullName;
 		this.role = role;
-	}
-
-	public Account(long id, int moodleId, String email, String fullName,
-			SystemRole role, Set<TaskLog> taskLogs, Set<CourseRole> courseRoles) {
-		this.id = id;
-		this.moodleId = moodleId;
-		this.email = email;
-		this.fullName = fullName;
-		this.role = role;
-		this.taskLogs = taskLogs;
-		this.courseRoles = courseRoles;
 	}
 
 	@Id
@@ -75,13 +65,13 @@ public class Account implements java.io.Serializable {
 		this.moodleId = moodleId;
 	}
 
-	@Column(name = "email", unique = true, nullable = false, length = 200)
-	public String getEmail() {
-		return this.email;
+	@Column(name = "username", unique = true, nullable = false, length = 200)
+	public String getUsername() {
+		return this.username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Column(name = "full_name", nullable = false, length = 200)
@@ -112,13 +102,15 @@ public class Account implements java.io.Serializable {
 		this.taskLogs = taskLogs;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
-	public Set<CourseRole> getCourseRoles() {
-		return this.courseRoles;
+	// TODO add cascades
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_course", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+	public Set<Course> getCourses() {
+		return this.courses;
 	}
 
-	public void setCourseRoles(Set<CourseRole> courseRoles) {
-		this.courseRoles = courseRoles;
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
 	}
 
 }
