@@ -3,15 +3,7 @@
 <%@page import="java.util.ResourceBundle" %>
 <%@page import="resource.VmlResources" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null) {
-        lang = "en";
-    }
-    ResourceBundle messages = ResourceBundle.getBundle(
-            "resource.VmlResources", new Locale(lang));
-    CourseForm data = (CourseForm) request.getAttribute("form_data");
-%>
+
 <script src="<%=request.getContextPath()%>/js/tinymce/tinymce.min.js"></script>
 <script>
     tinymce.init({

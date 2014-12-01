@@ -3,11 +3,13 @@ package ua.kpi.eec.vml.model.dao.impl;
 import java.io.Serializable;
 
 import org.hibernate.Hibernate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.kpi.eec.vml.model.dao.ModuleDao;
 import ua.kpi.eec.vml.model.entity.Module;
 
+@Repository
 public class ModuleDaoImpl extends AbstractHibernateDao<Module> implements
 		ModuleDao {
 

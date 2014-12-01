@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Hibernate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.kpi.eec.vml.model.dao.RoomDao;
 import ua.kpi.eec.vml.model.entity.Room;
 
+@Repository
 public class RoomDaoImpl extends AbstractHibernateDao<Room> implements RoomDao {
 
 	@Override

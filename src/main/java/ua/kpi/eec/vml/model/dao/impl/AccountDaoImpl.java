@@ -3,11 +3,13 @@ package ua.kpi.eec.vml.model.dao.impl;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.kpi.eec.vml.model.dao.AccountDao;
 import ua.kpi.eec.vml.model.entity.Account;
 
+@Repository
 public class AccountDaoImpl extends AbstractHibernateDao<Account> implements AccountDao {
 
 	@Override
