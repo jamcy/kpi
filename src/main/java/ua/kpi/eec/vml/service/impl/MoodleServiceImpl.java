@@ -16,6 +16,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -23,10 +24,10 @@ import com.google.gson.Gson;
 
 import ua.kpi.eec.vml.model.dto.AccountData;
 import ua.kpi.eec.vml.model.dto.MoodleTokenResponse;
-import ua.kpi.eec.vml.model.entity.Account;
 import ua.kpi.eec.vml.service.MoodleRequestException;
 import ua.kpi.eec.vml.service.MoodleService;
 
+@Service
 public class MoodleServiceImpl implements MoodleService {
 
 	public static final String FUNCTION_GET_USER_BY_TOKEN = "core_webservice_get_site_info";

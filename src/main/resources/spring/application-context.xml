@@ -82,7 +82,7 @@
 	</bean>
 	
 	<!-- Security configuration -->
-	<bean id="moodleAuthenticationManager" class="ua.kpi.eec.vml.authentication.MoodleAuthenticationManager">
+	<bean id="moodleAuthenticationManager" class="ua.kpi.eec.vml.service.authentication.MoodleAuthenticationManager">
 		<property name="moodleService" ref="moodleService" />
 	</bean>
 	<security:authentication-manager/>

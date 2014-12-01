@@ -1,4 +1,4 @@
-package ua.kpi.eec.vml.authentication;
+package ua.kpi.eec.vml.service.authentication;
 
 import java.util.ArrayList;
 import java.util.List;

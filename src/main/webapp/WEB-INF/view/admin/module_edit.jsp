@@ -5,7 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%
-    ModuleEditForm form = (ModuleEditForm) request
+	ModuleForm form = (ModuleForm) request
             .getAttribute("form_data");
     String lang = (String) session.getAttribute("lang");
     if (lang == null) {
