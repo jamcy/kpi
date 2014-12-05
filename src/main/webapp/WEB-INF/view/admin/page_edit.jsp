@@ -1,4 +1,12 @@
-<script src="/js/tinymce/tinymce.min.js"></script>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
+
+<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 <script>
     $(function () {
         $("#name-tabs").tabs();
@@ -11,55 +19,36 @@
     });
 </script>
 
-<form action="" id="module-edit" method="post">
+<sf:form action="" id="module-edit" method="post" commandName="page">
     <div class="form-group">
-        <label><%=messages.getString(VmlResources.FM_MODULE_NAME_LBL)%>
-        </label>
-
+        <label>Name:</label>
         <div id="name-tabs">
-            <div class="form-group">
-            </div>
-            <ul>
-                <li><a href="#name-tabs-en">en</a></li>
-                <li><a href="#name-tabs-uk">uk</a></li>
-            </ul>
-            <div id="name-tabs-en">
-                <input type="text" name="name_en" class="form-control"
-                       value="<%=(data == null) ? "" : data.getName().getByLanguage("en")%>"/>
-            </div>
-            <div id="name-tabs-uk">
-                <input type="text" name="name_uk" class="form-control"
-                       value="<%=(data == null) ? "" : data.getName().getByLanguage("uk")%>"/>
-            </div>
+			<ul>
+			    <li><a href="#name-tabs-en">en</a></li>
+			    <li><a href="#name-tabs-uk">uk</a></li>
+			</ul>
+			<div id="name-tabs-en"><sf:input path="nameEn" cssClass="form-control"/></div>
+			<div id="name-tabs-uk"><sf:input path="nameUk" cssClass="form-control"/></div>
         </div>
     </div>
     <div class="form-group">
         <label for="url-suffix">Page url suffix:</label>
-        <input type="text" name="url-suffix" id="url-suffix" class="form-control"
-               value="<%=(data == null) ? "" : data.getSuffix()%>"/>
+        <sf:input path="urlSuffix" cssClass="form-control" />
     </div>
     <div class="form-group">
         <label>Page content:</label>
-
         <div id="content-tabs">
             <ul>
                 <li><a href="#content-tabs-en">en</a></li>
                 <li><a href="#content-tabs-uk">uk</a></li>
             </ul>
             <div id="content-tabs-en">
-                <textarea id="page-content_en" name="content_en"
-                          class="form-control"><%=data.getContent().getByLanguage("en")
-                        .replaceAll("<", "&lt;").replaceAll(">", "&gt;")%>
-                </textarea>
+                <sf:textarea path="contentEn" htmlEscape="true" class="form-control"/>
             </div>
             <div id="content-tabs-uk">
-                <textarea id="page-content_uk" name="content_uk"
-                          class="form-control"><%=data.getContent().getByLanguage("uk")
-                        .replaceAll("<", "&lt;").replaceAll(">", "&gt;")%>
-                </textarea>
+                <sf:textarea path="contentUk" htmlEscape="true" cass="form-control"/>
             </div>
         </div>
     </div>
-    <button class="btn btn-primary" type="submit"><%=messages.getString(VmlResources.FM_BUTTON_CONFIRM)%>
-    </button>
-</form>
+    <button type="submit" class="btn btn-primary"><s:message code="form.button.confirm" /></button>
+</sf:form>

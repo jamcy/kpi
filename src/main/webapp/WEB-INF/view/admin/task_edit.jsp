@@ -1,19 +1,12 @@
-<%@page import="model.form.TaskForm" %>
-<%@page import="java.util.Locale" %>
-<%@page import="java.util.ResourceBundle" %>
-<%@page import="resource.VmlResources" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%
-    TaskForm data = (TaskForm) request.getAttribute("form_data");
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null) {
-        lang = "en";
-    }
-    ResourceBundle messages = ResourceBundle.getBundle(
-            "resource.VmlResources", new Locale(lang));
-%>
-<script src="/js/tinymce/tinymce.min.js"></script>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
+
+<script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 <script>
     tinymce.init({
         plugins: "image, code, table, link",
@@ -23,58 +16,47 @@
     $(function () {
         $("#task-tabs").tabs();
         $("#theory-tabs").tabs();
-
     });
 </script>
-<form action="" id="module-edit" method="post">
+
+<sf:form action="" id="module-edit" method="post">
     <div class="form-group">
         <label for="name-input">Task name:</label>
-        <input type="text" name="name" id="name-input" class="form-control" value="<%=data.getName()%>"/>
+        <sf:input path="name" cssClass="form-control"/>
     </div>
     <div class="form-group">
         <label>Task:</label>
-
         <div id="task-tabs">
             <ul>
                 <li><a href="#task-tabs-en">en</a></li>
                 <li><a href="#task-tabs-uk">uk</a></li>
             </ul>
             <div id="task-tabs-en">
-                <textarea name="task_en"><%=data.getTask().getByLanguage("en")
-                        .replaceAll("<", "&lt;").replaceAll(">", "&gt;")%>
-                </textarea>
+            	<sf:textarea path="taskEn" htmlEscape="true" cssClass="form-control"/>
             </div>
             <div id="task-tabs-uk">
-                <textarea name="task_uk"><%=data.getTask().getByLanguage("uk")
-                        .replaceAll("<", "&lt;").replaceAll(">", "&gt;")%>
-                </textarea>
+                <sf:textarea path="taskUk" htmlEscape="true" cssClass="form-control"/>
             </div>
         </div>
     </div>
     <div class="form-group">
         <label for="template-input">Task template path:</label>
-        <input type="text" name="template" id="template-input" class="form-control" value="<%=data.getTemplate() %>"/>
+        <sf:input path="template" cssClass="form-control"/>
     </div>
     <div class="form-group">
         <label>Task theory:</label>
-
         <div id="theory-tabs">
             <ul>
                 <li><a href="#theory-tabs-en">en</a></li>
                 <li><a href="#theory-tabs-uk">uk</a></li>
             </ul>
             <div id="theory-tabs-en">
-                <textarea name="theory_en"><%=data.getTheory().getByLanguage("en")
-                        .replaceAll("<", "&lt;").replaceAll(">", "&gt;")%>
-                </textarea>
+                <sf:textarea path="theoryEn" htmlEscape="true" cssClass="form-control"/>
             </div>
             <div id="theory-tabs-uk">
-                <textarea name="theory_uk"><%=data.getTheory().getByLanguage("uk")
-                        .replaceAll("<", "&lt;").replaceAll(">", "&gt;")%>
-                </textarea>
+                <sf:textarea path="theoryUk" htmlEscape="true" cssClass="form-control"/>
             </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary"><%=messages.getString(VmlResources.FM_BUTTON_CONFIRM)%>
-    </button>
-</form>
+    <button type="submit" class="btn btn-primary"><s:message code="form.button.confirm" /></button>
+</sf:form>

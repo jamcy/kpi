@@ -1,24 +1,3 @@
-<%@page import="java.util.Set" %>
-<%@page import="model.entity.Course" %>
-<%@page import="resource.VmlResources" %>
-<%@page import="model.entity.Translation" %>
-<%@page import="java.util.HashMap" %>
-<%@page import="model.entity.CourseRole" %>
-<%@page import="model.entity.User" %>
-<%@page import="java.util.Locale" %>
-<%@page import="model.form.UserForm" %>
-<%@page import="java.util.ResourceBundle" %>
-<%
-    HashMap<Long, Translation> courses = (HashMap<Long, Translation>) request
-            .getAttribute("courses");
-    UserForm data = (UserForm) request.getAttribute("form_data");
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null) {
-        lang = "en";
-    }
-    ResourceBundle messages = ResourceBundle.getBundle(
-            "resource.VmlResources", new Locale(lang));
-%>
 
 <form action="" method="post">
     <div class="form-group" style="width: 250px;">

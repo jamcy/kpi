@@ -13,7 +13,7 @@
     <c:forEach items="${tasks }" var="task">
     <tr>
         <td><u:i18n value="${task.name }"/></td>
-        <td><a href="/admin/task?action=edit&id=<%=task.getId()%>" class="btn btn-primary">Edit</a></td>
+        <td><a href="/admin/task?action=edit&id=${task.id }" class="btn btn-primary">Edit</a></td>
         <!-- TODO: add delete task action -->
     </tr>
     </c:forEach>
