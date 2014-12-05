@@ -1,39 +1,29 @@
-<%@page import="java.util.HashMap" %>
-<%@page import="model.entity.Course" %>
-<%@page import="java.util.List" %>
-<%@page import="java.util.ResourceBundle" %>
-<%
-    String lang = (String) session.getAttribute("lang");
-    ResourceBundle messages = (ResourceBundle) request
-            .getAttribute("messages");
-    String prefix = request.getContextPath();
-    List<Course> courses = (List<Course>) request
-            .getAttribute("courses");
-    HashMap<Long, String> moodleCourses = (HashMap<Long, String>) request
-            .getAttribute("moodle_courses");
-%>
-<table class="table">
-    <thead>
-    <th>Name</th>
-    <th>Actions</th>
-    </thead>
-    <%
-        for (Course c : courses) {
-    %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+
+
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
+
+<table class="table table-bordered table-condensed">
+    <thead><tr>
+	    <th>Name</th>
+	    <th>Actions</th>
+    </tr></thead>
+    <c:forEach items="${courses }" var="course">
     <tr>
-        <td><%=c.getName().toString(lang)%>
+        <td><u:i18n value="${course.name }" /></td>
+        <td><a href="<s:url value="/admin/tasks/${course.id }" />" class="btn btn-primary">Tasks</a>
+            <a href="<s:url value="/admin/course/edit/${course.id }" />" class="btn btn-primary">Edit</a>
         </td>
-        <td><a href="/admin/task?courseid=<%=c.getId() %>" class="btn btn-primary">Edit tasks</a>
-            <a href="/admin/course?action=edit&id=<%=c.getId()%>" class="btn btn-primary">Edit</a>
-        </td>
-        <!--<td><a href="/admin/course?action=delete&id=<%=c.getId()%>" class="btn btn-danger">Delete</a>-->
-        </td>
+        <!-- TODO: add action delete -->
     </tr>
-    <%
-        }
-    %>
+    </c:forEach>
 </table>
-<%
+<!-- TODO: add moodle import for courses -->
+<%-- <%
     if (moodleCourses != null & moodleCourses.size() != 0) {
 %>
 <div class="course-import">
@@ -54,4 +44,4 @@
 </div>
 <%
     }
-%>
+%> --%>

@@ -115,7 +115,7 @@
 		<security:logout invalidate-session="true" logout-success-url="/"/>
 		<security:anonymous username="anonymous" granted-authority="ROLE_GUEST" />
 		
-		<security:intercept-url pattern="/course/**" access="ROLE_USER" />
+		<!-- <security:intercept-url pattern="/course/**" access="ROLE_USER" /> -->
 	</security:http>
 	
 </beans>

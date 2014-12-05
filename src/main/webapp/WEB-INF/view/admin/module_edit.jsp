@@ -1,34 +1,26 @@
-<%@page import="java.util.Locale" %>
-<%@page import="java.util.ResourceBundle" %>
-<%@page import="resource.VmlResources" %>
-<%@page import="model.form.ModuleEditForm" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%
-	ModuleForm form = (ModuleForm) request
-            .getAttribute("form_data");
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null) {
-        lang = "en";
-    }
-    ResourceBundle messages = ResourceBundle.getBundle(
-            "resource.VmlResources", new Locale(lang));
-%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 
-<script src="<%=request.getContextPath()%>/js/tinymce/tinymce.min.js"></script>
-<script>
-    tinymce.init({
-        plugins: "image, code, table, link",
-        mode: "exact",
-        elements: "module-content_en, module-content_uk"
-    });
-    $(function () {
-        $("#description-tabs").tabs();
-        $("#name-tabs").tabs();
-        $("#content-tabs").tabs();
-    });
-</script>
-<form action="" id="module-edit" method="post">
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
+
+<sf:form action="/admin/module/add" method="post" modelAttribute="${moduleData}"> <!-- style="width: 250px;" -->
+    <div class="form-group">
+    	<form:input path="shortName" id="short-name" cssClass="form-control" />
+    </div>
+    <div class="form-group">
+	   	<form:select path="room" >
+	   		<c:forEach items="${rooms }" var="room">
+	   			<form:option value="${room.id }"><u:i18n value="${room.name }" /></form:option>
+	   		</c:forEach>
+	   	</form:select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create module</button>
+</sf:form>
+
+<sf:form action="" id="module-edit" method="post">
 
     <input type="hidden" name="short-name" value="<%=form.getShortName() %>"/>
     <input type="hidden" name="room-id" value="<%=form.getRoomId() %>"/>
@@ -110,4 +102,18 @@
 
     <button type="submit" class="btn btn-primary"><%=messages.getString(VmlResources.FM_BUTTON_CONFIRM)%>
     </button>
-</form>
+</sf:form>
+
+<script src="<%=request.getContextPath()%>/js/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        plugins: "image, code, table, link",
+        mode: "exact",
+        elements: "module-content_en, module-content_uk"
+    });
+    $(function () {
+        $("#description-tabs").tabs();
+        $("#name-tabs").tabs();
+        $("#content-tabs").tabs();
+    });
+</script>

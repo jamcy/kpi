@@ -30,7 +30,7 @@ public class RoomDaoImpl extends AbstractHibernateDao<Room> implements RoomDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public List<Room> findAll() throws Exception {
+	public List<Room> findAll() {
 		return getSessionFactory().getCurrentSession().createQuery("from Room order by id").list();
 	}
 }

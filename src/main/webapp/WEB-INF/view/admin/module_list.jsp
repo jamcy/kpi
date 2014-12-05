@@ -1,44 +1,22 @@
-<%@page import="model.form.ModuleAddForm" %>
-<%@page import="model.entity.Room" %>
-<%@page import="model.entity.Module" %>
-<%@page import="java.util.List" %>
-<%
-    List<Room> rooms = (List<Room>) request.getAttribute("rooms");
-    List<Module> modules = (List<Module>) request.getAttribute("modules");
-    String lang = (String) request.getAttribute("lang");
-    ModuleAddForm data = (ModuleAddForm) request.getAttribute("form_data");
-    if (lang == null) {
-        lang = "en";
-    }
-%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
-<table class="table">
-    <thead>
-    <th>Name</th>
-    <th>Actions</th>
-    </thead>
-    <%for (Module module : modules) { %>
+
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
+
+<table class="table table-bordered table-condensed">
+    <thead><tr>
+    	<th>Name</th>
+    	<th>Actions</th>
+    </tr></thead>
+    <c:forEach items="${modules}" var="module" >
     <tr>
-        <td><%=module.getName().toString(lang) %>
-        </td>
-        <td><a href="/admin/module?action=edit&id=<%=module.getId() %>" class="btn btn-primary">Edit</a></td>
-        <!--<td><a href="/admin/module?action=delete&id=<%=module.getId() %>">delete</a>--></td>
+    	<td><u:i18n value="${module.name }" /></td>
+    	<td><a href="<s:url value="/admin/module/edit/${module.id }" />" class="btn btn-primary">Edit</a></td>
+        <%-- TODO: add action delete --%>
     </tr>
-    <%} %>
+    </c:forEach>
 </table>
-
-<form action="/admin/module?action=add" method="post" style="width: 250px;">
-    <div class="form-group">
-        <input type="text" name="short-name" id="short-name" class="form-control" value="<%=data.getShortName()%>"
-               placeholder="Module short name"/>
-    </div>
-    <div class="form-group">
-        <select name="room-id" id="room-id" class="form-control">
-            <%for (Room room : rooms) { %>
-            <option value="<%=room.getId()%>"><%=room.getName().toString(lang) %>
-            </option>
-            <%} %>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Create module</button>
-</form>
+<a href="<s:url value="/admin/module/add" />" class="btn btn-primary">Create module</a>

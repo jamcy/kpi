@@ -1,34 +1,23 @@
-<%@page import="java.util.List" %>
-<%@page import="model.entity.Page" %>
-<%
-    List<Page> pages = (List<Page>) request.getAttribute("pages");
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null) {
-        lang = "en";
-    }
-%>
-<%
-    if (pages != null && pages.size() != 0) {
-%>
-<table id="page-list" class="table">
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
+
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
+
+<table id="page-list" class="table table-bordered table-condensed">
     <thead>
-    <th>Name</th>
-    <th>Actions</th>
-    </thead>
-    <%
-        for (Page p : pages) {
-    %>
     <tr>
-        <td><%=(p.getName() == null) ? "" : p.getName().getByLanguage(lang)%>
-        </td>
-        <td><a href="/admin/page?action=edit&id=<%=p.getId()%>" class="btn  btn-primary">edit</a>
-            <!--<a href="/admin/page?action=delete&id=<%=p.getId() %>">delete</a>--></td>
+    	<th>Name</th>
+    	<th>Actions</th>
     </tr>
-    <%
-        }
-    %>
+    </thead>
+    <c:forEach items="${pages }" var="page" >
+    <tr>
+        <td><u:i18n value="${page.name }" /></td>
+        <td><a href="<s:url value="/admin/page/edit/${page.id }" />" class="btn  btn-primary">edit</a></td>
+        <!-- TODO: action delete page -->
+    </tr>
+    </c:forEach>
 </table>
-<%
-    }
-%>
-<a href="/admin/page?action=add" class="btn btn-primary">Create page</a>
+<a href="<s:url value="/admin/page/add" />" class="btn btn-primary">Create page</a>

@@ -7,21 +7,21 @@
 
 <t:master>
 <jsp:body>
-<div class="contentCenter">
-    <table class="table">
-        <tr>
-            <td><a href="<s:url value="/admin/courses" />">Courses</a></td>
-            <td><a href="<s:url value="/admin/users" />">Users</a></td>
-            <td><a href="<s:url value="/admin/pages" />">Pages</a></td>
-            <td><a href="<s:url value="/admin/modules" />">Modules</a></td>
-        </tr>
-    </table>
-    <c:if test="${not empty view }">
-    <jsp:include page="admin/${view}.jsp" />
-    </c:if>
-    <div style="clear: both;"></div>
+<div class="row">
+	<div class="col-md-1">
+		<div class="btn-group-vertical">
+			<a href="<s:url value="/admin/courses" />" class="btn btn-default">Courses</a>
+			<a href="<s:url value="/admin/users" />" class="btn btn-default">Users</a>
+			<a href="<s:url value="/admin/pages" />" class="btn btn-default">Pages</a>
+			<a href="<s:url value="/admin/modules" />" class="btn btn-default">Modules</a>
+		</div>
+	</div>
+	<div class="col-md-11">
+	<c:if test="${not empty view }">
+	<jsp:include page="admin/${view }.jsp" />
+	</c:if>
+	</div>
 </div>
-<div class="contentFooter"></div>
 </jsp:body>
 </t:master>
 

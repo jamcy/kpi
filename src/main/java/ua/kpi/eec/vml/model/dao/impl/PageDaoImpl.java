@@ -1,5 +1,7 @@
 package ua.kpi.eec.vml.model.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,13 @@ public class PageDaoImpl extends AbstractHibernateDao<Page> implements PageDao {
 		return (Page)q.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Page> findAll() {
+		return getSessionFactory().getCurrentSession().createQuery("FROM Page ORDER BY id").list();
+	}
+	
 	@Override
 	public Class<?> getEntityClass() {
 		return Page.class;

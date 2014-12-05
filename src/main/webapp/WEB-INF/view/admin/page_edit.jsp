@@ -1,16 +1,3 @@
-<%@page import="model.form.PageForm" %>
-<%@page import="java.util.Locale" %>
-<%@page import="java.util.ResourceBundle" %>
-<%@page import="resource.VmlResources" %>
-<%
-    PageForm data = (PageForm) request.getAttribute("form_data");
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null) {
-        lang = "en";
-    }
-    ResourceBundle messages = ResourceBundle.getBundle(
-            "resource.VmlResources", new Locale(lang));
-%>
 <script src="/js/tinymce/tinymce.min.js"></script>
 <script>
     $(function () {

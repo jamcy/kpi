@@ -24,7 +24,6 @@ public class MoodleAuthenticationManager implements AuthenticationManager {
 		try {
 			AccountData principal = moodleService.authenticate(auth.getName(), auth.getCredentials().toString());
 			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			// TODO remove mock 
 			// TODO refresh user data
 			authorities.add(SystemRole.USER);
 			return new UsernamePasswordAuthenticationToken(principal, auth.getCredentials(), authorities);

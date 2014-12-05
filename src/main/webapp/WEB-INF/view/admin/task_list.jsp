@@ -1,37 +1,25 @@
-<%@page import="model.entity.Module" %>
-<%@page import="java.util.Map" %>
-<%@page import="model.entity.Task" %>
-<%@page import="java.util.List" %>
-<%
-    List<Task> tasks = (List<Task>) request.getAttribute("tasks");
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null) {
-        lang = "en";
-    }
-    Map<Long, String> moodleTasks = (Map<Long, String>) request
-            .getAttribute("moodle_tasks");
-    List<Module> modules = (List<Module>) request.getAttribute("modules");
-%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
+
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
 
 <table class="table">
-    <thead>
-    <th>Name</th>
-    <th>Actions</th>
-    </thead>
-    <%
-        for (Task task : tasks) {
-    %>
+    <thead><tr>
+	    <th>Name</th>
+	    <th>Actions</th>
+    </tr></thead>
+    <c:forEach items="${tasks }" var="task">
     <tr>
-        <td><%=task.getName()%>
-        </td>
+        <td><u:i18n value="${task.name }"/></td>
         <td><a href="/admin/task?action=edit&id=<%=task.getId()%>" class="btn btn-primary">Edit</a></td>
-        <!--<td><a href="/admin/task?action=delete&id=<%=task.getId()%>" class="btn btn-danger">delete</a>-->
+        <!-- TODO: add delete task action -->
     </tr>
-    <%
-        }
-    %>
+    </c:forEach>
 </table>
-<%
+<!-- TODO: import moodle tasks -->
+<%-- <%
     if (moodleTasks != null && moodleTasks.size() != 0) {
 %>
 <form action="/admin/task?action=add" method="post" id="add-task">
@@ -63,4 +51,4 @@
 </form>
 <%
     }
-%>
+%> --%>

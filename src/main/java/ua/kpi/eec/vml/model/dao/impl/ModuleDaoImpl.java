@@ -1,6 +1,7 @@
 package ua.kpi.eec.vml.model.dao.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,12 @@ public class ModuleDaoImpl extends AbstractHibernateDao<Module> implements
 	@Override
 	public Class<?> getEntityClass() {
 		return Module.class;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Module> findAll() {
+		return getSessionFactory().getCurrentSession().createQuery("from Module order by id").list();
 	}
 }

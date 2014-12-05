@@ -1,35 +1,21 @@
-<%@page import="java.util.List" %>
-<%@page import="model.entity.User" %>
-<%@page import="java.util.Locale" %>
-<%@page import="java.util.ResourceBundle" %>
-<%
-    List<User> users = (List<User>) request.getAttribute("users");
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null) {
-        lang = "en";
-    }
-    ResourceBundle messages = ResourceBundle.getBundle(
-            "resource.VmlResources", new Locale(lang));
-%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags/template"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="u" tagdir="/WEB-INF/tags/util"%>
+<%@taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
-<table class="table">
-    <thead>
-    <th>Name</th>
-    <th>System role</th>
-    <th>Actions</th>
-    </thead>
+<jsp:directive.page language="java" pageEncoding="UTF-8" />
 
-    <%
-        for (User user : users) {
-    %>
+<table class="table table-bordered table-condensed">
+    <thead><tr>
+	    <th>Name</th>
+	    <th>Role</th>
+	    <th>Actions</th>
+    </tr></thead>
+    <c:forEach items="${users }" var="user">
     <tr>
-        <td><%=user.getFirstName() + " " + user.getLastName()%>
-        </td>
-        <td><%=user.getRole()%>
-        </td>
-        <td><a href="/admin/user?action=edit&id=<%=user.getMoodleId()%>" class="btn btn-primary">Edit roles</a></td>
+        <td>${user.fullName }</td>
+        <td>${user.role }</td>
+        <td><a href="<s:url value="/admin/user/edit/${user.id }" />" class="btn btn-primary">Edit</a></td>
     </tr>
-    <%
-        }
-    %>
+    </c:forEach>
 </table>
