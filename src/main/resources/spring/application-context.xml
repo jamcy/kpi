@@ -81,6 +81,14 @@
 		<property name="token" value="${moodle.token}" />
 	</bean>
 	
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+	    <property name="converters">
+	        <set>
+	            <bean class="ua.kpi.eec.vml.service.converter.ModuleToModuleForm"/>
+	        </set>
+	    </property>
+	</bean>
+	
 	<!-- Security configuration -->
 	<bean id="moodleAuthenticationManager" class="ua.kpi.eec.vml.service.authentication.MoodleAuthenticationManager">
 		<property name="moodleService" ref="moodleService" />

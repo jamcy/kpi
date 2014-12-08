@@ -16,7 +16,7 @@
 			<a href="<s:url value="/admin/modules" />" class="btn btn-default">Modules</a>
 		</div>
 	</div>
-	<div class="col-md-11">
+	<div class="col-md-10">
 	<c:if test="${not empty view }">
 	<jsp:include page="admin/${view }.jsp" />
 	</c:if>

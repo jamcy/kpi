@@ -8,25 +8,23 @@
 
 <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
 <script>
-    tinymce.init({
-        plugins: "image, code, table, link",
-        mode: "exact",
-        elements: "module-content_en, module-content_uk"
-    });
-    $(function () {
-        $("#description-tabs").tabs();
+	$(function(){
+		$("#description-tabs").tabs();
         $("#name-tabs").tabs();
         $("#content-tabs").tabs();
+	});
+	tinymce.init({
+        plugins: "image, code, table, link",
+        mode: "exact",
+        elements: "contentEn, contentUk"
     });
 </script>
 
 <sf:form action="" id="module-edit" method="post" commandName="module">
 	<sf:hidden path="id"/>
     <div class="form-group">
-    	<sf:input path="shortName" id="short-name" cssClass="form-control" />
-    </div>
-    <div class="form-group">
-	   	<sf:select path="module.roomId" >
+    	<label>Module room:</label>
+	   	<sf:select path="roomId" cssClass="form-control">
 	   		<c:forEach items="${rooms }" var="room">
 	   			<sf:option value="${room.id }"><u:i18n value="${room.name }" /></sf:option>
 	   		</c:forEach>
@@ -34,7 +32,7 @@
     </div>
     <div class="form-group">
         <label>Short name:</label>
-        <sf:input path="shortName" />
+        <sf:input path="shortName" cssClass="form-control"/>
     </div>
     <div class="form-group">
         <label>Module name:</label>
@@ -43,13 +41,13 @@
                 <li><a href="#name-tabs-en">en</a></li>
                 <li><a href="#name-tabs-uk">uk</a></li>
             </ul>
-            <div id="name-tabs-en"><sf:input htmlEscape="true" path="nameEn" /></div>
-            <div id="name-tabs-uk"><sf:input htmlEscape="true" path="nameUk" /></div>
+            <div id="name-tabs-en"><sf:input htmlEscape="true" path="nameEn" cssClass="form-control" /></div>
+            <div id="name-tabs-uk"><sf:input htmlEscape="true" path="nameUk" cssClass="form-control" /></div>
         </div>
     </div>
     <div class="form-group">
         <label for="module-image">Image url:</label>
-        <sf:input path="imageUrl" />
+        <sf:input path="imageUrl" cssClass="form-control"/>
     </div>
     <div class="form-group">
         <label>Module description:</label>
@@ -82,8 +80,8 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="module-embed">Embed code:</label>
-        <sf:textarea path="embed" htmlEscape="true" cssClass="formControl" />
+        <label for="embedCode">Embed code:</label>
+        <sf:textarea path="embedCode" htmlEscape="true" cssClass="form-control" />
     </div>
     <button type="submit" class="btn btn-primary"><s:message code="form.button.confirm" /></button>
 </sf:form>

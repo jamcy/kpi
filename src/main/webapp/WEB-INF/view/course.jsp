@@ -271,84 +271,8 @@
 				<h5><%=course.getDescription().toString(lang)%></h5>
 			</div>
 		</div>
-		<!-- <div class="col-xs-6 col-sm-6 col-md-5 col-lg-4 aright">								
-				<h3 class="p gray">Course teachers</h3>
-				for teacher in teachers
-					<h4><a href="#">?teacher_name?</a></h4>				
-				endfor			
-			</div> -->
 	</div>
 	<div class="divider"></div>
-	<!--	
-		<div class="center">
-			<h4 class="p">COURSE EXPERIMENTS</h4>
-		</div>
-		<div class="row">
-					<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-						<div class="exp">		
-							<div class="body" id="container2">
-								<a href="#">
-									<img src="images/app1.jpg" />
-									<div class="over"></div>
-								</a>
-						    </div>
-							<div class="desc">
-								<b>Virtual Reality</b>
-								<h6>Demonstrates the virtual reality the virtual reality the virtual reality the virtual reality the virtual reality</h6>
-								<a href="#" class="link">More &gt;&gt;</a>
-							</div>
-						</div>
-					</div>
-					<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-						<div class="exp">							
-							<div class="body" id="container2">
-								<a href="#">
-									<img src="images/app2.jpg" />
-									<div class="over"></div>
-								</a>
-
-						    </div>
-							<div class="desc">
-								<b>Virtual Reality</b>
-								<h6>Demonstrates the virtual reality the virtual reality the virtual reality the virtual reality the virtual reality</h6>
-								<a href="#" class="link">More &gt;&gt;</a>
-							</div>
-						</div>
-					</div>
-					<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-						<div class="exp">							
-							<div class="body" id="container2">
-								<a href="#">
-									<img src="images/app3.jpg" />
-									<div class="over"></div>
-								</a>
-
-						    </div>
-							<div class="desc">
-								<b>Virtual Reality</b>
-								<h6>Demonstrates the virtual reality the virtual reality the virtual reality the virtual reality the virtual reality</h6>
-								<a href="#" class="link">More &gt;&gt;</a>
-							</div>
-						</div>
-					</div>
-					<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
-						<div class="exp">							
-							<div class="body" id="container2">
-								<a href="#">
-									<img src="images/app4.jpg" />
-									<div class="over"></div>
-								</a>
-
-						    </div>
-							<div class="desc">
-								<b>Virtual Reality</b>
-								<h6>Demonstrates the virtual reality the virtual reality the virtual reality the virtual reality the virtual reality</h6>
-								<a href="#" class="link">More &gt;&gt;</a>
-							</div>
-						</div>
-					</div>					
-		</div>
-		-->
 </div>
 </jsp:body>
 </t:master>
