@@ -11,12 +11,8 @@
 	<img src="<s:url value="/static/${course.imageUrl }" />" />
 	<div class="container">
 		<div class="over">
-			<h1>
-				<b><u:i18n value="${course.name }" /></b>
-			</h1>
-			<h4>
-				<a class="overlink" href="#more">Learn more &gt;&gt;</a>
-			</h4>
+			<h1><b><u:i18n value="${course.name }" /></b></h1>
+			<h4><a class="overlink" href="#more">Learn more &gt;&gt;</a></h4>
 		</div>
 	</div>
 </div>
@@ -24,12 +20,13 @@
 	<ol class="breadcrumb">
 		<li><a href="/">Home</a></li>
 		<li><a href="/course">Courses</a></li>
-		<li class="active"><%=course.getName().toString(lang)%></li>
+		<li class="active"><u:i18n value="${course.name }" /></li>
 	</ol>
 	<div class="row">
 		<div class="col-xs-6 col-sm-6 col-md-7 col-lg-8 exp-desc">
 			<div class="row">
-				<%
+				<!-- TODO: replace commented block with student tasks status widget -->
+				<%-- <%
 					if (user.getRole(course.getId()).equals(CourseRole.CR_STUDENT)
 							&& tasks != null && tasks.size() > 0) {
 				%>
@@ -210,8 +207,10 @@
 				<!-- /.tabbable -->
 				<%
 					}
-				%>
-				<%
+				%> --%>
+				
+				<!-- TODO: replace commented block with teacher tasks status widget -->
+				<%-- <%
 					if (user.getRole(course.getId()).equals(CourseRole.CR_TEACHER)) {
 				%>
 				<ul class="works">
@@ -242,8 +241,8 @@
 								DateFormat.MEDIUM, DateFormat.SHORT,
 								messages.getLocale()).format(tlg.getUpdated())%>
 										</span>
-										<%-- <br/>
-														<span>Status: <%=tlg.getStatus() %></span>  --%>
+										<br/>
+														<span>Status: <%=tlg.getStatus() %></span> 
 									</h4>
 									<h5><%=tsk.getName()%></h5>
 								</div>
@@ -262,19 +261,15 @@
 				</ul>
 				<%
 					} //teacher block
-				%>
+				%> --%>
 			</div>
-
+			
 			<a id="more"></a>
-			<h3 class="p"><%=messages.getString("page.course.description")%></h3>
-			<div class="exp-desc">
-				<h5><%=course.getDescription().toString(lang)%></h5>
-			</div>
+			<h3 class="p"> <s:message code="page.course.description" /></h3>
+			<div class="exp-desc"><h5><u:i18n value="${course.description }" /></h5></div>
 		</div>
 	</div>
 	<div class="divider"></div>
 </div>
 </jsp:body>
 </t:master>
-
-

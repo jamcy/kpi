@@ -13,7 +13,7 @@
 			<a href="<s:url value="/admin/courses" />" class="btn btn-default">Courses</a>
 			<a href="<s:url value="/admin/users" />" class="btn btn-default">Users</a>
 			<a href="<s:url value="/admin/pages" />" class="btn btn-default">Pages</a>
-			<a href="<s:url value="/admin/modules" />" class="btn btn-default">Modules</a>
+			<a href="<s:url value="/admin/module/list" />" class="btn btn-default">Modules</a>
 		</div>
 	</div>
 	<div class="col-md-10">
