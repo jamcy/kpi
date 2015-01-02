@@ -1,7 +1,6 @@
 package ua.kpi.eec.vml.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -16,9 +15,7 @@ import ua.kpi.eec.vml.model.form.ModuleForm;
 
 @Controller
 @RequestMapping(value="/admin/module")
-public class ModuleAdminController  {
-	@Autowired
-	private ConversionService conversionService;
+public class ModuleAdminController extends DefaultAdminController {
 	@Autowired
 	private ModuleDao moduleDao;
 	@Autowired
@@ -44,7 +41,7 @@ public class ModuleAdminController  {
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public String showModuleEdit(@PathVariable int id, Model model) {
 		Module module = moduleDao.find(id);
-		ModuleForm moduleForm = conversionService.convert(module, ModuleForm.class);
+		ModuleForm moduleForm = getConversionService().convert(module, ModuleForm.class);
 		model.addAttribute("module", moduleForm);
 		model.addAttribute("rooms", roomDao.findAll());
 		model.addAttribute("view", "module_edit");
