@@ -14,7 +14,15 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'all', 0.00001);
     
     % 1. Convert task to maximization and to standard form
-	A = [A diag(ones(1, size(A,1)))];
+    A = [A zeros(size(A,1))];
+    for i=1:size(A,1);
+        if(restrictions(i)>=0)
+            restriction=1;
+        else
+            restriction=-1;
+        end
+        A(i, size(A,2)-size(A,1)+i)=restriction;
+    end
     if(~max)
         c = c.*-1;
     end
@@ -33,7 +41,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     if(~strcmp(print, 'none'))
         fprintf('2. Find conjugate basis\n');
     end
-	[Pb, Icb] = conjugateBasis(A, c, basis, restrictions, print, epsilon);
+	[Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon);
     
     % 3. Decompose P0=b by basis vectors. Build initial table.
     [m, n] = size(A);
@@ -60,13 +68,18 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     for i=1:m
         res(Icb(Icb==Icb(i)))=x(i);
     end
+    for i=1:m
+        if(restrictions(i)==0 && res(m+i)>0)
+            throw(MException('DualSimplex:UnsolvableTask' ,['Optimal solution contains nonzero arfificial variable x' num2str(m+i)]));
+        end
+    end
     if(~strcmp(print, 'none'))
         fprintf('Optimal solution found:\nx*=');
         disp(res);
     end
 end
 
-function [Pb, Icb] = conjugateBasis(A, c, basis, restrictions, print, epsilon)
+function [Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon)
     [m, n] = size(A);
     if(ischar(basis)==false)
         if(size(basis, 2)~=m)
@@ -84,13 +97,13 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, restrictions, print, epsilon)
                 elseif(strcmp(basis, 'auto'))
                     i=i+1;
                 end
-                valid = checkBasis(A, c, Ic(i, :), restrictions, epsilon);
+                valid = checkBasis(A, c, Ic(i, :), epsilon);
             end
             Icb=Ic(i, :);
         elseif(strcmp(basis, 'manual'))
             fprintf( '#\t Icb\tvalid\n');
             for i=1:size(Ic, 1)
-                valid = checkBasis(A, c, Ic(i, :), restrictions, epsilon);
+                valid = checkBasis(A, c, Ic(i, :), epsilon);
                 fprintf([num2str(i) '\t' mat2str(Ic(i, :)) '\t' num2str(valid) '\n']);
             end
             i = input('Select bais combination number: ');
@@ -99,7 +112,7 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, restrictions, print, epsilon)
             throw(MException('DualSimplex:UnknownBasisMethod' ,'Unknown basis selection method'));
         end
     end
-    [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, restrictions, epsilon);
+    [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, epsilon);
     if(~strcmp(print, 'none'))
         fprintf('Icb:\n');
         disp(Icb);
@@ -117,7 +130,7 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, restrictions, print, epsilon)
     end
 end
 
-function [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, restrictions, epsilon)
+function [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, epsilon)
     m=size(A, 1);
     Pb=zeros(m);
     cb=zeros(m, 1);
