@@ -1,9 +1,9 @@
-function [x P Icb]= dualIterations(x, P, Icb, c, printSteps)
+function [x P Icb]= dualIterations(x, P, Icb, c, print, epsilon)
     m=size(P, 1);
     iteration = 1;
     while(true)
         if(all(x>=0))
-            if(printSteps)
+            if(~strcmp(print, 'none'))
                 fprintf('\nIteration %d:\n', iteration);
                 fprintf('Solution found for recalculated table:\n');
                 printSimplexTable(Icb, x, P, c);
@@ -12,7 +12,7 @@ function [x P Icb]= dualIterations(x, P, Icb, c, printSteps)
         end
         for i=1:m
             if((x(i)<0) && (all(P(i,:)>=0)))
-                if(printSteps)
+                if(~strcmp(print, 'none'))
                     fprintf('\nIteration %d:\n', iteration);
                     fprintf('Unsolvable task for table:\n');
                     printSimplexTable(Icb, x, P, c);
@@ -23,15 +23,15 @@ function [x P Icb]= dualIterations(x, P, Icb, c, printSteps)
         deltas = calculateDeltas(Icb, P, c);
         l=Icb(x == (min(x)));
         gammas = calculateGammas(Icb, P, deltas, l);
-        r=find(gammas==min(gammas));
-        if(printSteps)
+        r=find(gammas==min(gammas),1);
+        if(~strcmp(print, 'none'))
             fprintf('\nIteration %d:\n', iteration);
             printSimplexTable(Icb, x, P, c);
             printEstimatesTable(deltas, gammas);
             fprintf('Excluding l=%d. Including r=%d\n', l, r);
             fprintf('Recalculating table...\n');
         end
-        [x P Icb] = eliminateGJ(Icb, [x P], l, r);
+        [x P Icb] = eliminateGJ(Icb, [x P], l, r, epsilon);
         iteration=iteration+1;
     end
 end
@@ -65,20 +65,23 @@ function [gammas] = calculateGammas(Icb, P, deltas, l)
 	end
 end
 
-function [x P Icb] = eliminateGJ(Icb, P, l, r)
+function [x P Icb] = eliminateGJ(Icb, P, l, r, epsilon)
 	[m, n] = size(P);
-	ilr = find(Icb==l);
+	ilr = find(Icb==l,1);
 	jlr = r+1;
 	N = P(:,:);
-	for i=1:m
-    	for j=1:n
-        	if(i==ilr)
-            	N(i,j) = P(i,j)/P(ilr,jlr);
-        	else
-            	N(i,j) = P(i,j)- P(i, jlr) * P(ilr, j)/P(ilr, jlr);
-        	end
-    	end
-	end
+    for i=1:m
+        for j=1:n
+            if(i==ilr)
+                N(i,j) = P(i,j)/P(ilr,jlr);
+            else
+                N(i,j) = P(i,j)- P(i, jlr) * P(ilr, j)/P(ilr, jlr);
+            end
+            if(abs(N(i,j))<epsilon)
+                N(i,j)=0;
+            end
+        end
+    end
 	x=N(:, 1);
 	P=N(:, 2:n);
     Icb(Icb==l)=r;
