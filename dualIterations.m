@@ -1,0 +1,129 @@
+function [x P Icb]= dualIterations(x, P, Icb, c, printSteps)
+    m=size(P, 1);
+    iteration = 1;
+    while(true)
+        if(all(x>=0))
+            if(printSteps)
+                fprintf('\nIteration %d:\n', iteration);
+                fprintf('Solution found for recalculated table:\n');
+                printSimplexTable(Icb, x, P, c);
+            end
+            return;
+        end
+        for i=1:m
+            if((x(i)<0) && (all(P(i,:)>=0)))
+                if(printSteps)
+                    fprintf('\nIteration %d:\n', iteration);
+                    fprintf('Unsolvable task for table:\n');
+                    printSimplexTable(Icb, x, P, c);
+                end
+                throw(MException('DualSimplex:UnsolvableTask' ,'Basis solution does not satisfy dual task restrictions'));
+            end
+        end
+        deltas = calculateDeltas(Icb, P, c);
+        l=Icb(x == (min(x)));
+        gammas = calculateGammas(Icb, P, deltas, l);
+        r=find(gammas==min(gammas));
+        if(printSteps)
+            fprintf('\nIteration %d:\n', iteration);
+            printSimplexTable(Icb, x, P, c);
+            printEstimatesTable(deltas, gammas);
+            fprintf('Excluding l=%d. Including r=%d\n', l, r);
+            fprintf('Recalculating table...\n');
+        end
+        [x P Icb] = eliminateGJ(Icb, [x P], l, r);
+        iteration=iteration+1;
+    end
+end
+
+function [deltas] = calculateDeltas(Icb, P, c)
+	[m, n] = size(P);
+	deltas = NaN(1, n);
+	for j=1:n
+    	if(ismember(j, Icb))
+        	continue;
+    	end
+    	delta = 0;
+        for i=1:m
+            delta = delta+c(Icb(i))*P(i, j);
+        end
+    	deltas(j)=delta-c(j);
+	end
+end
+
+function [gammas] = calculateGammas(Icb, P, deltas, l)
+	n = size(P,2);
+	gammas = NaN(1, n);
+	for j=1:n
+    	if(ismember(j, Icb))
+        	continue;
+    	end
+    	x_lj = P(Icb==l, j);
+    	if(x_lj<0)
+        	gammas(j)=-deltas(j)/x_lj;
+    	end
+	end
+end
+
+function [x P Icb] = eliminateGJ(Icb, P, l, r)
+	[m, n] = size(P);
+	ilr = find(Icb==l);
+	jlr = r+1;
+	N = P(:,:);
+	for i=1:m
+    	for j=1:n
+        	if(i==ilr)
+            	N(i,j) = P(i,j)/P(ilr,jlr);
+        	else
+            	N(i,j) = P(i,j)- P(i, jlr) * P(ilr, j)/P(ilr, jlr);
+        	end
+    	end
+	end
+	x=N(:, 1);
+	P=N(:, 2:n);
+    Icb(Icb==l)=r;
+end
+
+function [] = printSimplexTable(Icb, x, P, c)
+	indexWidth = 4;
+	mainWidth = 10;
+	[m, n] = size(P);
+	totalWidth = (indexWidth+1)*3+(mainWidth+1)*(n+1)+1;
+	table = repmat('-', 1, totalWidth);
+	table = [table sprintf('\n|%25s|', 'C')];
+	for i=1:n
+    	table=strcat(table, sprintf('%10d|', c(i)));
+	end
+	table = [table '\n' repmat('-', 1, totalWidth)];
+	table = [table sprintf('\n|%4s|%4s|%4s|%10s|', 'i', 's', 'Cb', 'P0=x')];
+	for i=1:n
+    	table = strcat(table, sprintf('%10s|', ['P' num2str(i)]));
+	end
+	table = [table '\n' repmat('-', 1, totalWidth)];
+	for i=1:m
+    	table = strcat(table, sprintf('\n|%4d|%4d|%4d|%10.4f|', i, Icb(i), c(Icb(i)), x(i)));
+    	for j=1:n
+        	table=strcat(table, sprintf('%10.4f|', P(i,j)));
+    	end
+	end
+	table = [table '\n' repmat('-', 1, totalWidth) '\n'];
+	fprintf(table);
+ end
+ 
+ function [] = printEstimatesTable(deltas, gammas)
+    indexWidth = 4;
+	mainWidth = 10;
+    n = size(deltas,2);
+    totalWidth = (indexWidth+1)*3+(mainWidth+1)*(n+1)+1;
+    table = sprintf('|%25s|', 'Deltas');
+    for i=1:n
+   	 table = strcat(table, sprintf('%10.4f|', deltas(i)));
+    end
+    table = [table '\n' repmat('-', 1, totalWidth) '\n'];
+    table = [table sprintf('|%25s|', 'Gammas')];
+    for i=1:n
+        table = strcat(table, sprintf('%10.4f|', gammas(i)));
+    end
+    table=[table '\n' repmat('-', 1, totalWidth) '\n'];
+    fprintf(table);
+ end
