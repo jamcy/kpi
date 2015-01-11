@@ -1,9 +1,11 @@
 function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, epsilon)
     % *A, b, c - matrices with data
-    % *restrictions - vector, with dimensions like c, holding restrictions 
+    % *restrictions - row vector, having size equals to size of column vector b, holding restrictions 
     %   signs: 1(<=), 0(=), -1(>=)
     % *max - shows if maximization problem: true, false
-    % *basis - basis selection method: 'random', 'auto', <basis>
+    % *basis - basis selection method: 'random', 'auto', 'manual', <basis>
+    %   'auto' - generates all combinations n by m of basis vector indices and selects first
+    %       valid basis from generated
     % print -  logging mode: 'none', 'minimal', 'all'
     % epsilon - calculations accuracy: values less than epsilon are counted as
     %   zero
@@ -12,7 +14,39 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     %   b=[41; 42; -2];
     %   c=[35; 0; -9];
     % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'all', 0.00001);
+    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, [1 5 6], 'minimal', 0.00001);
     
+    clc;
+    if(max)
+        text = 'Maximize';
+    else
+        text = 'Minimize';
+    end
+    text = [text ' f(x)=cx while Ax <restrictions> b\n'];
+    fprintf(text);
+    fprintf('c[t]:\n');
+    disp(c');
+    fprintf('A <restrictions> b:\n');
+    for i=1:size(A, 1)
+        for j=1:size(A,2)
+            fprintf([num2str(A(i,j)) '\t']);
+        end
+        if(restrictions(i)==1)
+            fprintf('<=\t');
+        elseif(restrictions(i)==0)
+            fprintf('=\t');
+        else
+            fprintf('>=\t');
+        end
+        fprintf([num2str(b(i)) '\n']);
+    end
+    if(ischar(basis))
+        fprintf(['\nBasis method:\t' basis '\n']);
+    else
+        fprintf('\nBasis:\n');
+        disp(basis);
+    end
+    fprintf(['Epsilon:\t' num2str(epsilon) '\n']);
     % 1. Convert task to maximization and to standard form
     A = [A zeros(size(A,1))];
     for i=1:size(A,1);
@@ -28,18 +62,18 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     end
 	c = [c ; zeros(rank(A), 1)];
     if(~strcmp(print, 'none'))
-        fprintf('1. Convert task to standard form [max c[t]x while Ax=b] where \n');
+        fprintf('\n=============================================================\n');
+        fprintf('1. Convert task to standard form [max c[t]x while Ax=b]: \n');
         fprintf('A=\n');
         disp(A);
         fprintf('c[t]=\n');
         disp(c');
-        fprintf('b[t]=\n');
-        disp(b');
     end
     
     % 2. Find conjugate basis
     if(~strcmp(print, 'none'))
-        fprintf('2. Find conjugate basis\n');
+        fprintf('\n=============================================================\n');
+        fprintf('2. Find conjugate basis:\n');
     end
 	[Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon);
     
@@ -51,6 +85,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
         P(:,i) = Pb\A(:, i);
     end
     if(~strcmp(print, 'none'))
+        fprintf('\n=============================================================\n');
         fprintf('3. Find P0=x and Pi decomposition by Pb\n');
         if(strcmp(print, 'all'))
             printDecomposition(x, P, A, b, Pb);
@@ -61,7 +96,8 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     
     % 4. Do iteraion steps
     if(~strcmp(print, 'none'))
-        fprintf('3. Iterations:\n');
+        fprintf('\n=============================================================\n');
+        fprintf('4. Iterations:\n');
     end
     [x P Icb] = dualIterations(x, P, Icb, c, print, epsilon);
     res = zeros(1, n); 
@@ -70,7 +106,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     end
     for i=1:m
         if(restrictions(i)==0 && res(m+i)>0)
-            throw(MException('DualSimplex:UnsolvableTask' ,['Optimal solution contains nonzero arfificial variable x' num2str(m+i)]));
+            throw(MException('DualSimplex:UnsolvableTask' ,['Optimal solution contains nonzero arfificial variable x' num2str(m+i) '. Task is unsolvable']));
         end
     end
     if(~strcmp(print, 'none'))
@@ -91,10 +127,13 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon)
         if(strcmp(basis, 'random') || strcmp(basis, 'auto'))
             valid = false;
             i=0;
-            while(valid == false && i<size(Ic,1))
+            while(valid == false)
                 if(strcmp(basis, 'random'))
                     i=randi(size(Ic,1));
                 elseif(strcmp(basis, 'auto'))
+                    if(i==size(Ic))
+                        throw(MException('DualSimplex:NoValidBasis' ,'No valid conjugate basis exist. Task is unsolvable'));
+                    end
                     i=i+1;
                 end
                 valid = checkBasis(A, c, Ic(i, :), epsilon);
@@ -126,7 +165,7 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon)
         disp(restrictionFlags);
     end
     if(~valid)
-        throw(MException('DualSimplex:InvalidBasis' ,'Basis solution does not satisfy dual task restrictions'));
+        throw(MException('DualSimplex:InvalidBasis' ,'Basis solution does not satisfy dual task restrictions. Task is unsolvable.'));
     end
 end
 
@@ -135,8 +174,8 @@ function [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, epsilon)
     Pb=zeros(m);
     cb=zeros(m, 1);
     for i=1:m
-   	 Pb(:, i) = A(:, Icb(i));
-   	 cb(i) = c(Icb(i));
+        Pb(:, i) = A(:, Icb(i));
+        cb(i) = c(Icb(i));
     end
     y = Pb'\cb;
     restrictionFlags = ((A' * y) - c)';

@@ -5,7 +5,7 @@ function [x P Icb]= dualIterations(x, P, Icb, c, print, epsilon)
         if(all(x>=0))
             if(~strcmp(print, 'none'))
                 fprintf('\nIteration %d:\n', iteration);
-                fprintf('Solution found for recalculated table:\n');
+                fprintf('Solution found for table:\n');
                 printSimplexTable(Icb, x, P, c);
             end
             return;
