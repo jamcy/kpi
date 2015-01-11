@@ -93,6 +93,8 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
         end
         fprintf('Decomposition result, X=[x0 Pi]:\n')
         disp([x P]);
+        fprintf('Initial simplex table:\n');
+        printSimplexTable(Icb, x, P, c);
     end
     
     % 4. Do iteraion steps
@@ -210,3 +212,29 @@ function [] = printLinearEquationSystem(A, b)
         fprintf(['=\t' num2str(b(i)) '\n']);
     end
 end
+
+function [] = printSimplexTable(Icb, x, P, c)
+	indexWidth = 4;
+	mainWidth = 10;
+	[m, n] = size(P);
+	totalWidth = (indexWidth+1)*3+(mainWidth+1)*(n+1)+1;
+	table = repmat('-', 1, totalWidth);
+	table = [table sprintf('\n|%25s|', 'C')];
+	for i=1:n
+    	table=strcat(table, sprintf('%10d|', c(i)));
+	end
+	table = [table '\n' repmat('-', 1, totalWidth)];
+	table = [table sprintf('\n|%4s|%4s|%4s|%10s|', 'i', 's', 'Cb', 'P0=x')];
+	for i=1:n
+    	table = strcat(table, sprintf('%10s|', ['P' num2str(i)]));
+	end
+	table = [table '\n' repmat('-', 1, totalWidth)];
+	for i=1:m
+    	table = strcat(table, sprintf('\n|%4d|%4d|%4d|%10.4f|', i, Icb(i), c(Icb(i)), x(i)));
+    	for j=1:n
+        	table=strcat(table, sprintf('%10.4f|', P(i,j)));
+    	end
+	end
+	table = [table '\n' repmat('-', 1, totalWidth) '\n'];
+	fprintf(table);
+ end

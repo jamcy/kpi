@@ -33,14 +33,14 @@ function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
                 end
             end
         end
-        
         gammas = calculateGammas(Icb, P, deltas, l);
         r=find(gammas==min(gammas),1);
         if(~strcmp(print, 'none'))
             fprintf('\nIteration %d:\n', iteration);
             printSimplexTable(Icb, x, P, c);
             printEstimatesTable(deltas, gammas);
-            fprintf('Excluding l=%d. Including r=%d\n', l, r);
+            fprintf('Excluding l=%d\n', l);
+            fprintf(['Minimal gamma is ' num2str(min(gammas)) ' ==> Including r=' num2str(r) '\n']);
             fprintf('Recalculating table...\n');
         end
         [x P Icb] = eliminateGJ(Icb, [x P], l, r, epsilon);
