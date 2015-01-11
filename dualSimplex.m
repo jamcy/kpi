@@ -1,4 +1,4 @@
-function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, epsilon)
+function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion, print, epsilon)
     % *A, b, c - matrices with data
     % *restrictions - row vector, having size equals to size of column vector b, holding restrictions 
     %   signs: 1(<=), 0(=), -1(>=)
@@ -6,6 +6,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     % *basis - basis selection method: 'random', 'auto', 'manual', <basis>
     %   'auto' - generates all combinations n by m of basis vector indices and selects first
     %       valid basis from generated
+    % exclusion - mode of exclusion from basis variable selection: 'manual', 'auto'
     % print -  logging mode: 'none', 'minimal', 'all'
     % epsilon - calculations accuracy: values less than epsilon are counted as
     %   zero
@@ -13,8 +14,8 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
     %   A=[25 36 26; -6 6 6; 21 26 -8];
     %   b=[41; 42; -2];
     %   c=[35; 0; -9];
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'all', 0.00001);
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, [1 5 6], 'minimal', 0.00001);
+    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'auto', 'all', 0.00001);
+    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, [1 5 6], 'manual', 'minimal', 0.00001);
     
     clc;
     if(max)
@@ -99,7 +100,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, print, eps
         fprintf('\n=============================================================\n');
         fprintf('4. Iterations:\n');
     end
-    [x P Icb] = dualIterations(x, P, Icb, c, print, epsilon);
+    [x P Icb] = dualIterations(x, P, Icb, c, exclusion, print, epsilon);
     res = zeros(1, n); 
     for i=1:m
         res(Icb(Icb==Icb(i)))=x(i);

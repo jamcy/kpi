@@ -1,4 +1,4 @@
-function [x P Icb]= dualIterations(x, P, Icb, c, print, epsilon)
+function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
     m=size(P, 1);
     iteration = 1;
     while(true)
@@ -21,7 +21,19 @@ function [x P Icb]= dualIterations(x, P, Icb, c, print, epsilon)
             end
         end
         deltas = calculateDeltas(Icb, P, c);
-        l=Icb(x == (min(x)));
+        if(strcmp(exclusion, 'auto'))
+            l=Icb(x == (min(x)));
+        else
+            valid = false;
+            while(~valid)
+                l = input('Select index of variable to exclude from basis: ');
+                valid = ismember(l, Icb);
+                if(~valid)
+                    fprintf(['No variable with index ' l ' found in basis\n']);
+                end
+            end
+        end
+        
         gammas = calculateGammas(Icb, P, deltas, l);
         r=find(gammas==min(gammas),1);
         if(~strcmp(print, 'none'))
