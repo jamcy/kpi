@@ -11,6 +11,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     %   'normal'(standard dual simplex method),'modified'(adding artificial
     %   variables for equals sign restrictions)
     % *print -  logging mode: 'none', 'minimal', 'all'
+    %   'minimal' - does not prints decomposition of P0,Pi by basis vectors
     % *epsilon - calculations accuracy: values less than epsilon are counted as zero
     % Icb - basis indexes vector
     % Example:
@@ -133,6 +134,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     if(~strcmp(print, 'none'))
         fprintf('Optimal solution found:\nx*=');
         disp(res);
+        fprintf(['f(x*)=' num2str((c')*(res')) '\n']);
     end
 end
 
