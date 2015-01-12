@@ -17,7 +17,7 @@ function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
                     fprintf('Unsolvable task for table:\n');
                     printSimplexTable(Icb, x, P, c);
                 end
-                throw(MException('DualSimplex:UnsolvableTask' ,'Basis solution does not satisfy dual task restrictions'));
+                throw(MException('DualSimplex:UnsolvableTask' ,'Basis solution does not satisfy dual task restrictions. Task is unsolvable.'));
             end
         end
         deltas = calculateDeltas(Icb, P, c);
@@ -26,15 +26,21 @@ function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
         else
             valid = false;
             while(~valid)
-                l = input('Select index of variable to exclude from basis: ');
+                l = input('Select index of variable to exclude from basis (s): ');
                 valid = ismember(l, Icb);
                 if(~valid)
-                    fprintf(['No variable with index ' l ' found in basis\n']);
+                    fprintf(['No variable with index ' num2str(l) ' found in basis\n']);
+                elseif(x(Icb==l)>=0)
+                    ok = input('You have selected non-negative variable to exclude from basis. Are you shure? (1(yes)/0(no)):');
+                    valid = (ok==1);
                 end
             end
         end
         gammas = calculateGammas(Icb, P, deltas, l);
         r=find(gammas==min(gammas),1);
+        if(~exist('r', 'var'))
+            throw(MException('DualSimplex:UnsolvableTask' ,'All gammas evaluated to NaN. Can not proceed'));
+        end
         if(~strcmp(print, 'none'))
             fprintf('\nIteration %d:\n', iteration);
             printSimplexTable(Icb, x, P, c);

@@ -8,14 +8,14 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     %       valid basis from generated
     % exclusion - mode of exclusion from basis variable selection: 'manual', 'auto'
     % print -  logging mode: 'none', 'minimal', 'all'
-    % epsilon - calculations accuracy: values less than epsilon are counted as
-    %   zero
+    % epsilon - calculations accuracy: values less than epsilon are counted as zero
+    % Icb - basis indexes vector
     % Example:
     %   A=[25 36 26; -6 6 6; 21 26 -8];
     %   b=[41; 42; -2];
     %   c=[35; 0; -9];
     % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'auto', 'all', 0.00001);
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, [1 5 6], 'manual', 'minimal', 0.00001);
+    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, 'manual', 'minimal', 0.00001);
     
     clc;
     if(max)
