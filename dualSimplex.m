@@ -127,26 +127,30 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon)
         Icb = basis(1, :);
     else
         Ic = nchoosek(1:n, m);
+        validIc = zeros(size(Ic,1),1);
+        for i=1:size(Ic,1)
+            validIc(i)= checkBasis(A, c, Ic(i, :), epsilon);
+        end
+        if(sum(validIc)==0)
+            throw(MException('DualSimplex:NoValidBasis' ,'No valid conjugate basis exist. Task is unsolvable'));
+        end
         if(strcmp(basis, 'random') || strcmp(basis, 'auto'))
-            valid = false;
             i=0;
-            while(valid == false)
+            while(true)
                 if(strcmp(basis, 'random'))
                     i=randi(size(Ic,1));
                 elseif(strcmp(basis, 'auto'))
-                    if(i==size(Ic))
-                        throw(MException('DualSimplex:NoValidBasis' ,'No valid conjugate basis exist. Task is unsolvable'));
-                    end
                     i=i+1;
                 end
-                valid = checkBasis(A, c, Ic(i, :), epsilon);
+                if(validIc(i))
+                    break;
+                end
             end
             Icb=Ic(i, :);
         elseif(strcmp(basis, 'manual'))
             fprintf( '#\t Icb\tvalid\n');
             for i=1:size(Ic, 1)
-                valid = checkBasis(A, c, Ic(i, :), epsilon);
-                fprintf([num2str(i) '\t' mat2str(Ic(i, :)) '\t' num2str(valid) '\n']);
+                fprintf([num2str(i) '\t' mat2str(Ic(i, :)) '\t' num2str(validIc(i)) '\n']);
             end
             i = input('Select bais combination number: ');
             Icb = Ic(i, :);
