@@ -1,4 +1,4 @@
-function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion, print, epsilon)
+function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion, eqmode, print, epsilon)
     % *A, b, c - matrices with data
     % *restrictions - row vector, having size equals to size of column vector b, holding restrictions 
     %   signs: 1(<=), 0(=), -1(>=)
@@ -6,16 +6,19 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     % *basis - basis selection method: 'random', 'auto', 'manual', <basis>
     %   'auto' - generates all combinations n by m of basis vector indices and selects first
     %       valid basis from generated
-    % exclusion - mode of exclusion from basis variable selection: 'manual', 'auto'
-    % print -  logging mode: 'none', 'minimal', 'all'
-    % epsilon - calculations accuracy: values less than epsilon are counted as zero
+    % *exclusion - mode of exclusion from basis variable selection: 'manual', 'auto'
+    % *eqmode - mode of equals sign restrictions treating:
+    %   'normal'(standard dual simplex method),'modified'(adding artificial
+    %   variables for equals sign restrictions)
+    % *print -  logging mode: 'none', 'minimal', 'all'
+    % *epsilon - calculations accuracy: values less than epsilon are counted as zero
     % Icb - basis indexes vector
     % Example:
     %   A=[25 36 26; -6 6 6; 21 26 -8];
     %   b=[41; 42; -2];
     %   c=[35; 0; -9];
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'auto', 'all', 0.00001);
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, 'manual', 'minimal', 0.00001);
+    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'auto', 'normal', 'all', 0.00001);
+    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, 'manual', 'manual', 'modified', 'minimal', 0.00001);
     
     clc;
     if(max)
@@ -49,19 +52,33 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     end
     fprintf(['Epsilon:\t' num2str(epsilon) '\n']);
     % 1. Convert task to maximization and to standard form
-    A = [A zeros(size(A,1))];
-    for i=1:size(A,1);
-        if(restrictions(i)>=0)
-            restriction=1;
-        else
-            restriction=-1;
+    if(strcmp(eqmode, 'normal'))
+        A= [A zeros(size(A, 1), nnz(restrictions))];
+        innz =1;
+        for i=1:size(restrictions,2)
+            if(restrictions(i)==0)
+                continue;
+            end
+            A(i, size(A,2)-nnz(restrictions)+innz)=restrictions(i);
+            innz=innz+1;
         end
-        A(i, size(A,2)-size(A,1)+i)=restriction;
+    else
+        A = [A zeros(size(A,1))];
+        for i=1:size(A,1);
+            if(restrictions(i)>=0)
+                restriction=1;
+            else
+                restriction=-1;
+            end
+            A(i, size(A,2)-size(A,1)+i)=restriction;
+        end
     end
+    [m, n] = size(A);
+    
     if(~max)
         c = c.*-1;
     end
-	c = [c ; zeros(rank(A), 1)];
+	c = [c ; zeros(n-m, 1)];
     if(~strcmp(print, 'none'))
         fprintf('\n=============================================================\n');
         fprintf('1. Convert task to standard form [max c[t]x while Ax=b]: \n');
@@ -79,7 +96,6 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
 	[Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon);
     
     % 3. Decompose P0=b by basis vectors. Build initial table.
-    [m, n] = size(A);
 	x = Pb\b;
     P = zeros(m, n);
     for i=1:n
@@ -107,9 +123,11 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     for i=1:m
         res(Icb(Icb==Icb(i)))=x(i);
     end
-    for i=1:m
-        if(restrictions(i)==0 && res(m+i)>0)
-            throw(MException('DualSimplex:UnsolvableTask' ,['Optimal solution contains nonzero arfificial variable x' num2str(m+i) '. Task is unsolvable']));
+    if(strcmp(eqmode, 'modified'))
+        for i=1:m
+            if(restrictions(i)==0 && res(m+i)>0)
+                throw(MException('DualSimplex:UnsolvableTask' ,['Optimal solution contains nonzero arfificial variable x' num2str(m+i) '. Task is unsolvable']));
+            end
         end
     end
     if(~strcmp(print, 'none'))
