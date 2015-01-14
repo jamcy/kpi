@@ -71,9 +71,9 @@ function [x P Icb]= dualIterations(x, P, Icb, c, operation, exclusion, print, ep
             printEstimatesTable(deltas, gammas);
             fprintf('Excluding l=%d\n', l);
             if(strcmp(operation, 'max'))
-                fprintf(['Minimal gamma is ' num2str(min(gammas)) ' ==> Including r=' num2str(r) '\n']);
+                fprintf(['Minimal gamma is ' num2str(gammas(r)) ' ==> Including r=' num2str(r) '\n']);
             else
-                fprintf(['Maximal negative gamma is ' num2str(min(gammas)) ' ==> Including r=' num2str(r) '\n']);
+                fprintf(['Maximal negative gamma is ' num2str(gammas(r)) ' ==> Including r=' num2str(r) '\n']);
             end
             fprintf('Recalculating table...\n');
         end
