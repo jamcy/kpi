@@ -13,15 +13,15 @@
 		<li class="active"><u:i18n value="${room.name }"/></li>
 	</ol>
 	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-7 col-lg-8 exp-desc">
+		<!-- TODO: move description to properties -->
+		<%-- <div class="col-xs-6 col-sm-6 col-md-7 col-lg-8 exp-desc">
 			<h1><u:i18n value="${room.name }"/></h1>
-			<!-- TODO: move description to properties -->
+			
 			<h3 class="p">Description</h3>
 			<div class="exp-desc">
-			<!-- TODO: remove bad workaround -->
-				<h5><%-- <%=messages.getString("room-desc-" + room.getId()) %> --%></h5>
+				<h5><%=messages.getString("room-desc-" + room.getId()) %></h5>
 			</div>
-		</div>
+		</div> --%>
 		<div class="col-xs-6 col-sm-6 col-md-5 col-lg-4">
 			<div class='aright'>
 				<div class="room-static" style='background-color: inherit; box-shadow: none;'>

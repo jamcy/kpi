@@ -33,7 +33,9 @@ public class I18n implements java.io.Serializable {
 
 	public void setContentByLanguage(LanguageCode languageCode, String content) {
 		if (getContentByLanguage(languageCode) == null) {
-			i18nValues.add(new I18nValue(languageCode, content));
+			I18nValue value = new I18nValue(languageCode, content);
+			value.setI18n(this);
+			i18nValues.add(value);
 			return;
 		}
 		for (I18nValue value : i18nValues) {

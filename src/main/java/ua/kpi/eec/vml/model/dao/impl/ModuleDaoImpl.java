@@ -20,6 +20,8 @@ public class ModuleDaoImpl extends AbstractHibernateDao<Module> implements
 		Module module = super.find(id);
 		if(module!=null) {
 			Hibernate.initialize(module.getRoom());
+			Hibernate.initialize(module.getDescription());
+			Hibernate.initialize(module.getPageContent());
 		}
 		return module;
 	}

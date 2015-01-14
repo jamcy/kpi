@@ -20,7 +20,7 @@ public class CourseDaoImpl extends AbstractHibernateDao<Course> implements Cours
 	@Override
 	@Transactional
 	public List<Course> findAll() {
-		return getSessionFactory().getCurrentSession().createQuery("from Room order by id").list();
+		return getSessionFactory().getCurrentSession().createQuery("from Course order by id").list();
 	}
 
 }

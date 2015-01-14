@@ -20,7 +20,7 @@
     });
 </script>
 
-<sf:form action="" id="module-edit" method="post" commandName="module">
+<sf:form action="" id="module-edit" method="post" modelAttribute="module">
 	<sf:hidden path="id"/>
     <div class="form-group">
     	<label>Module room:</label>
@@ -32,7 +32,8 @@
     </div>
     <div class="form-group">
         <label>Short name:</label>
-        <sf:input path="shortName" cssClass="form-control"/>
+        <sf:input path="shortName" cssClass="form-control" />
+        <sf:errors path="shortName" cssClass="error" />
     </div>
     <div class="form-group">
         <label>Module name:</label>

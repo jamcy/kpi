@@ -85,15 +85,23 @@
 	    <property name="converters">
 	        <set>
 	            <bean class="ua.kpi.eec.vml.service.converter.ModuleToModuleForm"/>
+	            <bean class="ua.kpi.eec.vml.service.converter.ModuleFormToModule"/>
 	        </set>
 	    </property>
 	</bean>
 	
 	<!-- Security configuration -->
-	<bean id="moodleAuthenticationManager" class="ua.kpi.eec.vml.service.authentication.MoodleAuthenticationManager">
+	<security:authentication-manager/>
+	
+	<bean id="vmlAuthenticationManager" class="ua.kpi.eec.vml.service.authentication.VmlAuthenticationManager">
+		<property name="authenticationStrategy" ref="${authentication.strategy}" />
+	</bean>
+	
+	<bean id="moodleAuthenticationStrategy" class="ua.kpi.eec.vml.service.authentication.MoodleAuthenticationStrategy">
 		<property name="moodleService" ref="moodleService" />
 	</bean>
-	<security:authentication-manager/>
+	<bean id="mockAuthenticationStrategy" class="ua.kpi.eec.vml.service.authentication.MockAuthenticationStrategy">
+	</bean>
 	
 	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
     	<constructor-arg ref="roleHierarchy" />
@@ -118,11 +126,10 @@
 		</property>
 	</bean>
 	
-	<security:http authentication-manager-ref="moodleAuthenticationManager" access-decision-manager-ref="accessDecisionManager">
+	<security:http authentication-manager-ref="vmlAuthenticationManager" access-decision-manager-ref="accessDecisionManager">
 		<security:form-login login-page="/login"  authentication-failure-url="/login?error"/>
 		<security:logout invalidate-session="true" logout-success-url="/"/>
 		<security:anonymous username="anonymous" granted-authority="ROLE_GUEST" />
-		
 		<!-- <security:intercept-url pattern="/course/**" access="ROLE_USER" /> -->
 	</security:http>
 	

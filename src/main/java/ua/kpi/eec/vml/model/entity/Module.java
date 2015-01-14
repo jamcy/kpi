@@ -3,6 +3,7 @@ package ua.kpi.eec.vml.model.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,33 +35,6 @@ public class Module implements java.io.Serializable {
 	public Module() {
 	}
 
-	public Module(int id, I18n name, I18n description,
-			I18n pageContent, Room room, String code, String embed,
-			String imageUrl) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.pageContent = pageContent;
-		this.room = room;
-		this.code = code;
-		this.embed = embed;
-		this.imageUrl = imageUrl;
-	}
-
-	public Module(int id, I18n name, I18n description,
-			I18n pageContent, Room room, String code, String embed,
-			String imageUrl, Set<Task> tasks) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.pageContent = pageContent;
-		this.room = room;
-		this.code = code;
-		this.embed = embed;
-		this.imageUrl = imageUrl;
-		this.tasks = tasks;
-	}
-
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "module_seq_gen")
@@ -73,7 +47,7 @@ public class Module implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "name_i18n_id", nullable = false)
 	public I18n getName() {
 		return this.name;
@@ -83,7 +57,7 @@ public class Module implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "description_i18n_id", nullable = false)
 	public I18n getDescription() {
 		return this.description;
@@ -93,7 +67,7 @@ public class Module implements java.io.Serializable {
 		this.description = description;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "page_content_i18n_id", nullable = false)
 	public I18n getPageContent() {
 		return this.pageContent;
