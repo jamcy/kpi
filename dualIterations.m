@@ -17,7 +17,7 @@ function [x P Icb]= dualIterations(x, P, Icb, c, operation, exclusion, print, ep
                     fprintf('Unsolvable task for table:\n');
                     printSimplexTable(Icb, x, P, c);
                 end
-                throw(MException('DualSimplex:UnsolvableTask' , ['Basis solution does not satisfy dual task restrictions(All P' num2str(i) 'j>=0 for x' num2str(i) '<0). Task is unsolvable.']));
+                throw(MException('DualSimplex:UnsolvableTask' , ['Basis solution does not satisfy restrictions(All elements of s=' num2str(Icb(i)) 'row are >=0 while x' num2str(Icb(i)) '<0). Task is unsolvable.']));
             end
         end
         deltas = calculateDeltas(Icb, P, c, epsilon);
