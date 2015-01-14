@@ -48,7 +48,6 @@ function [x P Icb]= dualIterations(x, P, Icb, c, operation, exclusion, print, ep
                         maxnegative = gammas(i);
                     end
                 end
-                maxnegative
                 r=find(gammas==maxnegative, 1);
             end
         else
