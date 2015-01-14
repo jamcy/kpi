@@ -1,4 +1,4 @@
-function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
+function [x P Icb]= dualIterations(x, P, Icb, c, operation, exclusion, print, epsilon)
     m=size(P, 1);
     iteration = 1;
     while(true)
@@ -20,13 +20,14 @@ function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
                 throw(MException('DualSimplex:UnsolvableTask' , ['Basis solution does not satisfy dual task restrictions(All P' num2str(i) 'j>=0 for x' num2str(i) '<0). Task is unsolvable.']));
             end
         end
-        deltas = calculateDeltas(Icb, P, c);
+        deltas = calculateDeltas(Icb, P, c, epsilon);
         if(strcmp(exclusion, 'auto'))
             l=Icb(x == (min(x)));
         else
+            printSimplexTable(Icb, x, P, c);
             valid = false;
             while(~valid)
-                l = input('Select index of variable to exclude from basis (s): ');
+                l = input('Select index (s) of variable to exclude from basis. l= ');
                 valid = ismember(l, Icb);
                 if(~valid)
                     fprintf(['No variable with index ' num2str(l) ' found in basis\n']);
@@ -36,8 +37,32 @@ function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
                 end
             end
         end
-        gammas = calculateGammas(Icb, P, deltas, l);
-        r=find(gammas==min(gammas),1);
+        gammas = calculateGammas(Icb, P, deltas, l, epsilon);
+        if(strcmp(exclusion, 'auto'))
+            if(strcmp(operation, 'max'))
+                r=find(gammas==min(gammas),1);
+            else
+                maxnegative = min(gammas);
+                for i=1:size(gammas, 2)
+                    if(gammas(i)<0 && gammas(i)>maxnegative)
+                        maxnegative = gammas(i);
+                    end
+                end
+                maxnegative
+                r=find(gammas==maxnegative, 1);
+            end
+        else
+            printEstimatesTable(deltas, gammas);
+            while(true)
+                r=input('Select index of P to include into basis. r=');
+                if(ismember(l, Icb))
+                    fprintf(['Vector P' num2str(r) ' is already in basis\n']);
+                    continue;
+                else
+                    break;
+                end
+            end
+        end
         if(~exist('r', 'var'))
             throw(MException('DualSimplex:UnsolvableTask' ,'All gammas evaluated to NaN. Can not proceed'));
         end
@@ -46,7 +71,11 @@ function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
             printSimplexTable(Icb, x, P, c);
             printEstimatesTable(deltas, gammas);
             fprintf('Excluding l=%d\n', l);
-            fprintf(['Minimal gamma is ' num2str(min(gammas)) ' ==> Including r=' num2str(r) '\n']);
+            if(strcmp(operation, 'max'))
+                fprintf(['Minimal gamma is ' num2str(min(gammas)) ' ==> Including r=' num2str(r) '\n']);
+            else
+                fprintf(['Maximal negative gamma is ' num2str(min(gammas)) ' ==> Including r=' num2str(r) '\n']);
+            end
             fprintf('Recalculating table...\n');
         end
         [x P Icb] = eliminateGJ(Icb, [x P], l, r, epsilon);
@@ -54,7 +83,7 @@ function [x P Icb]= dualIterations(x, P, Icb, c, exclusion, print, epsilon)
     end
 end
 
-function [deltas] = calculateDeltas(Icb, P, c)
+function [deltas] = calculateDeltas(Icb, P, c, epsilon)
 	[m, n] = size(P);
 	deltas = NaN(1, n);
 	for j=1:n
@@ -66,10 +95,13 @@ function [deltas] = calculateDeltas(Icb, P, c)
             delta = delta+c(Icb(i))*P(i, j);
         end
     	deltas(j)=delta-c(j);
+        if(abs(deltas(j))<epsilon)
+            deltas(j)=0;
+        end
 	end
 end
 
-function [gammas] = calculateGammas(Icb, P, deltas, l)
+function [gammas] = calculateGammas(Icb, P, deltas, l, epsilon)
 	n = size(P,2);
 	gammas = NaN(1, n);
 	for j=1:n
@@ -79,6 +111,9 @@ function [gammas] = calculateGammas(Icb, P, deltas, l)
     	x_lj = P(Icb==l, j);
     	if(x_lj<0)
         	gammas(j)=-deltas(j)/x_lj;
+            if(abs(gammas(j))<epsilon)
+                gammas(j)=0;
+            end
     	end
 	end
 end

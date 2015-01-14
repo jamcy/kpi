@@ -1,4 +1,4 @@
-function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion, eqmode, print, epsilon)
+function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion, eqmode, minmode, print, epsilon)
     % *A, b, c - matrices with data
     % *restrictions - row vector, having size equals to size of column vector b, holding restrictions 
     %   signs: 1(<=), 0(=), -1(>=)
@@ -10,6 +10,9 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     % *eqmode - mode of equals sign restrictions treating:
     %   'normal'(standard dual simplex method),'modified'(adding artificial
     %   variables for equals sign restrictions)
+    % *minmode - defines the way to solve minimization task:
+    %   'invert' - multiply all 'c' components by -1 and solve maximization task
+    %   'natural' - solve minimization task "as is"
     % *print -  logging mode: 'none', 'minimal', 'all'
     %   'minimal' - does not prints decomposition of P0,Pi by basis vectors
     % *epsilon - calculations accuracy: values less than epsilon are counted as zero
@@ -18,8 +21,8 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     %   A=[25 36 26; -6 6 6; 21 26 -8];
     %   b=[41; 42; -2];
     %   c=[35; 0; -9];
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'auto', 'normal', 'all', 0.00001);
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, 'manual', 'manual', 'modified', 'minimal', 0.00001);
+    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'auto', 'normal', 'invert', 'all', 0.00001);
+    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, 'manual', 'manual', 'modified', 'natural', 'minimal', 0.00001);
     
     clc;
     if(max)
@@ -76,13 +79,18 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     end
     [m, n] = size(A);
     
-    if(~max)
+    if(~max && strcmp(minmode, 'invert'))
         c = c.*-1;
+    end
+    if(~max && strcmp(minmode, 'natural'))
+        operation = 'min';
+    else
+        operation = 'max';
     end
 	c = [c ; zeros(n-m, 1)];
     if(~strcmp(print, 'none'))
         fprintf('\n=============================================================\n');
-        fprintf('1. Convert task to standard form [max c[t]x while Ax=b]: \n');
+        fprintf(['1. Converted task to standard form [' operation ' c[t]x while Ax=b]: \n']);
         fprintf('A=\n');
         disp(A);
         fprintf('c[t]=\n');
@@ -94,7 +102,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
         fprintf('\n=============================================================\n');
         fprintf('2. Find conjugate basis:\n');
     end
-	[Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon);
+	[Pb, Icb] = conjugateBasis(A, c, basis, print, operation, epsilon);
     
     % 3. Decompose P0=b by basis vectors. Build initial table.
 	x = Pb\b;
@@ -119,7 +127,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
         fprintf('\n=============================================================\n');
         fprintf('4. Iterations:\n');
     end
-    [x P Icb] = dualIterations(x, P, Icb, c, exclusion, print, epsilon);
+    [x P Icb] = dualIterations(x, P, Icb, c, operation, exclusion, print, epsilon);
     res = zeros(1, n); 
     for i=1:m
         res(Icb(Icb==Icb(i)))=x(i);
@@ -138,7 +146,7 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     end
 end
 
-function [Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon)
+function [Pb, Icb] = conjugateBasis(A, c, basis, print, operation, epsilon)
     [m, n] = size(A);
     if(ischar(basis)==false)
         if(size(basis, 2)~=m)
@@ -149,7 +157,7 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon)
         Ic = nchoosek(1:n, m);
         validIc = zeros(size(Ic,1),1);
         for i=1:size(Ic,1)
-            validIc(i)= checkBasis(A, c, Ic(i, :), epsilon);
+            validIc(i)= checkBasis(A, c, Ic(i, :), operation, epsilon);
         end
         if(sum(validIc)==0)
             throw(MException('DualSimplex:NoValidBasis' ,'No valid conjugate basis exist. Task is unsolvable'));
@@ -178,7 +186,7 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon)
             throw(MException('DualSimplex:UnknownBasisMethod' ,'Unknown basis selection method'));
         end
     end
-    [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, epsilon);
+    [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, operation, epsilon);
     if(~strcmp(print, 'none'))
         fprintf('Icb:\n');
         disp(Icb);
@@ -196,7 +204,7 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, print, epsilon)
     end
 end
 
-function [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, epsilon)
+function [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, operation, epsilon)
     m=size(A, 1);
     Pb=zeros(m);
     cb=zeros(m, 1);
@@ -211,7 +219,11 @@ function [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, epsilon)
             restrictionFlags(i)=0;
         end
     end
-    valid = all(restrictionFlags>=0);
+    if(strcmp(operation, 'max'))
+        valid = all(restrictionFlags>=0);
+    else
+        valid = all(restrictionFlags<=0);
+    end
 end
 
 function [] = printDecomposition(x, P, A, b, Pb)
