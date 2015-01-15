@@ -13,18 +13,16 @@ import ua.kpi.eec.vml.model.entity.Module;
 
 @Controller
 public class ModuleController {
-	
+
 	@Autowired
 	private ModuleDao moduleDao;
-	
+
 	@RequestMapping(value="/module", method=RequestMethod.GET)
 	public String modulePage(@RequestParam int id, Model model) {
 		model.addAttribute("module", moduleDao.find(id));
 		return "module";
 	}
-	
-	//TODO: resource
-	
+
 	@ResponseBody
 	@RequestMapping(value="/module/app", method=RequestMethod.GET, produces="text/html; charset=utf-8")
 	public String showModuleApp(@RequestParam int id) {
@@ -105,7 +103,6 @@ public class ModuleController {
 		return "";
 	}
 	
-	public void setModuleDao(ModuleDao moduleDao) {
-		this.moduleDao = moduleDao;
-	}
+	//TODO: resource
+	
 }
