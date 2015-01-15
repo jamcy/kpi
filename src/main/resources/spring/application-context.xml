@@ -29,7 +29,7 @@
 		<property name="user" value="${db.user}" />
 		<property name="password" value="${db.password}" />
 		<property name="acquireIncrement" value="1" />
-		<property name="minPoolSize" value="5" />
+		<property name="minPoolSize" value="1" />
 		<property name="maxPoolSize" value="10" />
 		<property name="maxIdleTime" value="30" />
 	</bean>
@@ -54,6 +54,9 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
 				<prop key="show_sql">true</prop>
+				<prop key="hibernate.connection.useUnicode">true</prop>
+                <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+                <prop key="hibernate.connection.charSet">UTF-8</prop>
 			</props>
 		</property>
 	</bean>

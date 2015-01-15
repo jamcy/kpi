@@ -13,6 +13,7 @@
         $("#name-tabs").tabs();
         $("#content-tabs").tabs();
 	});
+	
 	tinymce.init({
         plugins: "image, code, table, link",
         mode: "exact",

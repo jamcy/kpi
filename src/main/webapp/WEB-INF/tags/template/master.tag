@@ -14,7 +14,7 @@
 <link rel="shortcut icon" href="<s:url value="/images/favicon.ico" />" />
 
 <link href="<s:url value="/css/bootstrap.min.css" />" rel="stylesheet">
-<link href="<s:url value="/css/responsive-main.css" />" rel="stylesheet">
+<link href="<s:url value="/css/main.css" />" rel="stylesheet">
 <link href="<s:url value="/css/smoothness/jquery-ui-1.10.4.custom.min.css" />" rel="stylesheet">
 
 <script src="<s:url value="/js/jquery-1.9.1.min.js" />"></script>

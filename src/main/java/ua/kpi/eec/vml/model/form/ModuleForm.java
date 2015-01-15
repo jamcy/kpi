@@ -1,10 +1,16 @@
 package ua.kpi.eec.vml.model.form;
 
+import java.io.Serializable;
+
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import ua.kpi.eec.vml.service.validation.constraint.ModuleName;
 
-public class ModuleForm {
+@SuppressWarnings("serial")
+public class ModuleForm implements Serializable {
+	
 	private int id;
 	@ModuleName
 	private String shortName;
@@ -16,7 +22,10 @@ public class ModuleForm {
 	private String descriptionUk;
 	private String contentEn;
 	private String contentUk;
-	private long roomId;
+	@NotNull
+	private Long roomId;
+	private int embedWidth;
+	private int embedHeight;
 	private String embedCode;
 	private String imageUrl;
 
@@ -76,12 +85,28 @@ public class ModuleForm {
 		this.contentUk = contentUk;
 	}
 
-	public long getRoomId() {
+	public Long getRoomId() {
 		return roomId;
 	}
 
-	public void setRoomId(long roomId) {
+	public void setRoomId(Long roomId) {
 		this.roomId = roomId;
+	}
+	
+	public int getEmbedWidth() {
+		return embedWidth;
+	}
+
+	public void setEmbedWidth(int embedWidth) {
+		this.embedWidth = embedWidth;
+	}
+
+	public int getEmbedHeight() {
+		return embedHeight;
+	}
+
+	public void setEmbedHeight(int embedHeight) {
+		this.embedHeight = embedHeight;
 	}
 
 	public String getEmbedCode() {

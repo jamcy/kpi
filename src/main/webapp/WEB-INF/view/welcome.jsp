@@ -53,6 +53,7 @@
 				</div>
 				</c:forEach>
 			</div>
+			<div style="clear: both;"></div>
 			<div class="divider"></div>
 			<div class="center">
 				<h3 class="p">

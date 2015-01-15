@@ -16,26 +16,29 @@ public class ModuleFormToModule implements Converter<ModuleForm, Module> {
 	private RoomDao roomDao;
 	
 	@Override
-	public Module convert(ModuleForm mf) {
-		Module m = new Module();
-		m.setId(mf.getId());
-		m.setCode(mf.getShortName());
-		m.setEmbed(mf.getEmbedCode());
-		m.setRoom(roomDao.find(mf.getRoomId()));
-		m.setImageUrl(mf.getImageUrl());
+	public Module convert(ModuleForm form) {
+		Module module = new Module();
+		module.setId(form.getId());
+		module.setCode(form.getShortName());
+		module.setEmbedHeight(form.getEmbedHeight());
+		module.setEmbedWidth(form.getEmbedWidth());
+		module.setEmbedCode(form.getEmbedCode());
+		module.setRoom(roomDao.find(form.getRoomId()));
+		module.setImageUrl(form.getImageUrl());
 		I18n name = new I18n();
 		I18n description = new I18n();
 		I18n content = new I18n();
-		name.setContentByLanguage(EN , mf.getNameEn());
-		name.setContentByLanguage(UK, mf.getContentUk());
-		description.setContentByLanguage(EN, mf.getDescriptionEn());
-		description.setContentByLanguage(UK, mf.getDescriptionUk());
-		content.setContentByLanguage(EN, mf.getContentEn());
-		content.setContentByLanguage(UK, mf.getContentUk());
-		m.setName(name);
-		m.setDescription(description);
-		m.setPageContent(content);
-		return m;
+		name.setContentByLanguage(EN , form.getNameEn());
+		name.setContentByLanguage(UK, form.getNameUk());
+		System.out.println(form.getNameUk());
+		description.setContentByLanguage(EN, form.getDescriptionEn());
+		description.setContentByLanguage(UK, form.getDescriptionUk());
+		content.setContentByLanguage(EN, form.getContentEn());
+		content.setContentByLanguage(UK, form.getContentUk());
+		module.setName(name);
+		module.setDescription(description);
+		module.setPageContent(content);
+		return module;
 	}
 
 }

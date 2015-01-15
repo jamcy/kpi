@@ -2,11 +2,11 @@ package ua.kpi.eec.vml.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import ua.kpi.eec.vml.model.dao.ModuleDao;
 import ua.kpi.eec.vml.model.entity.Module;
@@ -18,23 +18,24 @@ public class ModuleController {
 	private ModuleDao moduleDao;
 	
 	@RequestMapping(value="/module", method=RequestMethod.GET)
-	public ModelAndView modulePage(@RequestParam int id) {
-		ModelAndView model = new ModelAndView("module");
-		Module module = moduleDao.find(id);
-		model.addObject("module", module);
-		model.addObject("room", module.getRoom());
-		return model;
+	public String modulePage(@RequestParam int id, Model model) {
+		model.addAttribute("module", moduleDao.find(id));
+		return "module";
 	}
 	
-	//TODO: task
 	//TODO: resource
-	//TODO: app
 	
-	@RequestMapping(value="/module/app", method=RequestMethod.GET, produces="text/html; charset=utf-8")
 	@ResponseBody
-	public String moduleApplicationPage(@RequestParam int id) {
+	@RequestMapping(value="/module/app", method=RequestMethod.GET, produces="text/html; charset=utf-8")
+	public String showModuleApp(@RequestParam int id) {
 		Module module = moduleDao.find(id);
-		return module.getEmbed();
+		return module.getEmbedCode();
+	}
+
+	//TODO: task
+	@ResponseBody
+	@RequestMapping(value="/module/workshop", method=RequestMethod.GET, produces="text/html; charset=utf-8")
+	public String showTaskApp() {
 //		User user = (User) rd.getClientStateAttribute("user");
 //		String mode = rd.getParameter("mode");
 //
@@ -101,8 +102,8 @@ public class ModuleController {
 //		}
 //		resp.setPageDataAttribute("content", content);
 //		resp.setRawContentType("text/html");
+		return "";
 	}
-
 	
 	public void setModuleDao(ModuleDao moduleDao) {
 		this.moduleDao = moduleDao;

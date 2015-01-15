@@ -9,7 +9,7 @@
 <jsp:body>
 <div class="container">
 	<ol class="breadcrumb">
-		<li><a href="/">Home</a></li>
+		<li><a href="<s:url value="/" />">Home</a></li>
 		<li><a href="<s:url value="/room?id=${module.room.id}"/>"><u:i18n value="${module.room.name }"></u:i18n></a></li>
 		<li class="active"><u:i18n value="${module.name }"/></li>
 	</ol>
@@ -45,7 +45,7 @@
 					</div>
 					<div id="pane3" class="tab-pane">
 						<div class="tab-container">
-							<div class="exp-desc"><u:i18n value="${task.theory }"/></div>
+							<div class="exp-desc"><u:i18n value="${task.theory }" escape="false" /></div>
 						</div>
 					</div>
 					</c:if>
@@ -56,7 +56,7 @@
 			<div class="divider"></div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-5 col-lg-4 ">
-			<a id="launch_module" href="#module" class='exp-img-box-box'> <!--  data-toggle="modal" data-target="#myModal"> -->
+			<a id="launch-module" href="#module" class='exp-img-box-box'> <!--  data-toggle="modal" data-target="#myModal"> -->
 				<div class='exp-img-box'>
 					<div class='rel' style="text-align: center;">
 						<div class='over center'>
@@ -109,41 +109,43 @@
 
 		</div> --%>
 	</div>
-	
+	<div class="clearfix"></div>
+	<div id="module-app">
+		<iframe src="<s:url value="/module/app?id=${module.id }" />"
+			width="${module.embedWidth }" height="${module.embedHeight }" frameborder="no" >
+		</iframe>
+	</div>
 	<%-- <iframe id="module" style="display:none; margin-top: 10px; "
 		src="/module/app?id=${module.id}<%=(mode == null) ? "" : ("&mode=" + mode + (mode
 					.equals("task") ? ("&taskid=" + task.getId())
 					: ("&tlgid=" + tsk_status.getId())))%>"
-		width="1230" height="640" align="center" frameborder="no"> </iframe> --%>
-
+		width="${module.embedWidth }" height="${module.embedHeight }" align="center" frameborder="no"></iframe> --%>
 	<script>
-	$(function(){
-		function autoResize(id){
-		    var newheight;
-		    var newwidth;
-		    var frame = document.getElementById(id);
-		    if(document.getElementById){
-		    	if(frame.contentDocument){
-		    		newheight = frame.contentDocument.documentElement.scrollHeight+30;
-		    	}else{
-		        	newheight = frame.contentWindow.document.body.scrollHeight;	
-		    	}
-		        if(newheight==0){
-		        	 newheight= frame.contentWindow.document.body.offsetHeight;
-		        }
-		        newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth;
-		    }
+	/* function autoResize(id){
+	    var newheight;
+	    var newwidth;
+	    var frame = document.getElementById(id);
+	    if(document.getElementById){
+	    	if(frame.contentDocument){
+	    		newheight = frame.contentDocument.documentElement.scrollHeight+30;
+	    	}else{
+	        	newheight = frame.contentWindow.document.body.scrollHeight;	
+	    	}
+	        if(newheight==0){
+	        	 newheight= frame.contentWindow.document.body.offsetHeight;
+	        }
+	        newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth;
+	    }
 
-		    document.getElementById(id).height= (newheight) + "px";
-		    document.getElementById(id).width= (newwidth+15) + "px";
-		}
-		
-		$("#launch_module").click(function(e){
-			var id = "module";
-			$("#"+id).show();
-			autoResize(id);
-			});
-	})
+	    document.getElementById(id).height= (newheight) + "px";
+	    document.getElementById(id).width= (newwidth+15) + "px";
+	} */
+	
+	$(document).ready(function() {
+		$("#launch-module").click(function() {
+			$("#module-app").show();
+		});
+	});
 	</script>
 </div>
 </div>

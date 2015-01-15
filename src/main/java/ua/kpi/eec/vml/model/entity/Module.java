@@ -28,7 +28,9 @@ public class Module implements java.io.Serializable {
 	private I18n pageContent;
 	private Room room;
 	private String code;
-	private String embed;
+	private int embedWidth;
+	private int embedHeight;
+	private String embedCode;
 	private String imageUrl;
 	private Set<Task> tasks = new HashSet<Task>(0);
 
@@ -95,14 +97,32 @@ public class Module implements java.io.Serializable {
 	public void setCode(String code) {
 		this.code = code;
 	}
-
-	@Column(name = "embed", nullable = false)
-	public String getEmbed() {
-		return this.embed;
+	
+	@Column(name = "embed_width", nullable = false)
+	public int getEmbedWidth() {
+		return embedWidth;
 	}
 
-	public void setEmbed(String embed) {
-		this.embed = embed;
+	public void setEmbedWidth(int embedWidth) {
+		this.embedWidth = embedWidth;
+	}
+
+	@Column(name = "embed_height", nullable = false)
+	public int getEmbedHeight() {
+		return embedHeight;
+	}
+
+	public void setEmbedHeight(int embedHeight) {
+		this.embedHeight = embedHeight;
+	}
+
+	@Column(name = "embed_code", nullable = false)
+	public String getEmbedCode() {
+		return embedCode;
+	}
+
+	public void setEmbedCode(String embedCode) {
+		this.embedCode = embedCode;
 	}
 
 	@Column(name = "image_url", nullable = false, length = 200)

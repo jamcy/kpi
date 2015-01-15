@@ -23,7 +23,9 @@ public class ModuleToModuleForm implements Converter<Module, ModuleForm> {
 		form.setContentUk(module.getPageContent().getContentByLanguage(UK));
 		form.setRoomId(module.getRoom().getId());
 		form.setImageUrl(module.getImageUrl());
-		form.setEmbedCode(module.getEmbed());
+		form.setEmbedCode(module.getEmbedCode());
+		form.setEmbedHeight(module.getEmbedHeight());
+		form.setEmbedWidth(module.getEmbedWidth());
 		return form;
 	}
 

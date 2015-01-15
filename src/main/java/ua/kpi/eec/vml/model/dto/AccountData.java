@@ -1,6 +1,10 @@
 package ua.kpi.eec.vml.model.dto;
 
-public class AccountData {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class AccountData implements Serializable {
+	
 	private int moodleId;
 	private String username;
 	private String fullName;
