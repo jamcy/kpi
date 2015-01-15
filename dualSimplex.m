@@ -82,12 +82,17 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     if(~max && strcmp(minmode, 'invert'))
         c = c.*-1;
     end
+    if(strcmp(eqmode, 'normal'))
+        c = [c ; zeros(nnz(restrictions), 1)];
+    else
+        c = [c ; zeros(m, 1)];
+    end
+    
     if(~max && strcmp(minmode, 'natural'))
         operation = 'min';
     else
         operation = 'max';
     end
-	c = [c ; zeros(n-m, 1)];
     if(~strcmp(print, 'none'))
         fprintf('\n=============================================================\n');
         fprintf(['1. Converted task to standard form [' operation ' c[t]x while Ax=b]: \n']);
