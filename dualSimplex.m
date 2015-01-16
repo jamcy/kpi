@@ -3,7 +3,11 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     % *restrictions - row vector, having size equals to size of column vector b, holding restrictions 
     %   signs: 1(<=), 0(=), -1(>=)
     % *max - shows if maximization problem: true, false
-    % *basis - basis selection method: 'random', 'auto', 'manual', <basis>
+    % *basis - basis selection method: 
+    %   'random' - randomly selected
+    %   'manual' - prints all indices combinations (n by m), showing whether each is valid and
+    %       then user selects combination of choice manually from the list
+    %   <basis> - exact basis, provided as vector input argument (indices of P vectors)
     %   'auto' - generates all combinations n by m of basis vector indices and selects first
     %       valid basis from generated
     % *exclusion - mode of exclusion from basis variable selection: 'manual', 'auto'

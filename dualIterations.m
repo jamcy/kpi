@@ -11,7 +11,17 @@ function [x P Icb]= dualIterations(x, P, Icb, c, operation, exclusion, print, ep
             return;
         end
         for i=1:m
-            if((x(i)<0) && (all(P(i,:)>=0)))
+            if(x(i)>=0)
+                continue;
+            end
+            negativexfound = false;
+            for j = 1: size(P,2)
+                if(abs(P(i,j))>epsilon && P(i,j)<0)
+                    negativexfound=true;
+                    break;
+                end
+            end
+            if(~negativexfound)
                 if(~strcmp(print, 'none'))
                     fprintf('\nIteration %d:\n', iteration);
                     fprintf('Unsolvable task for table:\n');
@@ -102,7 +112,7 @@ end
 
 function [gammas] = calculateGammas(Icb, P, deltas, l, epsilon)
 	n = size(P,2);
-	gammas = NaN(1, n);
+	gammas = zeros(1, n);
 	for j=1:n
     	if(ismember(j, Icb))
         	continue;
