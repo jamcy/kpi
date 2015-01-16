@@ -19,7 +19,7 @@ public class ModuleFormToModule implements Converter<ModuleForm, Module> {
 	public Module convert(ModuleForm form) {
 		Module module = new Module();
 		module.setId(form.getId());
-		module.setCode(form.getShortName());
+		module.setFolder(form.getFolder());
 		module.setEmbedHeight(form.getEmbedHeight());
 		module.setEmbedWidth(form.getEmbedWidth());
 		module.setEmbedCode(form.getEmbedCode());

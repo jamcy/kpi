@@ -14,7 +14,7 @@ public class ModuleToModuleForm implements Converter<Module, ModuleForm> {
 	public ModuleForm convert(Module module) {
 		ModuleForm form = new ModuleForm();
 		form.setId(module.getId());
-		form.setShortName(module.getCode());
+		form.setFolder(module.getFolder());
 		form.setNameEn(module.getName().getContentByLanguage(EN));
 		form.setNameUk(module.getName().getContentByLanguage(UK));
 		form.setDescriptionEn(module.getDescription().getContentByLanguage(EN));

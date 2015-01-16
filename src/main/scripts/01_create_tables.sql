@@ -30,14 +30,14 @@ create table room (
 
 create table module (
 	id serial primary key,
-	code varchar(200) not null,
+	folder varchar(200) not null,
 	name_i18n_id int not null,
 	embed_code text not null,
 	embed_width int not null default(900),
 	embed_height int not null default(600),
 	description_i18n_id int not null,
 	page_content_i18n_id int not null,
-	image_url varchar(200) not null,
+	image_url varchar(200),
 	room_id int not null,
 	foreign key (name_i18n_id) references i18n(id),
 	foreign key (description_i18n_id) references i18n(id),

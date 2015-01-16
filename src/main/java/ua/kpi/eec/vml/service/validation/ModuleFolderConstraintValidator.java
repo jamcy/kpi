@@ -3,12 +3,12 @@ package ua.kpi.eec.vml.service.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import ua.kpi.eec.vml.service.validation.constraint.ModuleName;
+import ua.kpi.eec.vml.service.validation.constraint.ModuleFolderUnique;
 
-public class ModuleNameConstraintValidator implements ConstraintValidator<ModuleName, String> {
+public class ModuleFolderConstraintValidator implements ConstraintValidator<ModuleFolderUnique, String> {
 
 	@Override
-	public void initialize(ModuleName name) {}
+	public void initialize(ModuleFolderUnique name) {}
 	
 	@Override
 	public boolean isValid(String name, ConstraintValidatorContext ctx) {

@@ -15,7 +15,12 @@ public class ModuleServiceImpl implements ModuleService {
 	
 	@Override
 	public void add(Module module) throws Exception {
-			moduleDao.create(module);
+		moduleDao.create(module);
+	}
+
+	@Override
+	public void update(Module module) throws Exception {
+		moduleDao.update(module);
 	}
 	
 }

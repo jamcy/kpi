@@ -2,39 +2,53 @@ package ua.kpi.eec.vml.model.form;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import ua.kpi.eec.vml.service.validation.constraint.ModuleName;
-
 @SuppressWarnings("serial")
 public class ModuleForm implements Serializable {
-	
-	private int id;
-	@ModuleName
-	private String shortName;
-	@NotBlank
+	private Integer id;
+	@NotBlank(message="Module folder name should not be blank")
+	//TODO: check if folder name already used by another module
+	private String folder;
+	private String imageUrl;
+	@NotNull(message="Room should be selected")
+	private Long roomId;
+	@NotBlank(message="Module name should not be blank")
 	private String nameEn;
-	@NotBlank
+	@NotBlank(message="Module name should not be blank")
 	private String nameUk;
+	@NotBlank(message="Module description should not be blank")
 	private String descriptionEn;
+	@NotBlank(message="Module description should not be blank")
 	private String descriptionUk;
 	private String contentEn;
 	private String contentUk;
-	@NotNull
-	private Long roomId;
-	private int embedWidth;
-	private int embedHeight;
+	@NotNull(message="Embed size should not be blank")
+	@Min(value=1, message="Embed size should be positive integer")
+	private Integer embedWidth;
+	@NotNull(message="Embed size should not be blank")
+	@Min(value=1, message="Embed size should be positive integer")
+	private Integer embedHeight;
+	@NotBlank(message="Module embed code should not be blank")
 	private String embedCode;
-	private String imageUrl;
 
-	public String getShortName() {
-		return shortName;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public String getFolder() {
+		return folder;
+	}
+
+	public void setFolder(String folder) {
+		this.folder = folder;
 	}
 
 	public String getNameEn() {
@@ -93,19 +107,19 @@ public class ModuleForm implements Serializable {
 		this.roomId = roomId;
 	}
 	
-	public int getEmbedWidth() {
+	public Integer getEmbedWidth() {
 		return embedWidth;
 	}
 
-	public void setEmbedWidth(int embedWidth) {
+	public void setEmbedWidth(Integer embedWidth) {
 		this.embedWidth = embedWidth;
 	}
 
-	public int getEmbedHeight() {
+	public Integer getEmbedHeight() {
 		return embedHeight;
 	}
 
-	public void setEmbedHeight(int embedHeight) {
+	public void setEmbedHeight(Integer embedHeight) {
 		this.embedHeight = embedHeight;
 	}
 
@@ -123,14 +137,6 @@ public class ModuleForm implements Serializable {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 }

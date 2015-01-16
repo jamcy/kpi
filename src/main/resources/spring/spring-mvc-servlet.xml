@@ -22,8 +22,7 @@
 	<context:component-scan base-package="ua.kpi.eec.vml" />
     
     <!-- Resource configuration -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="classpath:messages" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
@@ -43,7 +42,7 @@
     
     <mvc:annotation-driven />
 
-	<mvc:resources location="file:/${static.content.root}/"
+	<mvc:resources location="file:/${vml.data.folder}/static/"
 		mapping="/static/**" />
 	<mvc:resources location="/resources/css/" mapping="/css/**" />
 	<mvc:resources location="/resources/js/" mapping="/js/**" />
@@ -57,5 +56,7 @@
 		<property name="prefix" value="/WEB-INF/view/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
+	
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 	
 </beans>

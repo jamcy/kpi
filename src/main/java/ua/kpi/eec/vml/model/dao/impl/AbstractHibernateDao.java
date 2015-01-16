@@ -28,6 +28,7 @@ public abstract class AbstractHibernateDao<T> implements GenericDao<T> {
 	}
 
 	@Override
+	@Transactional
 	public void update(T entity) {
 		getSessionFactory().getCurrentSession().update(entity);
 	}

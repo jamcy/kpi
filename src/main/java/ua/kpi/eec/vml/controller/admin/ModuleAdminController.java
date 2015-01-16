@@ -40,15 +40,16 @@ public class ModuleAdminController extends DefaultAdminController {
 		model.addAttribute("module", moduleForm);
 		model.addAttribute("rooms", roomDao.findAll());
 		model.addAttribute("view", "module_edit");
+		model.addAttribute("action", "add");
 		return "admin";
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public String doModuleAdd(@Valid ModuleForm module, BindingResult result, Model model) throws Exception {
+	public String doModuleAdd(@Valid @ModelAttribute("module") ModuleForm module, BindingResult result, Model model) throws Exception {
 		if(result.hasErrors()) {
-			model.addAttribute("module", module);
-			model.addAttribute("view", "module_edit");
 			model.addAttribute("rooms", roomDao.findAll());
+			model.addAttribute("view", "module_edit");
+			model.addAttribute("action", "add");
 			return "admin";
 		}
 		moduleService.add(getConversionService().convert(module, Module.class));
@@ -56,19 +57,26 @@ public class ModuleAdminController extends DefaultAdminController {
 	}
 	
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public String showModuleEdit(@PathVariable int id, Model model) {
+	public String showModuleUpdate(@PathVariable int id, Model model) {
 		Module module = moduleDao.find(id);
 		ModuleForm moduleForm = getConversionService().convert(module, ModuleForm.class);
 		model.addAttribute("module", moduleForm);
 		model.addAttribute("rooms", roomDao.findAll());
 		model.addAttribute("view", "module_edit");
+		model.addAttribute("action", "edit");
 		return "admin";
 	}
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public String doModuleEdit(ModuleForm module, Model model) {
-		model.addAttribute("view", "module_edit");
-		return "admin";
+	public String doModuleUpdate(@Valid @ModelAttribute("module") ModuleForm module, BindingResult result, Model model) throws Exception {
+		if(result.hasErrors()) {
+			model.addAttribute("rooms", roomDao.findAll());
+			model.addAttribute("view", "module_edit");
+			model.addAttribute("action", "edit");
+			return "admin";
+		}
+		moduleService.update(getConversionService().convert(module, Module.class));
+		return "redirect:/admin/module/list";
 	}
 	
 }

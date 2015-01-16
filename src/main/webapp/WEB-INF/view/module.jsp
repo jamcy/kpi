@@ -56,7 +56,7 @@
 			<div class="divider"></div>
 		</div>
 		<div class="col-xs-6 col-sm-6 col-md-5 col-lg-4 ">
-			<a id="launch-module" href="#module" class='exp-img-box-box'> <!--  data-toggle="modal" data-target="#myModal"> -->
+			<a id="launch-module" href="#module" class='exp-img-box-box'>
 				<div class='exp-img-box'>
 					<div class='rel' style="text-align: center;">
 						<div class='over center'>
@@ -107,7 +107,12 @@
 				}
 			%>
 
-		</div> --%>
+		</div>
+		<iframe id="module" style="display:none; margin-top: 10px; "
+		src="/module/app?id=${module.id}<%=(mode == null) ? "" : ("&mode=" + mode + (mode
+					.equals("task") ? ("&taskid=" + task.getId())
+					: ("&tlgid=" + tsk_status.getId())))%>"
+		width="${module.embedWidth }" height="${module.embedHeight }" align="center" frameborder="no"></iframe> --%>
 	</div>
 	<div class="clearfix"></div>
 	<div id="module-app">
@@ -115,32 +120,7 @@
 			width="${module.embedWidth }" height="${module.embedHeight }" frameborder="no" >
 		</iframe>
 	</div>
-	<%-- <iframe id="module" style="display:none; margin-top: 10px; "
-		src="/module/app?id=${module.id}<%=(mode == null) ? "" : ("&mode=" + mode + (mode
-					.equals("task") ? ("&taskid=" + task.getId())
-					: ("&tlgid=" + tsk_status.getId())))%>"
-		width="${module.embedWidth }" height="${module.embedHeight }" align="center" frameborder="no"></iframe> --%>
 	<script>
-	/* function autoResize(id){
-	    var newheight;
-	    var newwidth;
-	    var frame = document.getElementById(id);
-	    if(document.getElementById){
-	    	if(frame.contentDocument){
-	    		newheight = frame.contentDocument.documentElement.scrollHeight+30;
-	    	}else{
-	        	newheight = frame.contentWindow.document.body.scrollHeight;	
-	    	}
-	        if(newheight==0){
-	        	 newheight= frame.contentWindow.document.body.offsetHeight;
-	        }
-	        newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth;
-	    }
-
-	    document.getElementById(id).height= (newheight) + "px";
-	    document.getElementById(id).width= (newwidth+15) + "px";
-	} */
-	
 	$(document).ready(function() {
 		$("#launch-module").click(function() {
 			$("#module-app").show();

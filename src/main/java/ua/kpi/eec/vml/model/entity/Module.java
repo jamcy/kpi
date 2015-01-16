@@ -24,10 +24,10 @@ public class Module implements java.io.Serializable {
 
 	private int id;
 	private I18n name;
+	private String folder;
 	private I18n description;
 	private I18n pageContent;
 	private Room room;
-	private String code;
 	private int embedWidth;
 	private int embedHeight;
 	private String embedCode;
@@ -89,13 +89,13 @@ public class Module implements java.io.Serializable {
 		this.room = room;
 	}
 
-	@Column(name = "code", nullable = false, length = 200)
-	public String getCode() {
-		return this.code;
+	@Column(name = "folder", nullable = false, length = 200)
+	public String getFolder() {
+		return this.folder;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setFolder(String folder) {
+		this.folder = folder;
 	}
 	
 	@Column(name = "embed_width", nullable = false)

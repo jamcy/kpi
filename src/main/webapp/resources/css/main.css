@@ -367,6 +367,16 @@ body {
 	text-align: center;
 }
 
+.module-embed {
+	max-width: 100%;
+	min-width: 100%;
+	min-height: 200px;
+}
+
+.message-error {
+	color: red;
+}
+
 .divider {
 	height: 1px;
 	width: 100%;
