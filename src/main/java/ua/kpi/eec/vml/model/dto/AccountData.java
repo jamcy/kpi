@@ -2,12 +2,15 @@ package ua.kpi.eec.vml.model.dto;
 
 import java.io.Serializable;
 
+import ua.kpi.eec.vml.model.entity.SystemRole;
+
 @SuppressWarnings("serial")
 public class AccountData implements Serializable {
 	
 	private int moodleId;
 	private String username;
 	private String fullName;
+	private SystemRole role;
 
 	public int getMoodleId() {
 		return moodleId;
@@ -33,4 +36,11 @@ public class AccountData implements Serializable {
 		this.fullName = fullName;
 	}
 
+	public SystemRole getRole() {
+		return role;
+	}
+
+	public void setRole(SystemRole role) {
+		this.role = role;
+	}
 }

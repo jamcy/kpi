@@ -89,6 +89,8 @@
 	        <set>
 	            <bean class="ua.kpi.eec.vml.service.converter.ModuleToModuleForm"/>
 	            <bean class="ua.kpi.eec.vml.service.converter.ModuleFormToModule"/>
+	            <bean class="ua.kpi.eec.vml.service.converter.PageToPageForm"/>
+	            <bean class="ua.kpi.eec.vml.service.converter.PageFormToPage"/>
 	        </set>
 	    </property>
 	</bean>
@@ -104,6 +106,12 @@
 		<property name="moodleService" ref="moodleService" />
 	</bean>
 	<bean id="mockAuthenticationStrategy" class="ua.kpi.eec.vml.service.authentication.MockAuthenticationStrategy">
+		<property name="users">
+			<map>
+				<entry key="${authentication.mock.user}" value="${authentication.mock.password}" />
+			</map>
+		</property>
+		<property name="role" value="${authentication.mock.role}" />
 	</bean>
 	
 	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
@@ -133,7 +141,7 @@
 		<security:form-login login-page="/login"  authentication-failure-url="/login?error"/>
 		<security:logout invalidate-session="true" logout-success-url="/"/>
 		<security:anonymous username="anonymous" granted-authority="ROLE_GUEST" />
-		<!-- <security:intercept-url pattern="/course/**" access="ROLE_USER" /> -->
+		<security:intercept-url pattern="/admin/**" access="ROLE_USER" />
 	</security:http>
 	
 </beans>

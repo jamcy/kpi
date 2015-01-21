@@ -11,7 +11,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 
 import ua.kpi.eec.vml.model.dto.AccountData;
-import ua.kpi.eec.vml.model.entity.SystemRole;
 
 public class VmlAuthenticationManager implements AuthenticationManager {
 
@@ -20,8 +19,8 @@ public class VmlAuthenticationManager implements AuthenticationManager {
 	public Authentication authenticate(Authentication auth) throws AuthenticationException {
 		AccountData principal = authenticationStrategy.authenticate(auth.getName(), auth.getCredentials().toString());
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		authorities.add(principal.getRole());
 		// TODO refresh user data
-		authorities.add(SystemRole.USER);
 		return new UsernamePasswordAuthenticationToken(principal, auth.getCredentials(), authorities);
 	}
 

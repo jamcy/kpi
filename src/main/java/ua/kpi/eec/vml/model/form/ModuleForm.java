@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class ModuleForm implements Serializable {
 	private Integer id;
 	@NotBlank(message="Module folder name should not be blank")
-	//TODO: check if folder name already used by another module
+	//TODO: check if module folder name is unique
 	private String folder;
 	private String imageUrl;
 	@NotNull(message="Room should be selected")

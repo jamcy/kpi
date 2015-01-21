@@ -44,13 +44,6 @@ public class DefaultAdminController {
 		model.addAttribute("view", "course_list");
 		return "admin";
 	}
-
-	@RequestMapping(value = "/pages")
-	public String listPages(Model model) {
-		model.addAttribute("pages", pageDao.findAll());
-		model.addAttribute("view", "page_list");
-		return "admin";
-	}
 	
 	@RequestMapping(value = "/users")
 	public String listUsers(Model model) {
@@ -64,12 +57,6 @@ public class DefaultAdminController {
 		model.addAttribute("tasks", taskDao.findByCourseId(courseId));
 		model.addAttribute("view", "task_list");
 		return "admin";
-	}
-
-	@RequestMapping(value = "/user/edit/{id}")
-	public String updateUser(@PathVariable int id, Model model) {
-		// admin service select by id
-		return "/user/edit";
 	}
 
 	public ConversionService getConversionService() {
