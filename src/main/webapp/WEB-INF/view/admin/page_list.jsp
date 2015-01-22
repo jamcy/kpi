@@ -15,7 +15,7 @@
     <c:forEach items="${pages }" var="page" >
     <tr>
         <td><u:i18n value="${page.name }" /></td>
-        <td><a href="<s:url value="/admin/page/edit/${page.id }" />" class="btn  btn-primary">edit</a></td>
+        <td><a href="<s:url value="/admin/page/edit/${page.id }" />" class="btn  btn-primary">Edit</a></td>
         <!-- TODO: action delete page -->
     </tr>
     </c:forEach>

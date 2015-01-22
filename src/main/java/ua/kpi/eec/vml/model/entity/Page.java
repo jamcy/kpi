@@ -1,5 +1,6 @@
 package ua.kpi.eec.vml.model.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +18,7 @@ public class Page implements java.io.Serializable {
 
 	private static final long serialVersionUID = 3752039564906723751L;
 
-	private int id;
+	private Integer id;
 	private I18n name;
 	private I18n content;
 	private String urlSuffix;
@@ -37,15 +38,15 @@ public class Page implements java.io.Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "page_seq_gen")
 	@SequenceGenerator(name = "page_seq_gen", sequenceName = "page_id_seq")
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name = "name_i18n_id", nullable = false)
 	public I18n getName() {
 		return this.name;
@@ -55,7 +56,7 @@ public class Page implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name = "content_i18n_id", nullable = false)
 	public I18n getContent() {
 		return this.content;

@@ -22,7 +22,7 @@ public class Module implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4101240065544284978L;
 
-	private int id;
+	private Integer id;
 	private I18n name;
 	private String folder;
 	private I18n description;
@@ -41,11 +41,11 @@ public class Module implements java.io.Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "module_seq_gen")
 	@SequenceGenerator(name = "module_seq_gen", sequenceName = "module_id_seq")
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -15,11 +15,12 @@
     tinymce.init({
         plugins: "image, code, table, link",
         mode: "exact",
-        elements: "page-content_en, page-content_uk"
+        elements: "contentEn, contentUk"
     });
 </script>
 
-<sf:form action="" id="module-edit" method="post" commandName="page">
+<sf:form action="/admin/page/${action}" id="module-edit" method="post" commandName="page">
+	<sf:hidden path="id"/>
     <div class="form-group">
         <label>Name:</label>
         <div id="name-tabs">
@@ -32,8 +33,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="url-suffix">Page url suffix:</label>
-        <sf:input path="urlSuffix" cssClass="form-control" />
+        <label for="suffix">Page url suffix:</label>
+        <div class="input-group">
+        	<div class="input-group-addon">http://vml.eec.kpi.ua/page/</div>
+			<sf:input path="suffix" cssClass="form-control" />	
+		</div>
     </div>
     <div class="form-group">
         <label>Page content:</label>
@@ -46,7 +50,7 @@
                 <sf:textarea path="contentEn" htmlEscape="true" class="form-control"/>
             </div>
             <div id="content-tabs-uk">
-                <sf:textarea path="contentUk" htmlEscape="true" cass="form-control"/>
+                <sf:textarea path="contentUk" htmlEscape="true" class="form-control"/>
             </div>
         </div>
     </div>
