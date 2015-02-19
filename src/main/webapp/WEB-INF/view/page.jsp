@@ -9,6 +9,7 @@
 <jsp:body>
 <div class="container">
 	<h3 class="p"><u:i18n value="${page.name}"/></h3>
+	<div class="divider"></div>
 	<u:i18n value="${page.content }" escape="false" />
 </div>
 </jsp:body>

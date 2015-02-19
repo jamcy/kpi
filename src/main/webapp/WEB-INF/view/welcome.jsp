@@ -21,7 +21,7 @@
 					<spring:message code="vml.credo" />
 				</h2>
 				<h4>
-					<a class="overlink" href="<spring:url value="/page/about" />">Learn more &gt;&gt;</a>
+					<a class="overlink" href="<spring:url value="/page/about" />"><spring:message code="banner.learn.more"/></a>
 				</h4>
 				<!--<h4><a id="demo" class="btn btn-success" href="#">View Demo</a></h4>-->
 			</div>
@@ -29,11 +29,11 @@
 	</div>
 	<div id="collapse">
 		<div class="container">
-			<div class="divider"></div>
+			<!-- <div class="divider"></div> -->
 			<div class="center">
-				<h2>Discover our experiment rooms</h2>
+				<h3 class="p"><spring:message code="vml.rooms.discover" /></h3>
 			</div>
-			<div class="divider"></div>
+			<!-- <div class="divider"></div> -->
 			<div class="rooms"
 					style="width: 100%; display: block; text-align: center">
 				<c:forEach var="room" items="${rooms}">
@@ -60,10 +60,9 @@
 					<spring:message code="header.menu.mission" />
 				</h3>
 			</div>
-			<h4>
+			<h4 style="text-align: justify;">
 				<spring:message code="vml.mission" />
 			</h4>
-			<div class="divider"></div>
 		</div>
 	</div>
 

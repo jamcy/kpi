@@ -13,32 +13,25 @@
 		<li class="active"><u:i18n value="${room.name }"/></li>
 	</ol>
 	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-7 col-lg-8 exp-desc">
-			<h1><u:i18n value="${room.name }"/></h1>
-			
-			<h3 class="p">Description</h3>
-			<div class="exp-desc">
-				<h5><u:i18n value="${room.description }" /></h5>
-			</div>
+		<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 exp-desc">
+			<h3 class="p"><u:i18n value="${room.name }"/></h3>
+			<div class="divider"></div>
+			<h4><u:i18n value="${room.description }" /></h4>
 		</div>
-		<div class="col-xs-6 col-sm-6 col-md-5 col-lg-4">
-			<div class='aright'>
-				<div class="room-static" style='background-color: inherit; box-shadow: none;'>
-					<div class="body" id="container" style='background-color: inherit;'>
-						<img src="<s:url value="/static/${room.imageUrl}"/>" style="height: 220px;" />
-					</div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<div class='center'>
+				<div class="exp-img-box">
+					<img class="exp-img" src="<s:url value="/static/${room.imageUrl}"/>"  />
 				</div>
 			</div>
 		</div>
 	</div>
 	<c:if test="${not empty room.modules}">
 	<div class="divider"></div>
-	<div class="center">
-		<h4 class="p">ROOM EXPERIMENTS</h4>
-	</div>
+	<%-- <div class="center"><h3><s:message code="room.experiments"/></h3></div> --%>
 	<div class="row">
 	<c:forEach items="${room.modules}" var="module">
-		<s:url value="/module?id=${module.id}" var="moduleUrl"/>
+		<s:url value="/module/${module.folder}" var="moduleUrl"/>
 		<div class="exp-wrap col-xs-12 col-sm-6 col-md-4 col-lg-3">
 			<div class="exp">
 				<div class="body" id="container2">
@@ -56,7 +49,6 @@
 		</div>
 	</c:forEach>
 	</div>
-	<div class="divider"></div>
 	</c:if>
 </div>
 </jsp:body>

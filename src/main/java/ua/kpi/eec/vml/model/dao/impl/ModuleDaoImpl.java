@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,5 +38,20 @@ public class ModuleDaoImpl extends AbstractHibernateDao<Module> implements
 	@Transactional
 	public List<Module> findAll() {
 		return getSessionFactory().getCurrentSession().createQuery("from Module order by id").list();
+	}
+
+	@Override
+	@Transactional
+	public Module findByFolder(String folder) {
+		Session session = getSessionFactory().getCurrentSession();
+		Query q = session.createQuery("FROM Module where folder=:folder");
+		q.setParameter("folder", folder);
+		Module module = (Module)q.uniqueResult();
+		if(module!=null) {
+			Hibernate.initialize(module.getRoom());
+			Hibernate.initialize(module.getDescription());
+			Hibernate.initialize(module.getPageContent());
+		}
+		return module;
 	}
 }

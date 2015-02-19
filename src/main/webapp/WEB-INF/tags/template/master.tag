@@ -36,7 +36,7 @@
 					<a href="#" class="dropdown-toggle btn btn-primary" data-toggle="dropdown">
 						<c:out value="${user.fullName}" /><b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="<s:url value="/course" />"><s:message code="user.menu.courses" /></a></li>
+						<%-- <li><a href="<s:url value="/course" />"><s:message code="user.menu.courses" /></a></li> --%>
 						<li><a href="<s:url value="/admin" />"><s:message code="user.menu.admin" /> </a></li>
 						<li><a href="<s:url value="/j_spring_security_logout" />"><s:message code="user.menu.logout" /></a></li>
 					</ul>

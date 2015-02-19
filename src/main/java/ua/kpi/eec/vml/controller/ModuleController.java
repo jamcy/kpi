@@ -3,9 +3,9 @@ package ua.kpi.eec.vml.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ua.kpi.eec.vml.model.dao.ModuleDao;
@@ -17,16 +17,16 @@ public class ModuleController {
 	@Autowired
 	private ModuleDao moduleDao;
 
-	@RequestMapping(value="/module", method=RequestMethod.GET)
-	public String modulePage(@RequestParam int id, Model model) {
-		model.addAttribute("module", moduleDao.find(id));
+	@RequestMapping(value="/module/{folder}", method=RequestMethod.GET)
+	public String modulePage(@PathVariable String folder, Model model) {
+		model.addAttribute("module", moduleDao.findByFolder(folder));
 		return "module";
 	}
 
 	@ResponseBody
-	@RequestMapping(value="/module/app", method=RequestMethod.GET, produces="text/html; charset=utf-8")
-	public String showModuleApp(@RequestParam int id) {
-		Module module = moduleDao.find(id);
+	@RequestMapping(value="/module/app/{folder}", method=RequestMethod.GET, produces="text/html; charset=utf-8")
+	public String showModuleApp(@PathVariable String folder) {
+		Module module = moduleDao.findByFolder(folder);
 		return module.getEmbedCode();
 	}
 

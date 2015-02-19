@@ -14,49 +14,31 @@
 		<li class="active"><u:i18n value="${module.name }"/></li>
 	</ol>
 	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-7 col-lg-8 exp-desc">
-			<h2><u:i18n value="${module.name }"/></h2>
-			<div class="tabbable2">
-				<ul class="nav nav-tabs">
-					<li class="active"><a href="#pane1" data-toggle="tab"><s:message code="page.module.description" /></a></li>
-					<c:if test="${not empty task }">
-					<li><a href="#pane2" data-toggle="tab"><s:message code="page.module.task"/></a></li>
-					<li><a href="#pane3" data-toggle="tab"><s:message code="page.module.tdesc"/></a></li>
-					</c:if>
-				</ul>
-
-				<div class='divider'></div>
-
-				<div class="tab-content">
-					<div id="pane1" class="tab-pane active">
-						<div class="tab-container">
-							<div class="exp-desc">
-								<u:i18n value="${module.description }" />
-								<div class="divider"></div>
-								<u:i18n value="${module.pageContent }" escape="false"/>
-							</div>
-						</div>
-					</div>
-					<c:if test="${not empty task }">
-					<div id="pane2" class="tab-pane">
-						<div class="tab-container">
-							<div class="exp-desc"><u:i18n value="${task.task }"/></div>
-						</div>
-					</div>
-					<div id="pane3" class="tab-pane">
-						<div class="tab-container">
-							<div class="exp-desc"><u:i18n value="${task.theory }" escape="false" /></div>
-						</div>
-					</div>
-					</c:if>
-				</div>
-				<!-- /.tab-content -->
-			</div>
-			<!-- /.tabbable -->
+		<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 exp-desc">
+			<h3 class="p"><u:i18n value="${module.name }"/></h3>
 			<div class="divider"></div>
+			<%--<li class="active"><a href="#pane1" data-toggle="tab"><s:message code="page.module.description" /></a></li>
+			<c:if test="${not empty task }">
+			<li><a href="#pane2" data-toggle="tab"><s:message code="page.module.task"/></a></li>
+			<li><a href="#pane3" data-toggle="tab"><s:message code="page.module.tdesc"/></a></li>
+			</c:if> --%>
+			<h4><u:i18n value="${module.description }" /></h4>
+			
+			<c:if test="${not empty task }">
+			<div id="pane2" class="tab-pane">
+				<div class="tab-container">
+					<div class="exp-desc"><u:i18n value="${task.task }"/></div>
+				</div>
+			</div>
+			<div id="pane3" class="tab-pane">
+				<div class="tab-container">
+					<div class="exp-desc"><u:i18n value="${task.theory }" escape="false" /></div>
+				</div>
+			</div>
+			</c:if>
 		</div>
-		<div class="col-xs-6 col-sm-6 col-md-5 col-lg-4 ">
-			<a id="launch-module" href="#module" class='exp-img-box-box'>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<a id="launch-module" href="#module-app" class='exp-img-box-box'>
 				<div class='exp-img-box'>
 					<div class='rel' style="text-align: center;">
 						<div class='over center'>
@@ -113,10 +95,17 @@
 					.equals("task") ? ("&taskid=" + task.getId())
 					: ("&tlgid=" + tsk_status.getId())))%>"
 		width="${module.embedWidth }" height="${module.embedHeight }" align="center" frameborder="no"></iframe> --%>
+		</div>
 	</div>
 	<div class="clearfix"></div>
+	<%-- <h3><s:message code="page.module.description" /></h3> --%>
+	<div class="divider"></div>
+	<div id="module-description">
+		<u:i18n value="${module.pageContent }" escape="false"/>
+	</div>
 	<div id="module-app">
-		<iframe src="<s:url value="/module/app?id=${module.id }" />"
+		<div class="divider"></div>
+		<iframe src="<s:url value="/module/app/${module.folder}" />"
 			width="${module.embedWidth }" height="${module.embedHeight }" frameborder="no" >
 		</iframe>
 	</div>
@@ -127,7 +116,6 @@
 		});
 	});
 	</script>
-</div>
 </div>
 </jsp:body>
 </t:master>
