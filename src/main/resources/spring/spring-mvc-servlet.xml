@@ -42,7 +42,7 @@
     
     <mvc:annotation-driven />
 
-	<mvc:resources location="file:/${vml.data.folder}/static/"
+	<mvc:resources location="file:${vml.data.folder}/static/"
 		mapping="/static/**" />
 	<mvc:resources location="/resources/css/" mapping="/css/**" />
 	<mvc:resources location="/resources/js/" mapping="/js/**" />
