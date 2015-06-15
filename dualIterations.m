@@ -1,4 +1,5 @@
-function [x P Icb]= dualIterations(x, P, Icb, c, operation, exclusion, print, epsilon)
+function [statusCode x P Icb iteration]= dualIterations(x, P, Icb, c, operation, exclusion, print, epsilon)
+    statusCode = 0;
     m=size(P, 1);
     iteration = 1;
     while(true)
@@ -27,7 +28,8 @@ function [x P Icb]= dualIterations(x, P, Icb, c, operation, exclusion, print, ep
                     fprintf('Unsolvable task for table:\n');
                     printSimplexTable(Icb, x, P, c);
                 end
-                throw(MException('DualSimplex:UnsolvableTask' , ['Basis solution does not satisfy restrictions(All elements of s=' num2str(Icb(i)) 'row are >=0 while x' num2str(Icb(i)) '<0). Task is unsolvable.']));
+                statusCode = displayMessage(2, strcat('Basis solution does not satisfy restrictions(All elements of s=', num2str(Icb(i)), 'row are >=0 while x', num2str(Icb(i)), '<0). Task is unsolvable.'));
+                return;
             end
         end
         deltas = calculateDeltas(Icb, P, c, epsilon);
@@ -73,7 +75,8 @@ function [x P Icb]= dualIterations(x, P, Icb, c, operation, exclusion, print, ep
             end
         end
         if(~exist('r', 'var'))
-            throw(MException('DualSimplex:UnsolvableTask' ,'All gammas evaluated to NaN. Can not proceed'));
+            statusCode = displayMessage(2, 'All gammas evaluated to NaN. Can not proceed');
+            return;
         end
         if(~strcmp(print, 'none'))
             fprintf('\nIteration %d:\n', iteration);
@@ -192,3 +195,7 @@ function [] = printSimplexTable(Icb, x, P, c)
     table=[table '\n' repmat('-', 1, totalWidth) '\n'];
     fprintf(table);
  end
+ 
+function [statusCode] = displayMessage(statusCode, message)
+        fprintf(strcat('Error: ', message, '\n'));
+end

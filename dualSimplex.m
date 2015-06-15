@@ -1,4 +1,4 @@
-function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion, eqmode, minmode, print, epsilon)
+function [statusCode res P Icb iterationCount basisCount basisValid] = dualSimplex(A, b, c, restrictions, max, basis, exclusion, eqmode, minmode, print, epsilon)
     % *A, b, c - matrices with data
     % *restrictions - row vector, having size equals to size of column vector b, holding restrictions 
     %   signs: 1(<=), 0(=), -1(>=)
@@ -20,15 +20,22 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     % *print -  logging mode: 'none', 'minimal', 'all'
     %   'minimal' - does not prints decomposition of P0,Pi by basis vectors
     % *epsilon - calculations accuracy: values less than epsilon are counted as zero
+    %
+    % Return values:
+    % statusCode - indicates execution result status.
+    %   statusCode=0==>success, statusCode!=0==>error
+    % res - solution vector
     % Icb - basis indexes vector
+    % iterationCount - number of iterations
+    % basisCount - number of existing basis vectors
+    % basisValid - number of valid basis vectors
+    %
     % Example:
     %   A=[25 36 26; -6 6 6; 21 26 -8];
     %   b=[41; 42; -2];
     %   c=[35; 0; -9];
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'auto', 'normal', 'invert', 'all', 0.00001);
-    % [res P Icb] = dualSimplex(A, b, c, [1 0 -1], false, 'manual', 'manual', 'modified', 'natural', 'minimal', 0.00001);
-    
-    clc;
+    % [statusCode res P Icb iterationCount basisCount basisValid] = dualSimplex(A, b, c, [1 0 -1], true, 'random', 'auto', 'normal', 'invert', 'all', 0.00001);
+    % [statusCode res P Icb iterationCount basisCount basisValid] = dualSimplex(A, b, c, [1 0 -1], false, 'manual', 'manual', 'modified', 'natural', 'minimal', 0.00001);
     if(max)
         text = 'Maximize';
     else
@@ -82,6 +89,9 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
         end
     end
     [m, n] = size(A);
+    res = zeros(1, n);
+    P = zeros(m, n);
+    iterationCount=0;
     
     if(~max && strcmp(minmode, 'invert'))
         c = c.*-1;
@@ -111,11 +121,13 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
         fprintf('\n=============================================================\n');
         fprintf('2. Find conjugate basis:\n');
     end
-	[Pb, Icb] = conjugateBasis(A, c, basis, print, operation, epsilon);
+	[statusCode Pb Icb basisCount basisValid] = conjugateBasis(A, c, basis, print, operation, epsilon);
+    if statusCode~=0
+        return;
+    end
     
     % 3. Decompose P0=b by basis vectors. Build initial table.
 	x = Pb\b;
-    P = zeros(m, n);
     for i=1:n
         P(:,i) = Pb\A(:, i);
     end
@@ -136,15 +148,18 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
         fprintf('\n=============================================================\n');
         fprintf('4. Iterations:\n');
     end
-    [x P Icb] = dualIterations(x, P, Icb, c, operation, exclusion, print, epsilon);
-    res = zeros(1, n); 
+    [statusCode x P Icb iterationCount] = dualIterations(x, P, Icb, c, operation, exclusion, print, epsilon);
+    if statusCode ~= 0
+        return;
+    end
     for i=1:m
         res(Icb(Icb==Icb(i)))=x(i);
     end
     if(strcmp(eqmode, 'modified'))
         for i=1:m
             if(restrictions(i)==0 && res(m+i)>0)
-                throw(MException('DualSimplex:UnsolvableTask' ,['Optimal solution contains nonzero arfificial variable x' num2str(m+i) '. Task is unsolvable']));
+                statusCode=displayMessage(1, ['Optimal solution contains nonzero arfificial variable x' num2str(m+i) '. Task is unsolvable']);
+                return;
             end
         end
     end
@@ -155,27 +170,34 @@ function [res P Icb] = dualSimplex(A, b, c, restrictions, max, basis, exclusion,
     end
 end
 
-function [Pb, Icb] = conjugateBasis(A, c, basis, print, operation, epsilon)
+function [statusCode, Pb, Icb, basisCount, basisValid] = conjugateBasis(A, c, basis, print, operation, epsilon)
     [m, n] = size(A);
+    Pb=zeros(0);
+    Icb=zeros(0);
     if(ischar(basis)==false)
         if(size(basis, 2)~=m)
-            throw(MException('DualSimplex:InconsistentBasisSize' ,'Inconsistent size of user basis'));
+            statusCode = displayMessage(1, 'Inconsistent size of user basis');
+            return;
         end
         Icb = basis(1, :);
+        basisCount = 1;
     else
         Ic = nchoosek(1:n, m);
-        validIc = zeros(size(Ic,1),1);
+        basisCount = size(Ic, 1);
+        validIc = zeros(basisCount, 1);
         for i=1:size(Ic,1)
             validIc(i)= checkBasis(A, c, Ic(i, :), operation, epsilon);
         end
-        if(sum(validIc)==0)
-            throw(MException('DualSimplex:NoValidBasis' ,'No valid conjugate basis exist. Task is unsolvable'));
+        basisValid = sum(validIc);
+        if(basisValid==0)
+            statusCode = displayMessage(1, 'No valid conjugate basis exist. Task is unsolvable');
+            return;
         end
         if(strcmp(basis, 'random') || strcmp(basis, 'auto'))
             i=0;
             while(true)
                 if(strcmp(basis, 'random'))
-                    i=randi(size(Ic,1));
+                    i=randi(basisCount);
                 elseif(strcmp(basis, 'auto'))
                     i=i+1;
                 end
@@ -186,13 +208,14 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, print, operation, epsilon)
             Icb=Ic(i, :);
         elseif(strcmp(basis, 'manual'))
             fprintf( '#\t Icb\tvalid\n');
-            for i=1:size(Ic, 1)
+            for i=1:basisCount
                 fprintf([num2str(i) '\t' mat2str(Ic(i, :)) '\t' num2str(validIc(i)) '\n']);
             end
             i = input('Select bais combination number: ');
             Icb = Ic(i, :);
         else
-            throw(MException('DualSimplex:UnknownBasisMethod' ,'Unknown basis selection method'));
+            statusCode = displayMessage(1, 'Unknown basis selection method', print);
+            return;
         end
     end
     [valid Pb y restrictionFlags cb] = checkBasis(A, c, Icb, operation, epsilon);
@@ -209,7 +232,9 @@ function [Pb, Icb] = conjugateBasis(A, c, basis, print, operation, epsilon)
         disp(restrictionFlags);
     end
     if(~valid)
-        throw(MException('DualSimplex:InvalidBasis' ,'Basis solution does not satisfy dual task restrictions. Task is unsolvable.'));
+        statusCode = displayMessage(1, 'Basis solution does not satisfy dual task restrictions. Task is unsolvable.', print);
+    else
+        statusCode=0;
     end
 end
 
@@ -282,4 +307,8 @@ function [] = printSimplexTable(Icb, x, P, c)
 	end
 	table = [table '\n' repmat('-', 1, totalWidth) '\n'];
 	fprintf(table);
- end
+end
+ 
+function [statusCode] = displayMessage(statusCode, message)
+        fprintf(strcat('Error: ', message, '\n'));
+end
