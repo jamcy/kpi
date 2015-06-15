@@ -94,7 +94,7 @@ end
 
 function [deltas] = calculateDeltas(Icb, P, c, epsilon)
 	[m, n] = size(P);
-	deltas = NaN(1, n);
+	deltas = zeros(1, n);
 	for j=1:n
     	if(ismember(j, Icb))
         	continue;
@@ -112,7 +112,7 @@ end
 
 function [gammas] = calculateGammas(Icb, P, deltas, l, epsilon)
 	n = size(P,2);
-	gammas = zeros(1, n);
+	gammas = NaN(1, n);
 	for j=1:n
     	if(ismember(j, Icb))
         	continue;
