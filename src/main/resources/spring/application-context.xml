@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx 
+       	http://www.springframework.org/schema/tx/spring-tx.xsd
+       	http://www.springframework.org/schema/mvc 
+       	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       	http://www.springframework.org/schema/security
+       	http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<context:property-placeholder location="classpath:/config/application.properties" />
+	<context:component-scan base-package="ua.kpi.eec.vml" />
+
+	<!-- Database configuration -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="org.postgresql.Driver" />
+		<property name="jdbcUrl" value="${db.connection.url}" />
+		<property name="user" value="${db.user}" />
+		<property name="password" value="${db.password}" />
+		<property name="acquireIncrement" value="1" />
+		<property name="minPoolSize" value="1" />
+		<property name="maxPoolSize" value="10" />
+		<property name="maxIdleTime" value="30" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>ua.kpi.eec.vml.model.entity.Account</value>
+				<value>ua.kpi.eec.vml.model.entity.Course</value>
+				<value>ua.kpi.eec.vml.model.entity.I18n</value>
+				<value>ua.kpi.eec.vml.model.entity.I18nValue</value>
+				<value>ua.kpi.eec.vml.model.entity.Module</value>
+				<value>ua.kpi.eec.vml.model.entity.Page</value>
+				<value>ua.kpi.eec.vml.model.entity.Room</value>
+				<value>ua.kpi.eec.vml.model.entity.Task</value>
+				<value>ua.kpi.eec.vml.model.entity.TaskLog</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
+				<prop key="show_sql">true</prop>
+				<prop key="hibernate.connection.useUnicode">true</prop>
+                <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+                <prop key="hibernate.connection.charSet">UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven />
+
+	<!-- Data access object beans -->
+	<bean id="abstractDao" class="ua.kpi.eec.vml.model.dao.AbstractHibernateDao" abstract="true">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="moduleDao" class="ua.kpi.eec.vml.model.dao.impl.ModuleDaoImpl" parent="abstractDao" />	
+	<bean id="roomDao" class="ua.kpi.eec.vml.model.dao.impl.RoomDaoImpl" parent="abstractDao" />
+	<bean id="pageDao" class="ua.kpi.eec.vml.model.dao.impl.PageDaoImpl" parent="abstractDao" />
+	<bean id="courseDao" class="ua.kpi.eec.vml.model.dao.impl.CourseDaoImpl" parent="abstractDao" />
+	<bean id="accountDao" class="ua.kpi.eec.vml.model.dao.impl.AccountDaoImpl" parent="abstractDao" />
+	
+	<!-- Service beans -->
+	<bean id="moodleService" class="ua.kpi.eec.vml.service.impl.MoodleServiceImpl">
+		<property name="baseUrl" value="${moodle.url}"/>
+		<property name="token" value="${moodle.token}" />
+	</bean>
+	
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+	    <property name="converters">
+	        <set>
+	            <bean class="ua.kpi.eec.vml.service.converter.ModuleToModuleForm"/>
+	            <bean class="ua.kpi.eec.vml.service.converter.ModuleFormToModule"/>
+	            <bean class="ua.kpi.eec.vml.service.converter.PageToPageForm"/>
+	            <bean class="ua.kpi.eec.vml.service.converter.PageFormToPage"/>
+	        </set>
+	    </property>
+	</bean>
+	
+	<!-- Security configuration -->
+	<security:authentication-manager/>
+	
+	<bean id="vmlAuthenticationManager" class="ua.kpi.eec.vml.service.authentication.VmlAuthenticationManager">
+		<property name="authenticationStrategy" ref="${authentication.strategy}" />
+	</bean>
+	
+	<bean id="moodleAuthenticationStrategy" class="ua.kpi.eec.vml.service.authentication.MoodleAuthenticationStrategy">
+		<property name="moodleService" ref="moodleService" />
+	</bean>
+	<bean id="mockAuthenticationStrategy" class="ua.kpi.eec.vml.service.authentication.MockAuthenticationStrategy">
+		<property name="users">
+			<map>
+				<entry key="${authentication.mock.user}" value="${authentication.mock.password}" />
+			</map>
+		</property>
+		<property name="role" value="${authentication.mock.role}" />
+	</bean>
+	
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+    	<constructor-arg ref="roleHierarchy" />
+	</bean>
+	<bean id="roleHierarchy"
+	        class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+	    <property name="hierarchy">
+	        <value>
+	            ROLE_ADMIN > ROLE_TEACHER
+	            ROLE_TEACHER > ROLE_MODERATOR
+	            ROLE_MODERATOR > ROLE_USER
+	            ROLE_USER > ROLE_GUEST
+	        </value>
+	    </property>
+	</bean>
+	
+	<bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased">
+		<property name="decisionVoters">
+			<list>
+				<ref bean="roleVoter"/>
+			</list>
+		</property>
+	</bean>
+	
+	<security:http authentication-manager-ref="vmlAuthenticationManager" access-decision-manager-ref="accessDecisionManager">
+		<security:form-login login-page="/login"  authentication-failure-url="/login?error"/>
+		<security:logout invalidate-session="true" logout-success-url="/"/>
+		<security:anonymous username="anonymous" granted-authority="ROLE_GUEST" />
+		<security:intercept-url pattern="/admin/**" access="ROLE_USER" />
+	</security:http>
+	
+</beans>
