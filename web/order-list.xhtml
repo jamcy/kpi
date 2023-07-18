@@ -1,0 +1,38 @@
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/common.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="pageName" value="Orders" />
+	<ui:define name="content">
+
+		<h:form id="orders">
+			<p:dataTable var="o" value="#{orderListBean.orders}">
+				<p:column headerText="Order" style="width: 100px;">
+					<h:outputText value="##{o.orderId}" />
+				</p:column>
+				<p:column headerText="Status">
+					<h:outputText value="#{o.currentStatus.status}" />
+				</p:column>
+				<p:column headerText="Created">
+					<h:outputText value="#{o.timeCreated}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Changed">
+					<h:outputText value="#{o.timeUpdated}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column style="width: 100px;">
+					<p:button outcome="/order.xhtml" icon="ui-icon-pencil">
+						<f:param name="oid" value="#{o.orderId}" />
+					</p:button>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

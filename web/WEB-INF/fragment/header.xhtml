@@ -1,0 +1,53 @@
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<h:graphicImage id="logo" value="/img/logo.png" />
+	<div id="navbar">
+		<ul id="navlinks">
+			<li class="navlinks-border-right"><h:link outcome="/index.xhtml"
+					value="Home" /></li>
+			<li class="navlinks-border-right navlinks-border-left"><h:link
+					outcome="/catalogue.xhtml" value="Products" /></li>
+			<li
+				class="navlinks-border-left #{(stateBean.userState.currentUser.role == 'GUEST')? '' : 'navlinks-border-right'}"><h:link
+					outcome="/contact.xhtml" value="Contact" /></li>
+			<c:if test="#{stateBean.userState.currentUser.role == 'COMPANY'}">
+				<li class="navlinks-border-left"><h:link
+						outcome="/order-list.xhtml" value="Orders" /></li>
+			</c:if>
+			<c:if test="#{stateBean.userState.currentUser.role == 'MANAGER'}">
+				<li class="navlinks-border-left"><h:link
+						outcome="/manager/orders.xhtml" value="Orders" /></li>
+			</c:if>
+			<c:if test="#{stateBean.userState.currentUser.role == 'ADMIN'}">
+				<li class="navlinks-border-left"><h:link
+						outcome="/admin/users.xhtml" value="Admin" /></li>
+			</c:if>
+		</ul>
+		<ul id="user-panel">
+			<c:if test="#{stateBean.userState.currentUser.role == 'GUEST'}">
+				<li><h:link id="login-link" outcome="/login.xhtml"
+						value="Login" /></li>
+			</c:if>
+			<c:if test="#{stateBean.userState.currentUser.role == 'COMPANY'}">
+				<li><p:outputPanel id="header-cart-link">
+						<h:link id="cart-link" outcome="/cart.xhtml"
+							value="Cart(#{cartBean.getCartSize()})" />
+					</p:outputPanel></li>
+			</c:if>
+			<c:if test="#{stateBean.userState.currentUser.role != 'GUEST'}">
+				<li><h:form id="logout">
+						<h:commandLink action="#{authBean.logout()}" value="Logout" />
+					</h:form></li>
+			</c:if>
+		</ul>
+	</div>
+	<div id="breadcrumbs">
+		<div id="page-name">
+			<h:outputText value="#{pageName}" />
+
+		</div>
+	</div>
+</ui:composition>

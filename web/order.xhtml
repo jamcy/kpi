@@ -1,0 +1,169 @@
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/common.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="pageName" value="Order ##{orderBean.order.orderId}" />
+
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam required="true" name="oid" value="#{orderBean.order}"
+				converter="#{orderBean.converter}" />
+		</f:metadata>
+
+		<h:outputText value="No such order"
+			rendered="#{orderBean.order==null}" />
+		<p:outputPanel id="order-content">
+			<div class="order-block">
+				<div class="order-block-header">Details</div>
+				<h:form>
+					<h:panelGrid columns="2">
+					Order ID:
+					<h:outputText value="#{orderBean.order.orderId}" />
+					Customer:
+					<h:outputText value="#{orderBean.order.company.name}" />
+					Deal:
+					<h:outputText value="No" />
+						<h:outputLabel value="Manager:" for="manager" />
+						<h:outputText id="manager" value="#{orderBean.order.manager.name}" />
+						<!-- Created:
+					<h:outputText value="#{orderBean.order.timeCreated}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText>
+					Last change:
+					<h:outputText value="#{orderBean.order.timeUpdated}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</h:outputText> -->
+					Status:
+					<h:outputText value="#{orderBean.order.currentStatus.status}" />
+					Details:
+					<h:commandLink action="#{orderBean.viewOrderDeails()}">Details</h:commandLink>
+					</h:panelGrid>
+				</h:form>
+			</div>
+
+			<div class="order-block">
+				<div class="order-block-header">
+					History
+					<!-- <span class="commands"><a href="/edit.xhtml">hide</a></span> -->
+				</div>
+				<ui:repeat var="hi" value="#{orderBean.order.orderStatuses}">
+					<table class="history-item-header">
+						<tr>
+							<td>Status:<h:outputText value=" #{hi.status}" /></td>
+							<td style="width: 200px;">From: <h:outputText
+									value="#{hi.timeFrom}">
+									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								</h:outputText>
+							</td>
+							<td style="width: 200px;">To: <h:outputText
+									value="#{hi.timeTo}">
+									<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								</h:outputText>
+							</td>
+						</tr>
+					</table>
+
+					<div class="history-item">
+						<pre style="word-wrap: break-word;">
+							<h:outputText value="#{hi.comment}" />
+						</pre>
+					</div>
+				</ui:repeat>
+			</div>
+		</p:outputPanel>
+		<div id="order-controls">
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content" value="Comment">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="COMMENT">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content" value="Cancel">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="CANCEL">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content" value="Create deal">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="CANCEL">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content :orderEditForm" value="Close">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="CANCEL">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+			<p:commandButton oncomplete="PF('orderEdit').show()"
+				update=":order-content" value="ViewDeal">
+				<f:param name="oid" value="#{orderBean.order.orderId}" />
+				<f:setPropertyActionListener target="#{orderBean.selectedAction}"
+					value="CANCEL">
+					<f:converter converterId="orderBeanSelectedActionConverter" />
+				</f:setPropertyActionListener>
+			</p:commandButton>
+
+		</div>
+
+		<p:dialog header="Edit deal" widgetVar="dealEdit" resizable="false"
+			modal="true">
+			<h:form id="dealEdit">
+				<p:editor id="content" value="#{orderBean.dealContents}" width="600" />
+				<p:outputLabel for="cost" value="Additional cost:" />
+				<p:inputText id="cost" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Preview deal" widgetVar="dealPreview"
+			resizable="false">
+			<p:outputPanel id="dealPreview">
+				<div class="order-block">
+					<div class="order-block-header">Deal</div>
+					<h:outputText value="#{orderBean.dealContents}" escape="false" />
+				</div>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog header="Add comment" widgetVar="orderEdit" resizable="false"
+			modal="true">
+			<h:form id="orderEditForm">
+				<!--
+					<p:selectOneMenu converter="#{orderBean.managerConverter}"
+						id="manager" value="#{orderBean.selectedManager}">
+						<f:selectItems value="#{orderBean.managers}" var="m"
+							itemLabel="#{m.name}" />
+					</p:selectOneMenu> -->
+				<p:inputTextarea id="comment" rows="4" cols="60" autoResize="true"
+					value="#{orderBean.comment}" />
+				<br />
+				<p:commandButton action="#{orderBean.updateOrder()}"
+					oncomplete="PF('orderEdit').hide()" update=":order-content"
+					value="Ok">
+					<f:param name="oid" value="#{orderBean.order.orderId}" />
+				</p:commandButton>
+				<p:commandButton oncomplete="PF('orderEdit').hide()"
+					update=":order-content" value="Cancel">
+					<f:param name="oid" value="#{orderBean.order.orderId}" />
+				</p:commandButton>
+			</h:form>
+		</p:dialog>
+	
+	</ui:define>
+</ui:composition>

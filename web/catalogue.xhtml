@@ -1,0 +1,112 @@
+<!-- <h:form>
+		<p:dataTable var="product" value="#{catalogueBean.products}">
+			<p:column headerText="Name">
+				<h:outputText value="#{product.name}" />
+			</p:column>
+			<p:column headerText="Picture">
+				<h:graphicImage value="#{product.picture}" />
+			</p:column>
+			<p:column headerText="Price">
+				<h:outputText value="#{product.unitPrice}" />
+			</p:column>
+			<p:column headerText="Units">
+				<h:outputText value="#{product.units}" />
+			</p:column>
+		</p:dataTable>
+	</h:form> -->
+
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/common.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:param name="pageName" value="Products" />
+	<ui:define name="content">
+		<h:form id="catalogue-search-sort">
+			<h:panelGrid columns="5">
+				<p:outputLabel for="sortFilter" value="Sort by" />
+				<p:selectOneMenu id="sortFilter" value="#{catalogueBean.sortFilter}">
+					<f:selectItem itemLabel="Name" itemValue="na" />
+					<f:selectItem itemLabel="Name reverse" itemValue="nd" />
+					<f:selectItem itemLabel="Price asc" itemValue="pa" />
+					<f:selectItem itemLabel="Price desc" itemValue="pd" />
+				</p:selectOneMenu>
+				<p:outputLabel for="searchFilter" value="Search:" />
+				<p:inputText id="searchFilter" value="#{catalogueBean.searchFilter}" />
+				<p:commandButton action="#{catalogueBean.search()}"
+					update=":catalogue-form" icon="ui-icon-search" />
+			</h:panelGrid>
+		</h:form>
+		<h:form id="catalogue-form">
+			<p:dataList value="#{catalogueBean.products}" var="p"
+				id="product-list" paginator="true" rows="5" type="none">
+
+				<div class="product-list-box">
+
+					<h:graphicImage value="#{p.picture}"
+						styleClass="product-list-image" />
+
+					<div class="product-list-info">
+						<div class="product-title">
+							<h:outputText value="#{p.name}" />
+						</div>
+						<h:panelGrid columns="2" cellpadding="2">
+							<h:outputLabel value="Price retail" for="productPriceRetail" />
+							<h:outputText id="productPriceRetail" value="#{p.priceRetail}$" />
+
+							<h:outputLabel value="Price wholesale"
+								for="productPriceWholesale" />
+							<h:outputText id="productPriceWholesale"
+								value="#{p.priceWholesale}$" />
+
+							<h:outputLabel value="Units" for="productUnits" />
+							<h:outputText id="productUnits" value="#{p.units}" />
+
+							<h:outputLabel value="Wholesale floor" for="productWholesale" />
+							<h:outputText id="productWholesale" value="#{p.wholesaleFloor}" />
+						</h:panelGrid>
+						<div class="product-description">
+							<p:commandLink>Description</p:commandLink> <br />
+							<!-- <h:outputText value="#{p.details}" escape="false" /> -->
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<div class="product-list-cart-box">
+						<p:commandButton oncomplete="PF('cartDialog').show()"
+							title="Add to cart" update=":cartForm" icon="ui-icon-cart"
+							rendered="#{!cartBean.isProductInCart(p) and stateBean.userState.currentUser.role == 'COMPANY'}">
+							<f:setPropertyActionListener
+								target="#{stateBean.cartSelectedProduct}" value="#{p}" />
+							<f:setPropertyActionListener
+								target="#{stateBean.cartSelectedProductQuantity}" value="1" />
+						</p:commandButton>
+						<p:outputPanel rendered="#{cartBean.isProductInCart(p)}">
+							<div class="cart-added">
+								<!-- <span class="ui-icon ui-icon-cart"></span> -->
+								#{cartBean.getQuantity(p)}
+							</div>
+						</p:outputPanel>
+					</div>
+				</div>
+			</p:dataList>
+		</h:form>
+		<p:dialog header="Add to Cart" widgetVar="cartDialog" modal="true"
+			resizable="false"
+			rendered="#{stateBean.userState.currentUser.role == 'COMPANY'}">
+			<h:form id="cartForm">
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Name:" />
+					<h:outputText value="#{stateBean.cartSelectedProduct.name}" />
+					<h:outputLabel value="Quantity:" />
+					<p:spinner value="#{stateBean.cartSelectedProductQuantity}" min="1"
+						max="1000000" />
+				</h:panelGrid>
+				<div style="margin-top: 10px;"></div>
+				<p:commandButton actionListener="#{cartBean.add}" value="Add"
+					ajax="true" oncomplete="PF('cartDialog').hide()"
+					update=":catalogue-form :header-cart-link" style="float: right;" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,23 @@
+<HTML xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<h:outputStylesheet library="css" name="wp.css"/>
+	<title><h:outputText value="#{pageName}" /> </title>
+</h:head>
+<h:body>
+	<div id="page">
+		<div id="header">
+			<ui:insert name="header">
+				<ui:include src="/WEB-INF/fragment/header.xhtml" />
+			</ui:insert>
+		</div>
+		<div id="content">
+			<ui:insert name="content">
+				Default content
+			</ui:insert>
+		</div>
+	</div>
+</h:body>
+</HTML>

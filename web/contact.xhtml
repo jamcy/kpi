@@ -1,0 +1,26 @@
+<ui:composition xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/common.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:param name="pageName" value="Our contacts" />
+	<ui:define name="content">
+		<div
+			style="background-color: #252525; color: white; font-size: 14pt; padding: 10px;">
+			Contact us for registration or information
+			<div
+				style="width: 100%; border-top: 1px solid black; border-bottom: 1px solid #8D8B8B; margin-bottom: 5px;"></div>
+			<h:panelGrid style="color: white;" columns="2">
+				<h:outputText value="Email:" />
+				<a href="mailto:megahard@example.com?Subject=Registration">megahard@example.com</a>
+				<h:outputText value="Phone1:" />
+				<h:outputText value="000-0001-1010-1111" />
+				<h:outputText value="Phone2:" />
+				<h:outputText value="1011-110-111-1102" />
+				<h:outputText value="Address:" />
+				<h:outputText value="Pukalani, HI 96768, US" />
+			</h:panelGrid>
+		</div>
+	</ui:define>
+</ui:composition>
