@@ -1,0 +1,36 @@
+<?php
+  public class FacebookWrapper extends SocialWrapper
+  {
+    public function Post($params)
+    {
+      $post = array('message'=>$params);
+      Yii::app()->facebook->api('/me/feed', 'POST', $post);
+    }
+    public function getName();
+    public function isPermissions($params)
+    {
+    }
+    public function Login()
+    {
+    try
+    {
+      if(Yii::app()->facebook->getUser()==0)
+        return Yii::app()->facebook->getLoginUrl(array(
+                                               'scope'=>'publish_stream',));
+      else
+      {
+        $perms = Yii::app()->facebook->api('/me/permissions');
+        $perms = $perms['data'][0];
+        if(array_key_exists('publish_stream', $perms))
+        {
+          return Yii::app()->facebook->getUser();
+        }
+        else
+          return Yii::app()->facebook->getLoginUrl(array(
+                                                'scope'=>'publish_stream',));
+      }
+    } catch(Exception $ex)
+    {
+      return Yii::app()->facebook->getLoginUrl(array('scope'=>'publish_stream',));
+    }
+  }

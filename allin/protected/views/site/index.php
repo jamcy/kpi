@@ -1,0 +1,49 @@
+<?php $this->pageTitle=Yii::app()->name; ?>
+<meta http-equiv="Content-Type" content="text/html" charset="utf-8"> 
+<div class="container">
+	<div class="row">
+   	<form action="">
+      	<div class="span6 offset3">
+         	<div class = "logincontainer" id="twi">
+              <a href="?authenticate=1">Sign in with Twitter</a>
+              <?echo $url?>
+              <a href="?wipe=1">Выйти</a>
+            </div>
+            <div class="logincontainer" id="fb"></div>
+            <div class="logincontainer" id="vk"></div>
+            <div class="clear"></div>
+            <label style="display:block;" for="textarea"><h4>What's up?</h4></label>
+            <textarea class="input-xlarge" id="textarea" name="status" style="width:98%; margin-bottom:5px;" rows="2"></textarea>
+            <div class="row">
+          		<div class="span4">
+                  <div class="btn-group">
+                     <input type="checkbox" id="checkbox_fb" />
+                     <label class="btn btn-info" for="checkbox_fb"><i class="icon-facebook-sign"></i> Facebook</label>
+                     <input type="checkbox" id="checkbox_twi" name="checkbox_twi" value="1"/> 
+                     <label class="btn btn-info" for="checkbox_twi"><i class="icon-twitter-sign"></i> Twitter</label>
+                     <input type="checkbox" id="checkbox_vk" onchange="lol()" />
+                     <label class="btn btn-info btn-vk" for="checkbox_vk" data-olol-text="&lt;img src=&quot;images/vk7.png&quot; /&gt; vk.com"><img src="images/vk7_inv.png" />vk.com</label>
+                  </div>
+               </div>
+         	<div class="span1">
+             	<button class="btn btn-mini" ><i class="icon-picture"></i> image</button>
+           	</div> 
+            	<div class="span1"  style="margin-left:5px; right:0; text-align:right;">
+            		<button class="btn btn-primary btn-large" style="width:75px;">Send</button>
+            	</div>
+            	</div>
+           	</div>
+    	</div>
+    	</div>
+         </form>
+      </div>
+</div> <!-- /container -->
+
+<?php 
+	Yii::app()->clientScript->registerScriptFile('js/charCount.js');
+	Yii::app()->clientScript->registerScriptFile('protected/extensions/bootstrap/assets/js/bootstrap-modal.js');
+	Yii::app()->clientScript->registerScriptFile('protected/extensions/bootstrap/assets/js/bootstrap-button.js');
+	Yii::app()->clientScript->registerScriptFile('http://vkontakte.ru/js/api/openapi.js');
+	Yii::app()->clientScript->registerScriptFile('js/common.js');
+	Yii::app()->clientScript->registerCssFile('css/vlad.css'); 
+?>

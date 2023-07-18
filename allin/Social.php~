@@ -1,0 +1,47 @@
+<?php
+  public abstract class SocialWrapper
+  {
+    public function Post($params);
+    public function getName();
+    public function isPermissions($params);
+    public function Login();
+  }
+
+  public class VKWrapper extends SocialWrapper
+  {
+    
+  }
+
+  public class FacebookWrapper extends SocialWrapper
+  {
+    public function Post($params)
+    {
+      $post = array('message'=>$params);
+      Yii::app()->facebook->api('/me/feed', 'POST', $post);
+    }
+    public function getName();
+    public function isPermissions($params)
+    {
+    }
+    public function Login()
+    {
+      if(Yii::app()->facebook->getUser()==0)
+        return Yii::app()->facebook->getLoginUrl(array(
+                                               'scope'=>'publish_stream',));
+      else
+      {
+        $perms = Yii::app()->facebook->api('/me/permissions');
+        $perms = $perms['data'][0];
+        if(array_key_exists('publish_stream', $perms))
+          return 'OK';
+        else
+          return Yii::app()->facebook->getLoginUrl(array(
+                                               'scope'=>'publish_stream',));
+      }
+    }
+  }
+
+  public class TwitterWrapper extends SocialWrapper
+  {
+
+  }

@@ -1,0 +1,10 @@
+<?php
+  abstract class SocialWrapper
+  {
+    function Post($params);
+    function getName();
+    function isPermissions($params);
+    function Login();
+  }
+
+    

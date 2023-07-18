@@ -1,0 +1,16 @@
+<?php
+$this->pageTitle=Yii::app()->name . ' - Login';
+$this->breadcrumbs=array(
+	'Login',
+);
+?> 
+<ul>
+  <li><a href="index.php?r=site/login&authenticate=1">Sign in with Twitter</a></li>
+  <li><a href="?authenticate=1&amp;force=1">Sign in with Twitter (force login)</a></li>
+  <li><a href="?authorize=1">Authorize Application (with callback)</a></li>
+  <li><a href="?authorize=1&amp;oob=1">Authorize Application (oob - pincode flow)</a></li>
+  <li><a href="?authorize=1&amp;force_read=1">Authorize Application (with callback) (force read-only permissions)</a></li>
+  <li><a href="?authorize=1&amp;force_write=1">Authorize Application (with callback) (force read-write permissions)</a></li>
+  <li><a href="?authorize=1&amp;force=1">Authorize Application (with callback) (force login)</a></li>
+  <li><a href="?wipe=1">Start Over and delete stored tokens</a></li>
+</ul>
